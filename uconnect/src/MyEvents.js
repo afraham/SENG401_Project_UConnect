@@ -1,6 +1,6 @@
 function MyEvents() {
   return (
-    <h1>MyEvents</h1>
+    <h1>My Events</h1>
   );
 }
 
