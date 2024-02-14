@@ -1,6 +1,6 @@
 function FindEvents() {
   return (
-    <h1>FindEvents</h1>
+    <h1>Find Events</h1>
   );
 }
 
