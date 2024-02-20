@@ -28,7 +28,7 @@
 }
   
 .event-button:hover {
-    background-color: #ffffff; /* Light grey background on hover */
+    background-color: #d1d1d1; /* Light grey background on hover */
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2), /* Smaller shadow for a pressed effect */
                -2px -2px 5px rgba(255, 255, 255, 0.5);
 }
