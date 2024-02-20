@@ -24,13 +24,13 @@ function Layout( { signInState } ) {
       <nav>
         <ul>
           <li>
-            <Link to="/user">Home</Link>
-          </li>
-          <li>
-            <Link to="/user/findevents">Find Events</Link>
+            <Link to="/user">Find Events</Link>
           </li>
           <li>
             <Link to="/user/myevents">My Events</Link>
+          </li>
+          <li>
+            <Link to="/user/myprofile">My Profile</Link>
           </li>
         </ul>
       </nav>

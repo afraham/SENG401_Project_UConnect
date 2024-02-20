@@ -1,6 +1,17 @@
+import React from 'react';
+import './MyEvents.css';
+
+
 function MyEvents() {
   return (
-    <h1>MyEvents</h1>
+    <div className="my-events-page">
+      <p>ADD AN EVENT!</p>
+      <div className="event-button-container">
+        <button className="event-button" >
+          +
+        </button>
+      </div>
+    </div>
   );
 }
 

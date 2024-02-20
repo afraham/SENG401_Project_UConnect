@@ -1,0 +1,34 @@
+.my-events-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 40px; /* add space before text*/
+    
+}
+  
+.event-button-container {
+    margin-top: -20px; /*remove gap b/w btn&txt */
+    display: flex;
+    justify-content: center;
+    
+}
+  
+.event-button {
+    background-color: #ffffff; /* Background color */
+    border-radius: 15px; /* Rounded corners */
+    padding: 10px 20px; /* Padding inside the button */
+    font-size: 100px; /* Font size of + */
+    color: #a1a0a0;
+    cursor: pointer;
+    outline: none; 
+    width: 280px; 
+    height: 160px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2), /* dark Shadow for right and bottom */
+               -5px -5px 10px rgba(255, 255, 255, 0.5); /* Light shadow for top and left */
+}
+  
+.event-button:hover {
+    background-color: #ffffff; /* Light grey background on hover */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2), /* Smaller shadow for a pressed effect */
+               -2px -2px 5px rgba(255, 255, 255, 0.5);
+}
