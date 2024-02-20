@@ -51,6 +51,14 @@ textarea {
   
 }
 
+textarea {
+    resize: vertical;
+    min-height: 50px;
+    max-height: 300px;
+    overflow: auto; /* Adds scrollbars  */
+}
+
+
 .max-people {
   display: flex;
   align-items: center;
