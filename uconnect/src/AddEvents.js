@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './AddEvents.css'; // You will create this CSS file for styling the popup
+import './AddEvents.css'; 
 
 const AddEvents = ({ closePopup }) => {
 
