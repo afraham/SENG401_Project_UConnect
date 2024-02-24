@@ -1,0 +1,58 @@
+/* Profile container */
+.myprofile-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Display name */
+  .displayName {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  /* Bio section */
+  .bio {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  
+  /* Interests section */
+  .interests {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 20px;
+  }
+  
+  /* Edit icon */
+  .edit-icon {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .edit-icon:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Modal (pop-up form) */
+  .modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+  
