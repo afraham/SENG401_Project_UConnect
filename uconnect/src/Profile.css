@@ -2,10 +2,12 @@
 .myprofile-container {
     max-width: 600px;
     margin: 0 auto;
+    margin-top: 30px;
     padding: 20px;
-    background-color: #f9f9f9;
+    background-color: #ffffff;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1), -10px -10px 10px rgba(227, 227, 227, 0.5);
+                
   }
   
   /* Display name */
@@ -56,3 +58,6 @@
     z-index: 1000;
   }
   
+  .avatar{
+    width: 100px;
+  }

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./Profile.css";
+import default_picture from './images/default_picture.jpg';
 
 function Profile() {
   const [isEditing, setIsEditing] = useState(false);
@@ -53,7 +54,7 @@ function Profile() {
           {/* Avatar */}
           {!isEditing ? (
             <img
-              src={profileInfo.picture || "default_picture.png"}
+              src={profileInfo.picture || default_picture}
               alt="Profile"
               className="avatar"
             />
