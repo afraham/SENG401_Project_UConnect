@@ -10,15 +10,28 @@
 .SigninContainer {
   background-color: white;
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 30px;
   box-shadow: 0 4px 8px rgba(245, 244, 244, 0.1); /* Add some shadow for depth */
-  width: 500px; /* Adjust width as needed */
+  width: 390px; /* Adjust width as needed */
 }
 
 form {
   display: flex;
   flex-direction: column;
+  
+  
 }
+
+
+
+form h1{
+  text-align: center; 
+  margin: 0;
+  padding: 0.3em 0;
+}
+
+
+
 
 input[type="email"],
 input[type="password"]  {
