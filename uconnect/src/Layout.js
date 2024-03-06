@@ -1,6 +1,7 @@
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import "./Layout.css"
+import logoImage from './images/logo.png';
 
 function Layout( { signInState } ) {
 
@@ -22,15 +23,17 @@ function Layout( { signInState } ) {
     <>
     <div className='navbar'>
       <nav>
+        
         <ul>
+        <img src={logoImage} alt="Logo" className="navbar-logo" /> 
           <li>
-            <Link to="/user">Find Events</Link>
+            <Link to="/user/myprofile">My Profile</Link>
           </li>
           <li>
             <Link to="/user/myevents">My Events</Link>
           </li>
           <li>
-            <Link to="/user/myprofile">My Profile</Link>
+            <Link to="/user">Find Events</Link>
           </li>
         </ul>
       </nav>

@@ -27,7 +27,7 @@ function SignIn( {changeSignInState} ) {
     <div className="LoginPage">
       <div className="SigninContainer">
         <form onSubmit={handleSignIn}>
-              <h1>Welcome to UConnect!</h1>
+              <h1>UConnect</h1>
               <h2>Sign In</h2>
               <label htmlFor="email">
                 <b>Email</b>
