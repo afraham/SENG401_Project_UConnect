@@ -22,7 +22,7 @@ const AddEvents = ({ closePopup }) => {
 
 
     // This is just a test pls remove it when database is set up
-    const saveEventData = () => {
+    const saveEventData = async () => {
         
         if (!title.trim() || !description.trim() || !date.trim() || !location.trim()) {
             alert('Please fill in all fields.');
@@ -38,6 +38,31 @@ const AddEvents = ({ closePopup }) => {
         });
 
         closePopup();
+
+        try {
+            const response = await fetch('http://localhost:3000/api/events', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    title,
+                    description,
+                    maxPeople,
+                    date,
+                    location,
+                }),
+            });
+
+            if (response.ok) {
+                console.log('Event data sent successfully');
+                closePopup();
+            } else {
+                console.error('Failed to send event data');
+            }
+        } catch (error) {
+            console.error('Error sending event data:', error);
+        }
     };
     //..................
 
