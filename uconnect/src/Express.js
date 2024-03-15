@@ -40,11 +40,18 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { MongoClient, ServerApiVersion } = require('mongodb');
+const cors = require('cors');
 
 const app = express();
-const port = 3000;
+const port = 8000;
 
 app.use(bodyParser.json());
+
+const corsOptions = {
+  origin: 'http://localhost:3000'
+}
+
+app.use(cors(corsOptions));
 
 const uri = "mongodb+srv://uconnect:uconnect123@uconnectdb.xi1eihr.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri, {
@@ -66,6 +73,7 @@ app.post('/api/events', async (req, res) => {
     const result = await collection.insertOne(eventData);
 
     console.log(`Successfully inserted event with _id: ${result.insertedId}`);
+    res.setHeader('Access-Control-Allow-Origin', 'localhost:3000')
     res.status(201).send({ message: 'Event created successfully' });
   } catch (error) {
     console.error('Error inserting event:', error);

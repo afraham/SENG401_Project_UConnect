@@ -40,7 +40,7 @@ const AddEvents = ({ closePopup }) => {
         closePopup();
 
         try {
-            const response = await fetch('http://localhost:3000/api/events', {
+            const response = await fetch('http://localhost:8000/api/events', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
