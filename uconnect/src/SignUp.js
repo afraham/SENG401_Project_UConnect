@@ -26,7 +26,7 @@ function SignUp() {
     <div className="LoginPage">
       <div className="SigninContainer">
         <form onSubmit={handleSignUp}>
-              <h1>Welcome to UConnect!</h1>
+              <h1>UConnect</h1>
               <h2>Sign Up</h2>
               <label htmlFor="newEmail">
                 <b>Email</b>
