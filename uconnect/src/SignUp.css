@@ -58,9 +58,11 @@ form {
   flex-direction: column;
 }
 
+
 .signheader{
   text-align: center;
 }
+
 
 input[type="email"],
 input[type="password"] {
