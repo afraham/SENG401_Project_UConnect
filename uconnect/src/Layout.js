@@ -10,7 +10,6 @@ function Layout( { signInState } ) {
   useEffect(() => {
     // Simulate an asynchronous check for user authentication
     const checkUserAuthentication = () => {
-      console.log(signInState)
       if (!signInState) {
         nav("/")
       }
