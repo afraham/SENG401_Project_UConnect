@@ -73,7 +73,7 @@ app.post('/api/events', async (req, res) => {
     const result = await collection.insertOne(eventData);
 
     console.log(`Successfully inserted event with _id: ${result.insertedId}`);
-    res.setHeader('Access-Control-Allow-Origin', 'localhost:3000')
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000')
     res.status(201).send({ message: 'Event created successfully' });
   } catch (error) {
     console.error('Error inserting event:', error);
