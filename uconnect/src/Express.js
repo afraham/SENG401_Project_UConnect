@@ -83,6 +83,26 @@ app.post('/api/events', async (req, res) => {
   }
 });
 
+app.get('/api/events', async (req, res) => {
+  try {
+    await client.connect();
+    const db = client.db('create_events');
+    const collection = db.collection('events');
+
+    // Assuming you want to retrieve all events from the collection
+    const events = await collection.find().toArray();
+
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.status(200).json(events);
+  } catch (error) {
+    console.error('Error retrieving events:', error);
+    res.status(500).send({ message: 'Internal Server Error' });
+  } finally {
+    await client.close();
+  }
+});
+
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

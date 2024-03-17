@@ -40,6 +40,7 @@ const AddEvents = ({ closePopup }) => {
         closePopup();
 
         try {
+            const spotsTaken = 0
             const response = await fetch('http://localhost:8000/api/events', {
                 method: 'POST',
                 headers: {
@@ -49,6 +50,7 @@ const AddEvents = ({ closePopup }) => {
                     title,
                     description,
                     maxPeople,
+                    spotsTaken,
                     date,
                     location,
                 }),
