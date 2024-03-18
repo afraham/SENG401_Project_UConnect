@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./AddEvents.css";
-import { auth } from "../Firebase";
+import { auth } from "../firebase";
 
 const AddEvents = ({ closePopup }) => {
 	const [title, setTitle] = useState("");

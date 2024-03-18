@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Profile.css";
 import default_picture from "../images/default_picture.jpg";
-import { auth } from "../Firebase";
+import { auth } from "../firebase";
 
 function Profile() {
 	const [isEditing, setIsEditing] = useState(false);
