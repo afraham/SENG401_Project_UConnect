@@ -45,7 +45,7 @@ function SignIn({ changeSignInState }) {
 						onChange={(e) => setPassword(e.target.value)}
 						required
 					/>
-					<button type="submit">Sign In</button>
+					<button type="submit" >Sign In</button>
 					<img src={require("../images/logo.png")} alt="Logo.png"/>
 					<p style={{ cursor: "pointer" }}>
 						<Link to="/signup"> Don't have an account? Sign Up</Link>

@@ -76,10 +76,12 @@ const AddEvents = ({ closePopup }) => {
 	return (
 		<div className="popup-container">
 			<div className="popup-content">
-				<h2>Add New Event</h2>
-				<button className="close-button" onClick={closePopup}>
-					X
-				</button>
+				<div className="ce-header">
+					<h2 className="ce-header">Add New Event</h2>
+					<button className="close-button" onClick={closePopup}>
+						X
+					</button>
+				</div>
 				<input
 					type="text"
 					placeholder="Title"

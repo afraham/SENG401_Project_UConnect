@@ -11,7 +11,11 @@ function FindEvents() {
 				const response = await fetch("http://localhost:8000/api/events");
 				const data = await response.json();
 				console.log(data); // Log the data
-				setEvents(data); // Assuming data is an array of events
+				const eventsWithExpansion = data.map(event => ({
+                    ...event,
+                    isExpanded: false
+                }));
+				setEvents(eventsWithExpansion); // Assuming data is an array of events
 			} catch (error) {
 				console.error("Error fetching events:", error);
 			}
@@ -20,13 +24,34 @@ function FindEvents() {
 		fetchEvents();
 	}, []); // Empty dependency array ensures the effect runs only once after initial render
 
+
+	// Function to toggle event card expansion
+    const toggleExpansion = (index) => {
+        setEvents(currentEvents =>
+            currentEvents.map((event, i) => {
+                if (i === index) {
+                    return { ...event, isExpanded: !event.isExpanded };
+                }
+                return event;
+            })
+        );
+    };
+
+	const handleRequestToJoin = (e) => {
+		console.log("not yet working")
+	};
+
 	return (
 		<div>
-			<h1>Event List</h1>
+			<br></br><br></br><br></br><br></br>
 			<div className="event-list">
 				{Array.isArray(events) &&
 					events.map((event, index) => (
-						<div className="event-card" key={index}>
+						<div
+                            className={`event-card ${event.isExpanded ? 'expanded' : ''}`}
+                            key={index}
+                            onClick={() => toggleExpansion(index)}
+                        >
 							<div className="top-box">
 								<div className="left-align">
 									<p className="event-title">{event.title}</p>
@@ -34,17 +59,18 @@ function FindEvents() {
 								<div className="right-align">
 									<p className="capacity">
 										{event.spotsTaken}/{event.maxPeople}
+										
 									</p>
-									<p>&#128100;</p>
+									<p className="capacity"><i class="fa fa-group"></i></p>
 								</div>
 							</div>
-							<p className="description">{event.description}</p>
+							<p className={`description ${event.isExpanded ? 'expanded' : ''}`}>{event.description}</p>
 							<div className="bottom-box">
 								<div className="left-align">
-									<p className="location">{event.location}</p>
+									<p className="location"><i class="fa fa-map-marker"></i> {event.location}</p>
 								</div>
 								<div className="right-align">
-									<button className="request-button">Request To Join</button>
+									<button className="request-button" onClick={handleRequestToJoin}>Request To Join</button>
 								</div>
 							</div>
 						</div>

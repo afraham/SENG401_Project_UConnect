@@ -25,6 +25,8 @@
     height: 160px;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2), /* dark Shadow for right and bottom */
                -5px -5px 10px rgba(255, 255, 255, 0.5); /* Light shadow for top and left */
+    border: none;
+    margin-top: 4px;
 }
   
 .event-button:hover {

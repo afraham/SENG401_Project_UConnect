@@ -18,7 +18,7 @@ function MyEvents() {
 
 	return (
 		<div className="my-events-page">
-			<p>ADD AN EVENT!</p>
+			<p><b>ADD AN EVENT!</b></p>
 			<div className="event-button-container">
 				<button className="event-button" onClick={handleShowPopup}>
 					{" "}
