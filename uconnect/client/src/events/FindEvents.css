@@ -2,18 +2,19 @@
     display: flex;
     flex-wrap: wrap;
     max-height: 500px;
+    justify-content: center;
     align-items: flex-start;
 }
 
 .event-card {
     display: flex;
     flex-direction: column;
-    width: 195px;
+    width: 270px;
     height: auto;
-    background-color: #f2f2f2;
+    background-color: #f3f1f1;
     opacity: 0.8;
     border-radius: 20px;
-    margin: 0px 5% 20px 5%;
+    margin: 0px 20px 20px 20px;
     box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.2), /* dark Shadow for right and bottom */
                  -5px -5px 10px rgba(255, 255, 255, 0.5); /* Light shadow for top and left */
     padding: 10px 10px 10px 10px;
@@ -46,6 +47,8 @@
     font-weight: bold;
     font-size: 15px;
     margin-left: 5px;
+    margin-top: 2px;
+    text-transform: uppercase;
 }
 
 .capacity {
@@ -54,25 +57,33 @@
     font-size: 15px;
     height: auto;
     margin-right: 5px;
+    margin-top: 2px;
 }
 
 .request-button {
-    background-color: #6eb4fa;
+    background-color: #0080ff;
     height: 30px;
     width: 100px;
     color: white;
     font-size: 12px;
     padding: 0px 0px 0px 0px;
+    border-radius: 15px;
     
 }
 
 .location {
-    font-size: 12px;
-    margin-right: 10px;
+    font-size: 14px;
+    text-transform: capitalize;
+    margin-bottom: 10px;
 }
 
 .bottom-box {
     display: flex;
     flex-direction: row;
     padding: 0px 0px 0px 0px;
+    margin-bottom: 0px;
 }
+/* 
+.description{
+    TODO
+} */
