@@ -1,0 +1,78 @@
+.event-list {
+    display: flex;
+    flex-wrap: wrap;
+    max-height: 500px;
+    align-items: flex-start;
+}
+
+.event-card {
+    display: flex;
+    flex-direction: column;
+    width: 195px;
+    height: auto;
+    background-color: #f2f2f2;
+    opacity: 0.8;
+    border-radius: 20px;
+    margin: 0px 5% 20px 5%;
+    box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.2), /* dark Shadow for right and bottom */
+                 -5px -5px 10px rgba(255, 255, 255, 0.5); /* Light shadow for top and left */
+    padding: 10px 10px 10px 10px;
+    justify-content: flex-start;
+    align-content: center;
+}
+
+.top-box {
+    display: flex;
+    flex-direction: row;
+
+    padding: 0px 0px 0px 0px;
+}
+
+.left-align {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: row;
+}
+
+.right-align {
+    justify-content: flex-end;
+    flex-grow: 1.0;
+    display: flex;
+    flex-direction: row;
+}
+
+.event-title {
+    font-style: italic;
+    font-weight: bold;
+    font-size: 15px;
+    margin-left: 5px;
+}
+
+.capacity {
+    text-align: right;
+    color: gray;
+    font-size: 15px;
+    height: auto;
+    margin-right: 5px;
+}
+
+.request-button {
+    background-color: #6eb4fa;
+    height: 30px;
+    width: 100px;
+    color: white;
+    font-size: 12px;
+    padding: 0px 0px 0px 0px;
+    
+}
+
+.location {
+    font-size: 12px;
+    margin-right: 10px;
+}
+
+.bottom-box {
+    display: flex;
+    flex-direction: row;
+    padding: 0px 0px 0px 0px;
+}
