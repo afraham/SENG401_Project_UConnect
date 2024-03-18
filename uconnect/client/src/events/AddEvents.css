@@ -19,17 +19,21 @@
   width: 50%; /* Adjust width */
   max-width: 600px; /* Adjust maximum width */
 }
+.ce-header{
   
+  margin: 0px 0px 10px 0px;
+}
 
 .close-button {
   position: absolute;
-  top: 10px; /* Position from the top of the popup */
+  top: 18px; /* Position from the top of the popup */
   right: 10px; /* Position from the right of the popup */
   background: none;
   color: #000000; /* Change color here */
   font-size: 24px;
   cursor: pointer;
   padding: 10px; /* Increase padding to make the button larger */
+  border: none;
     
 }
 
@@ -105,4 +109,5 @@ textarea {
 
 .create-button:hover {
   background-color: #0056b3; /* Darker background on hover */
+  transition: background-color 0.3s;
 }

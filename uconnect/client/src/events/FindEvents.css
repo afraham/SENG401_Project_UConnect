@@ -61,14 +61,20 @@
 }
 
 .request-button {
-    background-color: #0080ff;
+    background-color: #007bff;
     height: 30px;
     width: 100px;
     color: white;
     font-size: 12px;
     padding: 0px 0px 0px 0px;
     border-radius: 15px;
+    border: none;
     
+}
+
+.request-button:hover{
+    background-color: #0056b3;
+    transition: background-color 0.3s;
 }
 
 .location {
