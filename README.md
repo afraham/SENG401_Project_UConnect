@@ -2,6 +2,8 @@
 
 ### To Run them SEPARATELY:
 
+**step 1:** `cd uconnect`
+
 **Running the Frontend:** `npm start`
 
 **Running the Backend:** `npm run start-server`
