@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./AddEvents.css";
+import { auth } from "../Firebase";
 
 const AddEvents = ({ closePopup }) => {
 	const [title, setTitle] = useState("");
@@ -40,6 +41,9 @@ const AddEvents = ({ closePopup }) => {
 		closePopup();
 
 		try {
+			const user = auth.currentUser; // get the current user
+			const userEmail = user ? user.email : null; // get the user's email
+
 			const spotsTaken = 0;
 			const response = await fetch("http://localhost:8000/api/events", {
 				method: "POST",
@@ -53,6 +57,7 @@ const AddEvents = ({ closePopup }) => {
 					spotsTaken,
 					date,
 					location,
+					userEmail,
 				}),
 			});
 
