@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./SignIn.css";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase";
+import { auth } from "../Firebase";
 
 function SignUp() {
 	const [email, setEmail] = useState("");
@@ -22,15 +22,13 @@ function SignUp() {
 		}
 	};
 
+
 	return (
 		<div className="LoginPage">
 			<div className="SigninContainer">
 				<form onSubmit={handleSignUp}>
 					<h1>UConnect</h1>
 					<h2>Sign Up</h2>
-					<label htmlFor="newEmail">
-						<b>Email</b>
-					</label>
 					<input
 						type="email"
 						placeholder="Enter Your Email"
@@ -39,9 +37,6 @@ function SignUp() {
 						onChange={(e) => setEmail(e.target.value)}
 						required
 					/>
-					<label htmlFor="newPassword">
-						<b>Password</b>
-					</label>
 					<input
 						type="password"
 						placeholder="Create a Password"
@@ -51,8 +46,9 @@ function SignUp() {
 						required
 					/>
 					<button type="submit">Sign Up</button>
+					<img src={require("../images/logo.png")} alt="Logo.png"/>
 					<p style={{ cursor: "pointer" }}>
-						Already have an account? <Link to="/">Sign In</Link>
+						<Link to="/"> Already have an account? Sign In</Link>
 					</p>
 				</form>
 			</div>

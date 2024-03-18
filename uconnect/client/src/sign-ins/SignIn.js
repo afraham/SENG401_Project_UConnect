@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./SignIn.css";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase";
+import { auth } from "../Firebase";
 
 function SignIn({ changeSignInState }) {
 	const [email, setEmail] = useState("");
@@ -29,9 +29,6 @@ function SignIn({ changeSignInState }) {
 				<form onSubmit={handleSignIn}>
 					<h1>UConnect</h1>
 					<h2>Sign In</h2>
-					<label htmlFor="email">
-						<b>Email</b>
-					</label>
 					<input
 						type="email"
 						placeholder="Enter Email"
@@ -40,9 +37,6 @@ function SignIn({ changeSignInState }) {
 						onChange={(e) => setEmail(e.target.value)}
 						required
 					/>
-					<label htmlFor="password">
-						<b>Password</b>
-					</label>
 					<input
 						type="password"
 						placeholder="Enter Password"
@@ -52,8 +46,9 @@ function SignIn({ changeSignInState }) {
 						required
 					/>
 					<button type="submit">Sign In</button>
+					<img src={require("../images/logo.png")} alt="Logo.png"/>
 					<p style={{ cursor: "pointer" }}>
-						Don't have an account? <Link to="/signup">Sign Up</Link>
+						<Link to="/signup"> Don't have an account? Sign Up</Link>
 					</p>
 				</form>
 			</div>

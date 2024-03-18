@@ -1,9 +1,16 @@
+@font-face {
+  font-family: 'Poppins';
+  src: url('https://fonts.gstatic.com/s/poppins/v15/pxiByp8kv8JHgFVrLDz8Z1xlFd2JQEk.woff2') format('woff2'); /* URL to the font file */
+  font-weight: normal;
+  font-style: normal;
+}
+
 .LoginPage {
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: url('https://blog.purestorage.com/wp-content/uploads/2020/08/iStock-959769248-scaled.jpg'); /* Use a local path or a URL */
+  background: url('../images/login_background.png'); /* Use a local path or a URL */
   background-size: cover;
 }
 
@@ -11,44 +18,70 @@
   background-color: white;
   padding: 20px;
   border-radius: 30px;
-  box-shadow: 0 4px 8px rgba(245, 244, 244, 0.1); /* Add some shadow for depth */
-  width: 390px; /* Adjust width as needed */
+  box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.2), /* dark Shadow for right and bottom */
+  -5px -5px 10px rgba(255, 255, 255, 0.5); /* Light shadow for top and left */
+  width: 350px; /* Adjust width as needed */
+  height: 400px;
 }
 
 form {
   display: flex;
   flex-direction: column;
-  
-  
+  font-family: 'Poppins', sans-serif; /* Fallback to sans-serif if Poppins isn't available */
 }
 
+form img {
+  height: 105px;
+  width: 122px;
+  align-self: center;
+  margin: 0px;
 
+}
+
+form h2 {
+  text-align: center;
+  font-size: 16px;
+  height: 32px;
+  margin: 0px;
+  color: #605D5C;
+
+}
 
 form h1{
   text-align: center; 
-  margin: 0;
+  font-size: 20px;
+  margin: 0px;
   padding: 0.3em 0;
+  height: 32px;
 }
 
-
-
+form p {
+  text-align: center;
+  font-size: 14px;
+}
 
 input[type="email"],
 input[type="password"]  {
-  margin: 10px 0;
+  align-self: center;
+  margin: 5px 0;
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ddd; /* A light gray border */
+  background-color: #D9D9D9;
+  min-height: 34px;
+  width: 270px;
 }
 
 button {
-  background-color: blue;
+  background-color: red;
   color: white;
   padding: 10px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   margin-top: 10px;
+  width: 290px;
+  align-self: center;
 }
 
 button:hover {
