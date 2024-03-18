@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import "./Profile.css";
 import default_picture from "../images/default_picture.jpg";
+import { auth } from "../Firebase";
 
 function Profile() {
 	const [isEditing, setIsEditing] = useState(false);
 	const [profileInfo, setProfileInfo] = useState({
 		name: "Firstname Lastname",
-		email: "email@example.com",
+		email: auth.currentUser ? auth.currentUser.email : "email@example.com",
 		bio: "",
 		interests: [],
 		picture: null,
