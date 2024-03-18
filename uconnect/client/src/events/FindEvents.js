@@ -22,7 +22,7 @@ function FindEvents() {
 
 	return (
 		<div>
-			<h1>Event List</h1>
+			<br></br><br></br><br></br><br></br>
 			<div className="event-list">
 				{Array.isArray(events) &&
 					events.map((event, index) => (
@@ -34,14 +34,15 @@ function FindEvents() {
 								<div className="right-align">
 									<p className="capacity">
 										{event.spotsTaken}/{event.maxPeople}
+										
 									</p>
-									<p>&#128100;</p>
+									<p className="capacity"><i class="fa fa-group"></i></p>
 								</div>
 							</div>
 							<p className="description">{event.description}</p>
 							<div className="bottom-box">
 								<div className="left-align">
-									<p className="location">{event.location}</p>
+									<p className="location"><i class="fa fa-map-marker"></i> {event.location}</p>
 								</div>
 								<div className="right-align">
 									<button className="request-button">Request To Join</button>
