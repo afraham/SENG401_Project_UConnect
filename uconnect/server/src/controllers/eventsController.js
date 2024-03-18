@@ -2,7 +2,6 @@ const db = require("../db/db");
 
 exports.createEvent = async (req, res) => {
 	try {
-		await db.connect();
 		const database = db.db("create_events");
 		const collection = database.collection("events");
 
@@ -16,14 +15,11 @@ exports.createEvent = async (req, res) => {
 	} catch (error) {
 		console.error("Error inserting event:", error);
 		res.status(500).send({ message: "Internal Server Error" });
-	} finally {
-		await db.close();
 	}
 };
 
 exports.getEvents = async (req, res) => {
 	try {
-		await db.connect();
 		const database = db.db("create_events");
 		const collection = database.collection("events");
 
@@ -34,7 +30,5 @@ exports.getEvents = async (req, res) => {
 	} catch (error) {
 		console.error("Error retrieving events:", error);
 		res.status(500).send({ message: "Internal Server Error" });
-	} finally {
-		await db.close();
 	}
 };
