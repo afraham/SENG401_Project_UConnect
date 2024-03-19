@@ -19,6 +19,7 @@
 	},
 	"scripts": {
 		"start": "cd client && npm start",
+		"build-client": "cd client && npm run build",
 		"build": "cd client && npm run build",
 		"start-server": "node server/src/app.js",
 		"test": "cd client && npm test",
