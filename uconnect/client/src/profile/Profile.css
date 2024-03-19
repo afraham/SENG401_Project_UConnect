@@ -14,6 +14,7 @@
   display: flex;
   align-items: center;
   margin-bottom: 20px;
+  padding: 3%;
 }
 /* Display name */
 .displayName {
@@ -34,18 +35,20 @@
 .bio {
   font-size: 16px;
   margin-bottom: 10px;
+  background-color: rgb(240, 240, 240);
+  padding: 1em;
+  border-radius: 8px;
 }
 
 .bio text {
   font-size: 14px;
-  background-color: #007bff;
   margin-bottom: 20px;
 }
 
 /* Interests section */
 .interests {
   font-size: 14px;
-  color: #555;
+  background-color: #ff0000;
   margin-bottom: 20px;
 }
 
@@ -80,4 +83,39 @@
 .avatar {
   width: 100px;
   border-radius: 50px;
+}
+
+/* Container for the interests section */
+.interests-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* Adjust as needed */
+}
+
+/* Individual interest blocks */
+.interests-container .interest-block {
+  display: inline-block;
+  padding: 10px; /* Adjust as needed */
+  background-color: blue; /* Adjust as needed */
+  color: white; /* Adjust as needed */
+  border-radius: 5px; /* Adjust as needed */
+}
+
+/* Edit and Save buttons */
+.edit-icon, .save-button {
+  margin-top: 10px; /* Adjust as needed */
+  padding: 5px 10px; /* Adjust as needed */
+  background-color: grey; /* Adjust as needed */
+  color: white; /* Adjust as needed */
+  border: none;
+  border-radius: 5px; /* Adjust as needed */
+  cursor: pointer;
+}
+
+/* Input field for adding new interest */
+.new-interest-input {
+  margin-top: 10px; /* Adjust as needed */
+  padding: 5px; /* Adjust as needed */
+  border: 1px solid grey; /* Adjust as needed */
+  border-radius: 5px; /* Adjust as needed */
 }

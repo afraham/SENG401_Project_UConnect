@@ -99,12 +99,12 @@ function Profile() {
           )}
 
           {/* Interests */}
-
+		<div className = "interests-container">
           <p>Interests</p>
           {!isEditing ? (
             profileInfo.interests.length > 0 ? (
               profileInfo.interests.map((interest) => (
-                <span key={interest}>{interest}</span>
+                <span key={interest} className ="interest-block">{interest}</span>
               ))
             ) : (
               "Add an interest!"
@@ -112,7 +112,7 @@ function Profile() {
           ) : (
             <>
               {profileInfo.interests.map((interest) => (
-                <div key={interest}>
+                <div key={interest} className ="interest-block">
                   {interest}
                   <button onClick={() => handleRemoveInterest(interest)}>
                     Remove
@@ -126,8 +126,10 @@ function Profile() {
               />
               <button onClick={handleAddInterest}>Add Interest</button>
             </>
+			
           )}
         </div>
+		</div>
 
         {/* Edit Icon or Save Button based on isEditing state*/}
         {!isEditing ? (
