@@ -1,8 +1,10 @@
 # SENG401_Project_UConnect
 
-### To Run them SEPARATELY:
+Below are instructions to run the applications (frontend and backend) SEPARATELY and TOGETHER!
 
-**step 1:** `cd uconnect`
+First, make sure you `cd uconnect`, then run whatever is needed! :)
+
+### To Run them SEPARATELY:
 
 **Running the Frontend:** `npm start`
 
