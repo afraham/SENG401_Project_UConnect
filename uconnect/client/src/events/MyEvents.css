@@ -35,3 +35,9 @@
                -2px -2px 5px rgba(255, 255, 255, 0.5);
     color: #ff5555;
 }
+
+.myevents-line{
+    display: block;
+    border: solid #ff5555 2px;
+    margin: 40px 20px 20px 20px;
+}
