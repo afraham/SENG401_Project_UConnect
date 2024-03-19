@@ -21,7 +21,8 @@
     align-content: center;
     height: auto; 
     overflow: hidden; /* Hide the overflow content */
-    user-select: none
+    user-select: none;
+    cursor: pointer;
     
 }
 
