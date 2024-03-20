@@ -64,7 +64,6 @@ function Profile() {
     });
   };
 
-  const default_picture = '"../images/default_picture.jpg"';
 
   return (
     <>
