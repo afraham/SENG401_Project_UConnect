@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./AddEvents.css";
 import { auth } from "../firebase";
 
-const AddEvents = ({ closePopup, event, editMode}) => {
+const AddEvents = ({ closePopup, event, editMode, updateEvents }) => {
 	const [title, setTitle] = useState(event ? event.title : "");
 	const [description, setDescription] =  useState(event ? event.description : "");
 	const [maxPeople, setMaxPeople] = useState(event ? event.maxPeople : 2);
@@ -74,6 +74,7 @@ const AddEvents = ({ closePopup, event, editMode}) => {
 
 			if (response.ok) {
 				console.log("Event data sent successfully");
+				updateEvents();
 				closePopup();
 			} else {
 				console.error("Failed to send event data");

@@ -84,6 +84,7 @@ function MyEvents() {
 						closePopup={handleClosePopup} 
 						event={currentEvent} 
 						editMode={Boolean(currentEvent)}
+						updateEvents={fetchEvents}
 					/>
 				}
 				
