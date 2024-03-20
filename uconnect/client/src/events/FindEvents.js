@@ -46,31 +46,40 @@ function FindEvents() {
         );
     };
 
-    const handleRequestToJoin = async (eventId, userEmail) => {
-		console.log("Event ID:", eventId); // Log the eventId
-		console.log("userEmail:", userEmail)
-		try {
-			const response = await fetch(`http://localhost:8000/api/events/${eventId}/join`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ userEmail: userEmail })
-			});
+    const handleRequestToJoin = async (eventId, userEmail, index) => {
+        // Update the event's state to indicate that the request is pending
+        setEvents(currentEvents =>
+            currentEvents.map((event, i) => {
+                if (i === index) {
+                    return { ...event, isExpanded: event.isExpanded, requestStatus: 'Pending' };
+                }
+                return event;
+            })
+        );
+    
+        console.log("Event ID:", eventId); // Log the eventId
+        console.log("userEmail:", userEmail);
+        try {
+            const response = await fetch(`http://localhost:8000/api/events/join`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userEmail) // Just pass userEmail directly
+            });
+    
+            if (response.ok) {
+                console.log('Request to join sent successfully');
+            } else {
+                console.error('Failed to send request to join:', response.status, response.statusText);
+                // Handle error case here
+            }
+        } catch (error) {
+            console.error('Error sending request to join:', error);
+            // Handle error case here
+        }
+    };
 	
-			if (response.ok) {
-				console.log('Request to join sent successfully');
-			} else {
-				console.error('Failed to send request to join');
-				// Handle error case here
-			}
-		} catch (error) {
-			console.error('Error sending request to join:', error);
-			// Handle error case here
-		}
-	};
-	
-
     return (
         <div>
             <br /><br /><br /><br />
@@ -100,7 +109,14 @@ function FindEvents() {
                                     <p className="location"><i class="fa fa-map-marker"></i> {event.location}</p>
                                 </div>
                                 <div className="right-align">
-									<button className="request-button" onClick={() => handleRequestToJoin(event._id, userEmail)}>Request To Join</button>
+                                    <button
+                                        className={`request-button ${event.requestStatus === 'Pending' ? 'pending' : ''}`}
+                                        disabled={event.requestStatus === 'Pending'}
+                                        onClick={() => handleRequestToJoin(event._id, userEmail, index)}
+                                    >
+                                        {event.requestStatus === 'Pending' ? 'Pending' : 'Request To Join'}
+                                    </button>
+                              
                                 </div>
                             </div>
                         </div>
