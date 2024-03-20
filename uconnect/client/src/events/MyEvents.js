@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./MyEvents.css";
 import "./FindEvents.css";
 import AddEvents from "./AddEvents";
+import ManageEvents from "./ManageEvents";
 import { auth } from "../firebase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -11,6 +12,7 @@ function MyEvents() {
   const [showPopup, setShowPopup] = useState(false);
   const [events, setEvents] = useState([]);
   const [currentEvent, setCurrentEvent] = useState(null);
+  const [showManagePopup, setShowManagePopup] = useState(false);
 
   // Edit Event
   const handleEditEvent = (event) => {
@@ -54,6 +56,13 @@ function MyEvents() {
     setShowPopup(false);
   };
 
+  const handleManageEvent = (event) => {
+    setCurrentEvent(event);
+    setShowManagePopup(true); // Show manage popup when "Manage" button is clicked
+    console.log("showManagePopup set to true:");
+    console.log("showManagePopup set to true:", showManagePopup);
+  };
+
   const fetchEvents = async () => {
     try {
       const user = auth.currentUser;
@@ -82,6 +91,10 @@ function MyEvents() {
   useEffect(() => {
     fetchEvents();
   }, []);
+
+  useEffect(() => {
+    console.log("showManagePopup set to true:", showManagePopup);
+  }, [showManagePopup]);
 
   const toggleExpansion = (index) => {
     setEvents((currentEvents) =>
@@ -138,6 +151,13 @@ function MyEvents() {
                   <p className="capacity">
                     <i class="fa fa-group"></i>
                   </p>
+
+                  <button
+                    className="manage-button"
+                    onClick={() => handleManageEvent(event)}
+                  >
+                    Manage
+                  </button>
                 </div>
               </div>
               <p
@@ -169,6 +189,13 @@ function MyEvents() {
             </div>
           ))}
       </div>
+      {showManagePopup && (
+        <ManageEvents
+          event={currentEvent}
+          title={currentEvent.title} // Pass the title as a prop
+          closePopup={() => setShowManagePopup(false)}
+        />
+      )}
     </div>
   );
 }
