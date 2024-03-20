@@ -45,23 +45,23 @@ test("submits the form", () => {
 });
 
 jest.mock("firebase/auth", () => ({
-    signInWithEmailAndPassword: jest.fn(() => Promise.resolve("Mock sign in")),
-    getAuth: jest.fn(() => ({})),
+	signInWithEmailAndPassword: jest.fn(() => Promise.resolve("Mock sign in")),
+	getAuth: jest.fn(() => ({})),
 }));
 
 test("calls changeSignInState on form submission", async () => {
-    const mockChangeSignInState = jest.fn();
-    const { getByRole } = render(
-        <Router>
-            <SignIn changeSignInState={mockChangeSignInState} />
-        </Router>
-    );
-    const submitButton = getByRole("button", { name: /sign in/i });
+	const mockChangeSignInState = jest.fn();
+	const { getByRole } = render(
+		<Router>
+			<SignIn changeSignInState={mockChangeSignInState} />
+		</Router>
+	);
+	const submitButton = getByRole("button", { name: /sign in/i });
 
-    fireEvent.click(submitButton);
+	fireEvent.click(submitButton);
 
-    // Wait for any asynchronous actions to complete
-    await waitFor(() => {
-        expect(mockChangeSignInState).toHaveBeenCalledWith(true);
-    });
+	// Wait for any asynchronous actions to complete
+	await waitFor(() => {
+		expect(mockChangeSignInState).toHaveBeenCalledWith(true);
+	});
 });
