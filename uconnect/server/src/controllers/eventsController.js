@@ -1,5 +1,4 @@
 const db = require("../db/db");
-const { ObjectId }= require('mongodb');
 
 exports.createEvent = async (req, res) => {
 	try {
@@ -76,8 +75,8 @@ exports.requestToJoinEvent = async (req, res) => {
             { $push: { pending: userEmail } },
             { returnOriginal: false }
         );
-		if (result) {
-			res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+		      if (result) {
+			      res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
             res.status(200).json({ message: 'Event joined successfully' });
         } else {
             // If item not found
@@ -94,8 +93,8 @@ exports.getMyPendingEventsByEmail = async (req, res) => {
 
     try {
 
-		const database = db.db("create_events");
-		const collection = database.collection("events");;
+		    const database = db.db("create_events");
+		    const collection = database.collection("events");;
         const result = await collection.find({pending: userEmail }).toArray();
         if (result.length > 0) {
 			res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
@@ -106,5 +105,27 @@ exports.getMyPendingEventsByEmail = async (req, res) => {
     } catch (error) {
         console.error('Error searching items:', error);
         res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+exports.deleteEvent = async (req, res) => {
+    const { eventId } = req.params;
+    console.log("Trying to delete", eventId);
+
+    try {
+        const database = db.db("create_events");
+        const collection = database.collection("events");
+
+        const result = await collection.deleteOne({ _id: new ObjectId(eventId) });
+
+        if (result.deletedCount > 0) {
+            res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+            res.status(200).json({ message: "Event deleted successfully" });
+        } else {
+            res.status(404).json({ message: "Event not found" });
+        }
+    } catch (error) {
+        console.error("Error deleting event:", error);
+        res.status(500).json({ message: "Internal Server Error" });
     }
 };
