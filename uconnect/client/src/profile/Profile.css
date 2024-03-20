@@ -47,20 +47,21 @@
 
 /* Interests section */
 .interests {
-  font-size: 14px;
-  background-color: #ff0000;
-  margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* Adjust as needed */
 }
 
 /* Edit icon */
 .edit-icon {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 4px;
-  cursor: pointer;
+  color: #0a7220;
   transition: background-color 0.3s;
+}
+
+.profile-button {
+  background-color: transparent;
+  border: none;
+  color: #fff;
 }
 
 .edit-icon:hover {
@@ -88,6 +89,7 @@
 /* Container for the interests section */
 .interests-container {
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
   gap: 10px; /* Adjust as needed */
 }
@@ -96,13 +98,14 @@
 .interests-container .interest-block {
   display: inline-block;
   padding: 10px; /* Adjust as needed */
-  background-color: blue; /* Adjust as needed */
+  background-color: rgba(100, 194, 215, 1); /* Adjust as needed */
   color: white; /* Adjust as needed */
-  border-radius: 5px; /* Adjust as needed */
+  border-radius: 20px; /* Adjust as needed */
 }
 
 /* Edit and Save buttons */
-.edit-icon, .save-button {
+.edit-icon,
+.save-button {
   margin-top: 10px; /* Adjust as needed */
   padding: 5px 10px; /* Adjust as needed */
   background-color: grey; /* Adjust as needed */

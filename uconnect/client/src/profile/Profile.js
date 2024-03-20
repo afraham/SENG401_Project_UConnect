@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import "./Profile.css";
 import default_picture from "../images/default_picture.jpg";
 import { auth } from "../firebase";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPen, faX } from "@fortawesome/free-solid-svg-icons";
 
 function Profile() {
   const [isEditing, setIsEditing] = useState(false);
@@ -99,42 +101,45 @@ function Profile() {
           )}
 
           {/* Interests */}
-		<div className = "interests-container">
-          <p>Interests</p>
-          {!isEditing ? (
-            profileInfo.interests.length > 0 ? (
-              profileInfo.interests.map((interest) => (
-                <span key={interest} className ="interest-block">{interest}</span>
-              ))
-            ) : (
-              "Add an interest!"
-            )
-          ) : (
-            <>
-              {profileInfo.interests.map((interest) => (
-                <div key={interest} className ="interest-block">
-                  {interest}
-                  <button onClick={() => handleRemoveInterest(interest)}>
-                    Remove
-                  </button>
-                </div>
-              ))}
-              <input
-                type="text"
-                value={newInterest}
-                onChange={(e) => setNewInterest(e.target.value)}
-              />
-              <button onClick={handleAddInterest}>Add Interest</button>
-            </>
-			
-          )}
+          <div className="interests-container">
+            <p>Interests</p>
+            <div className="interests">
+              {!isEditing ? (
+                profileInfo.interests.length > 0 ? (
+                  profileInfo.interests.map((interest) => (
+                    <span key={interest} className="interest-block">
+                      {interest}
+                    </span>
+                  ))
+                ) : (
+                  "Add an interest!"
+                )
+              ) : (
+                <>
+                  {profileInfo.interests.map((interest) => (
+                    <div key={interest} className="interest-block">
+                      {interest}
+                      <button className="profile-button" onClick={() => handleRemoveInterest(interest)}>
+                        <FontAwesomeIcon icon={faX} />
+                      </button>
+                    </div>
+                  ))}
+                  <input
+                    type="text"
+                    value={newInterest}
+                    onChange={(e) => setNewInterest(e.target.value)}
+                  />
+                  <button onClick={handleAddInterest}>Add Interest</button>
+                </>
+              )}
+            </div>
+          </div>
         </div>
-		</div>
 
         {/* Edit Icon or Save Button based on isEditing state*/}
         {!isEditing ? (
           <button onClick={handleEditClick} className="edit-icon">
-            Edit
+            <FontAwesomeIcon icon={faPen} />
           </button>
         ) : (
           <button
