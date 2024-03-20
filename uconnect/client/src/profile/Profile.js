@@ -73,7 +73,7 @@ function Profile() {
         <div className="profile-info">
           <div className="profile-header">
             {/* Avatar */}
-            <div className="image-upload">
+            <label htmlFor="image-input" className="image-upload">
               {!isEditing ? (
                 <img
                   src={profileInfo.picture || default_picture}
@@ -87,7 +87,8 @@ function Profile() {
                   className="image-input"
                 />
               )}
-            </div>
+        
+            </label>
             {isEditing && profileInfo.picture && (
               <img className="avatar-prev" src={profileInfo.picture} alt="Preview" />
             )}
