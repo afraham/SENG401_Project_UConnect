@@ -12,10 +12,35 @@ function MyEvents() {
   const [events, setEvents] = useState([]);
   const [currentEvent, setCurrentEvent] = useState(null);
 
+  // Edit Event
   const handleEditEvent = (event) => {
     setCurrentEvent(event);
     setShowPopup(true);
   };
+
+  // Delete Event
+  const handleDeleteEvent = async (event) => {
+    try {
+        const response = await fetch(`http://localhost:8000/api/events/${event._id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (response.ok) {
+            // Remove the deleted event from the events state
+            setEvents((currentEvents) =>
+                currentEvents.filter((e) => e._id !== event._id)
+            );
+            console.log('Event deleted successfully');
+        } else {
+            console.error('Failed to delete event');
+        }
+    } catch (error) {
+        console.error('Error deleting event:', error);
+    }
+};
 
   // Function to show the popup
   const handleShowPopup = (event = null) => {
@@ -135,7 +160,7 @@ function MyEvents() {
                   </button>
                   <button
                     className="delete-button"
-                    onClick={() => handleEditEvent(event)}
+                    onClick={() => handleDeleteEvent(event)}
                   >
                     <FontAwesomeIcon icon={faTrash} />
                   </button>

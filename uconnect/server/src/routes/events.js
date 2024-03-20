@@ -6,6 +6,9 @@ const { getEventsByEmail } = require("../controllers/eventsController");
 
 router.post("/api/events", eventsController.createEvent);
 router.get("/api/events", eventsController.getEvents);
+router.put("/api/events/:eventId/join", eventsController.requestToJoinEvent)
 router.get("/api/eventsByEmail", getEventsByEmail);
+router.delete("/api/events/:eventId", eventsController.deleteEvent); // Add this line for delete
+
 
 module.exports = router;
