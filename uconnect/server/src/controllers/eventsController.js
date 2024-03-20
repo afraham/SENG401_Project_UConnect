@@ -1,5 +1,4 @@
 const db = require("../db/db");
-const { ObjectId } = require("mongodb");
 
 exports.createEvent = async (req, res) => {
 	try {
@@ -69,18 +68,15 @@ exports.requestToJoinEvent = async (req, res) => {
 	const { userEmail } = req.body;
   
 	try {
-		console.log(`User ${userEmail} joined event ${eventId}`);
-		res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-
-		await client.connect();
+		
 		const database = db.db('create_events')
 		const result = await database.collection('events').findOneAndUpdate(
-            { _id: ObjectId(eventId) },
+            { _id: new ObjectId(eventId) },
             { $push: { pending: userEmail } },
             { returnOriginal: false }
         );
-
-		if (result.value) {
+		      if (result) {
+			      res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
             res.status(200).json({ message: 'Event joined successfully' });
         } else {
             // If item not found
@@ -89,9 +85,27 @@ exports.requestToJoinEvent = async (req, res) => {
 	} catch (error) {
 		console.error('Error joining event:', error);
 		res.status(500).json({ message: 'Internal Server Error' });
-	} finally {
-		client.close();
 	}
+};
+
+exports.getMyPendingEventsByEmail = async (req, res) => {
+	const userEmail = req.query.userEmail;
+
+    try {
+
+		    const database = db.db("create_events");
+		    const collection = database.collection("events");;
+        const result = await collection.find({pending: userEmail }).toArray();
+        if (result.length > 0) {
+			res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+            res.status(200).json(result);
+        } else {
+            res.status(400).json({ message: 'No matching items found' });
+        }
+    } catch (error) {
+        console.error('Error searching items:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
 };
 
 exports.deleteEvent = async (req, res) => {

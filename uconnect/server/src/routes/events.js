@@ -8,7 +8,7 @@ router.post("/api/events", eventsController.createEvent);
 router.get("/api/events", eventsController.getEvents);
 router.put("/api/events/:eventId/join", eventsController.requestToJoinEvent)
 router.get("/api/eventsByEmail", getEventsByEmail);
+router.get("/api/pendingEventsByEmail", eventsController.getMyPendingEventsByEmail);
 router.delete("/api/events/:eventId", eventsController.deleteEvent); // Add this line for delete
-
 
 module.exports = router;

@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const cors = require('cors');
 
 const app = express();
@@ -23,6 +23,7 @@ const client = new MongoClient(uri, {
   }
 });
 
+// Posting an Event
 app.post('/api/events', async (req, res) => {
   try {
     await client.connect();
@@ -44,6 +45,7 @@ app.post('/api/events', async (req, res) => {
   }
 });
 
+// Getting an Event
 app.get('/api/events', async (req, res) => {
   try {
     await client.connect();
@@ -63,7 +65,27 @@ app.get('/api/events', async (req, res) => {
   }
 });
 
+// Requesting to join an event
+app.post('/api/events/:eventId/join', async (req, res) => {
+  const { eventId } = req.params;
+  const { userEmail } = req.body;
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+  try {
+    const event = await Event.findById(eventId);
+    if (!event) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+
+    // Add the user's email to the participants array
+    event.participants.push(userEmail);
+    await event.save();
+
+    console.log(`User ${userEmail} joined event ${eventId}`);
+    res.status(200).json({ message: 'Join request successful', event: event });
+  } catch (error) {
+    console.error('Error joining event:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
 });
+
+
