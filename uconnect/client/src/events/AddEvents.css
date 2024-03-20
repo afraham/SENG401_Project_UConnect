@@ -8,6 +8,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
 }
   
 .popup-content {
@@ -67,7 +68,7 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 10px 0;
+  margin: 10px 70px 0px 0px;
 }
 
 .max-people button {
@@ -110,4 +111,9 @@ textarea {
 .create-button:hover {
   background-color: #0056b3; /* Darker background on hover */
   transition: background-color 0.3s;
+}
+
+.title-input-error {
+  /* Highlight in red when there's an error */
+  border: 2px solid red !important;
 }

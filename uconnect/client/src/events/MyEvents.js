@@ -101,7 +101,7 @@ function MyEvents() {
 									<p className="location"><i class="fa fa-map-marker"></i> {event.location}</p>
 								</div>
 								<div className="right-align">
-									<button className="request-button">Edit</button>
+									<button className="edit-button">Edit</button>
 								</div>
 							</div>
 						</div>

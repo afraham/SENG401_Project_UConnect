@@ -8,7 +8,8 @@ const AddEvents = ({ closePopup }) => {
 	const [maxPeople, setMaxPeople] = useState(2);
 	const [date, setDate] = useState("");
 	const [location, setLocation] = useState("");
-
+	const maxCharacters = 24;
+	
 	// Function to increment maxPeople
 	const incrementPeople = () => {
 		setMaxPeople((prev) => prev + 1);
@@ -17,6 +18,15 @@ const AddEvents = ({ closePopup }) => {
 	// Function to decrement maxPeople
 	const decrementPeople = () => {
 		setMaxPeople((prev) => (prev > 2 ? prev - 1 : 2));
+	};
+
+	
+	const handleInputChange = (value, setValue) => {
+		if (value.length > maxCharacters) {
+		  alert(`Please keep the input under ${maxCharacters} characters.`);
+		} else {
+		  setValue(value);
+		}
 	};
 
 	const saveEventData = async () => {
@@ -73,6 +83,9 @@ const AddEvents = ({ closePopup }) => {
 	};
 	//..................
 
+	
+
+
 	return (
 		<div className="popup-container">
 			<div className="popup-content">
@@ -86,7 +99,7 @@ const AddEvents = ({ closePopup }) => {
 					type="text"
 					placeholder="Title"
 					value={title}
-					onChange={(e) => setTitle(e.target.value)}
+					onChange={(e) => handleInputChange(e.target.value, setTitle)}
 				/>{" "}
 				{/*Title Box*/}
 				<textarea
@@ -98,6 +111,7 @@ const AddEvents = ({ closePopup }) => {
 				<div className="max-people">
 					{" "}
 					{/*No. of People*/}
+					<p>Max People: </p>
 					<button onClick={decrementPeople}>-</button>
 					<span>{maxPeople}</span>
 					<button onClick={incrementPeople}>+</button>
@@ -111,7 +125,7 @@ const AddEvents = ({ closePopup }) => {
 					type="text"
 					placeholder="Location"
 					value={location}
-					onChange={(e) => setLocation(e.target.value)}
+					onChange={(e) => handleInputChange(e.target.value, setLocation)}
 				/>
 				<div className="create-button-container">
 					<button className="create-button" onClick={saveEventData}>
