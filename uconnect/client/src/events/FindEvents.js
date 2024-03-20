@@ -65,7 +65,7 @@ function FindEvents() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(userEmail) // Just pass userEmail directly
+                body: JSON.stringify({ userEmail }) // Just pass userEmail directly
             });
     
             if (response.ok) {

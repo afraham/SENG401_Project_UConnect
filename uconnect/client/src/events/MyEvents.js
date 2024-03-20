@@ -9,6 +9,7 @@ function MyEvents() {
 	const [showPopup, setShowPopup] = useState(false);
 
 	const [events, setEvents] = useState([]);
+	const [pendingEvents, setPendingEvents] = useState([]);
 
 	// Function to show the popup
 	const handleShowPopup = () => {
@@ -45,8 +46,36 @@ function MyEvents() {
 		}
 	};
 
+	const fetchPendingEvents = async () => {
+		try {
+			const user = auth.currentUser;
+			const userEmail = user ? user.email : null;
+
+			if (userEmail) {
+				console.log(userEmail)
+				const response = await fetch(
+					`http://localhost:8000/api/pendingEventsByEmail?userEmail=${userEmail}`
+				);
+				if (!response.ok) {
+					throw new Error(`HTTP error! status: ${response.status}`);
+				}
+				const data = await response.json();
+				console.log(data); // Log the data
+				const eventsWithExpansion = data.map((event) => ({
+					...event,
+					isExpanded: false,
+				}));
+				setPendingEvents(eventsWithExpansion); // Assuming data is an array of events
+				console.log("Fetched successfully")
+			}
+		} catch (error) {
+			console.error("Error fetching events:", error);
+		}
+	};
+
 	useEffect(() => {
 		fetchEvents();
+		fetchPendingEvents();
 	}, []);
 
 
@@ -105,6 +134,14 @@ function MyEvents() {
 								</div>
 							</div>
 						</div>
+					))}
+			</div>
+			<div>
+				{Array.isArray(pendingEvents) &&
+					pendingEvents.map((event, index) => (
+					<h1>
+						{event.title}
+					</h1>
 					))}
 			</div>
 		</div>
