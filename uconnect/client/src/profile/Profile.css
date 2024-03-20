@@ -4,6 +4,8 @@
   margin: 0 auto;
   margin-top: 30px;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1),
@@ -40,6 +42,31 @@
   border-radius: 8px;
 }
 
+.bio-input {
+  font-size: 16px;
+  background-color: rgb(240, 240, 240);
+  border-radius: 8px;
+  width: 80%;
+}
+
+.profile-bio-interests {
+  margin: 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.profile-bio-interests p {
+  font-size: 24px;
+  margin-bottom: 0.05em;
+}
+
+.profile-bio-interests textarea {
+  font-size: 16px;
+  background-color: rgb(240, 240, 240);
+  border-radius: 8px;
+  max-width: 1000px;
+  height: 10px;
+}
 .bio text {
   font-size: 14px;
   margin-bottom: 20px;
@@ -53,23 +80,31 @@
 }
 
 /* Edit icon */
-.edit-icon {
-  color: #0a7220;
-  transition: background-color 0.3s;
-}
-
-.profile-button {
+.edit-icon,
+.save-icon {
   background-color: transparent;
   border: none;
-  color: #fff;
+  color: grey;
+  transition: 0.3s;
+  font-size: larger;
+  display: flex;
+  justify-content: end;
+}
+.edit-icon:hover,
+.save-icon:hover {
+  background-color: transparent;
+  border: none;
+  color: rgb(11, 92, 19);
 }
 
-.edit-icon:hover {
-  background-color: #0056b3;
+.remove-button {
+  background-color: transparent;
+  border: none;
+  color: #ffffff;
 }
 
 /* Modal (pop-up form) */
-.modal {
+/* .modal {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -79,6 +114,31 @@
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   z-index: 1000;
+} */
+
+.image-upload {
+  position: relative;
+  width: 100px; /* Adjust as needed */
+  height: 100px; /* Adjust as needed */
+}
+.image-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.displayName-input {
+  border: none;
+  outline: none;
+  font-size: 24px;
+  font-weight: light;
+  margin: auto;
+  margin-left: 20px;
+  background-color: transparent;
+  width: 100%;
 }
 
 .avatar {
@@ -101,18 +161,6 @@
   background-color: rgba(100, 194, 215, 1); /* Adjust as needed */
   color: white; /* Adjust as needed */
   border-radius: 20px; /* Adjust as needed */
-}
-
-/* Edit and Save buttons */
-.edit-icon,
-.save-button {
-  margin-top: 10px; /* Adjust as needed */
-  padding: 5px 10px; /* Adjust as needed */
-  background-color: grey; /* Adjust as needed */
-  color: white; /* Adjust as needed */
-  border: none;
-  border-radius: 5px; /* Adjust as needed */
-  cursor: pointer;
 }
 
 /* Input field for adding new interest */
