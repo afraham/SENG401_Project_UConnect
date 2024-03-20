@@ -3,7 +3,7 @@ import "./Profile.css";
 import default_picture from "../images/default_picture.jpg";
 import { auth } from "../firebase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen, faX, faBookmark } from "@fortawesome/free-solid-svg-icons";
+import { faPen, faX, faBookmark, faPlus, faCheck } from "@fortawesome/free-solid-svg-icons";
 
 function Profile() {
   const [isEditing, setIsEditing] = useState(false);
@@ -15,6 +15,7 @@ function Profile() {
     picture: null,
   });
   const [newInterest, setNewInterest] = useState("");
+  const [isAddingInterest, setIsAddingInterest] = useState(false);
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -136,17 +137,31 @@ function Profile() {
                         </button>
                       </div>
                     ))}
-                    <input
-                      type="text"
-                      value={newInterest}
-                      onChange={(e) => setNewInterest(e.target.value)}
-                    />
-                    <button
-                      classsName="add-interest"
-                      onClick={handleAddInterest}
-                    >
-                      Add Interest
-                    </button>
+                    {isAddingInterest ? (
+                      <>
+                        <input
+                          type="text"
+                          value={newInterest}
+                          onChange={(e) => setNewInterest(e.target.value)}
+                        />
+                        <button
+                          className="add-interest"
+                          onClick={() => {
+                            handleAddInterest();
+                            setIsAddingInterest(false);
+                          }}
+                        >
+                          <FontAwesomeIcon icon={faCheck} />
+                        </button>
+                      </>
+                    ) : (
+                      <button
+                        className="add-interest"
+                        onClick={() => setIsAddingInterest(true)}
+                      >
+                        <FontAwesomeIcon icon={faPlus} />
+                      </button>
+                    )}
                   </>
                 )}
               </div>

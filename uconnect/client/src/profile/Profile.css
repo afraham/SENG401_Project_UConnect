@@ -88,7 +88,7 @@
   transition: 0.3s;
   font-size: larger;
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
 .edit-icon:hover,
 .save-icon:hover {
@@ -97,6 +97,14 @@
   color: rgb(11, 92, 19);
 }
 
+.add-interest {
+  background-color: transparent;
+  color: rgba(100, 194, 215, 1);
+  border-radius: 50px;
+  border: none;
+  background-color: #ffffff;
+  font-size: 16px;
+}
 .remove-button {
   background-color: transparent;
   border: none;
@@ -165,8 +173,9 @@
 
 /* Input field for adding new interest */
 .new-interest-input {
-  margin-top: 10px; /* Adjust as needed */
-  padding: 5px; /* Adjust as needed */
-  border: 1px solid grey; /* Adjust as needed */
-  border-radius: 5px; /* Adjust as needed */
+  display: inline-block;
+  padding: 10px; /* Adjust as needed */
+  color: white; /* Adjust as needed */
+  border-radius: 20px; /* Adjust as needed */
+  background-color: rgba(100, 194, 215, 1); /* Adjust as needed */
 }
