@@ -14,6 +14,8 @@ function MyEvents() {
   const [currentEvent, setCurrentEvent] = useState(null);
   const [showManagePopup, setShowManagePopup] = useState(false);
   const [pendingEvents, setPendingEvents] = useState([]);
+  const [activeTab, setActiveTab] = useState("myEvents"); // State to track active tab
+
   // Edit Event
   const handleEditEvent = (event) => {
     setCurrentEvent(event);
@@ -164,12 +166,28 @@ function MyEvents() {
       </div>
       <hr className="myevents-line"></hr>
       <div className="event-tab">
-        <button>My Events</button>
-        <button>Pending</button>
-        <button>Joined</button>
+        <button
+          className={activeTab === "myEvents" ? "active-tab" : ""}
+          onClick={() => setActiveTab("myEvents")}
+        >
+          My Events
+        </button>
+        <button
+          className={activeTab === "pending" ? "active-tab" : ""}
+          onClick={() => setActiveTab("pending")}
+        >
+          Pending
+        </button>
+        <button
+          className={activeTab === "joined" ? "active-tab" : ""}
+          onClick={() => setActiveTab("joined")}
+        >
+          Joined
+        </button>
       </div>
       <div className="myevent-list">
-        {Array.isArray(events) &&
+        {activeTab === "myEvents" && // Only render if activeTab is "My Events"
+          Array.isArray(events) &&
           events.map((event, index) => (
             <div
               className={`event-card ${event.isExpanded ? "expanded" : ""}`}
@@ -224,11 +242,52 @@ function MyEvents() {
               </div>
             </div>
           ))}
+
+        {activeTab === "pending" && // Only render if activeTab is "Pending"
+          Array.isArray(pendingEvents) &&
+          pendingEvents.map((event, index) => (
+            <div
+              className={`event-card ${event.isExpanded ? "expanded" : ""}`}
+              key={index}
+              onClick={() => toggleExpansion(index)}
+            >
+              <div className="top-box">
+                <div className="left-align">
+                  <p className="event-title">{event.title}</p>
+                </div>
+                <div className="right-align">
+                  <p className="capacity">
+                    {event.spotsTaken}/{event.maxPeople}
+                  </p>
+                  <p className="capacity">
+                    <i class="fa fa-group"></i>
+                  </p>
+                </div>
+              </div>
+              <p
+                className={`description ${event.isExpanded ? "expanded" : ""}`}
+              >
+                {event.description}
+              </p>
+              <div className="bottom-box">
+                <div className="left-align">
+                  <p className="location">
+                    <i class="fa fa-map-marker"></i> {event.location}
+                  </p>
+                </div>
+                <div className="right-align">
+                  <button
+                    className="pending-button"
+                    onClick={() => handleDeleteEvent(event)}
+                  >
+                    PENDING
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
       </div>
-      <div>
-        {Array.isArray(pendingEvents) &&
-          pendingEvents.map((event, index) => <h1>{event.title}</h1>)}
-      </div>
+
       {showManagePopup && (
         <ManageEvents
           event={currentEvent}

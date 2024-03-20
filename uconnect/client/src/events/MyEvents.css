@@ -22,6 +22,14 @@
   margin-left: 0.5em;
 }
 
+.pending-button {
+  background-color: rgb(255, 119, 22);
+  border: none;
+  border-radius: 20px;
+  color: white;
+  padding: 5px 10px;
+}
+
 .event-tab {
   display: flex;
   justify-content: flex-start;
@@ -29,11 +37,11 @@
   margin: 2em;
   margin-bottom: 0;
 }
-.event-tab button:active {
+
+.active-tab {
   color: #ff5555;
   text-decoration: underline;
 }
-
 .myevent-list {
   display: flex;
   flex-wrap: wrap;
