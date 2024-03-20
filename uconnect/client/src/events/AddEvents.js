@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import "./AddEvents.css";
 import { auth } from "../firebase";
 
-const AddEvents = ({ closePopup }) => {
-	const [title, setTitle] = useState("");
-	const [description, setDescription] = useState("");
-	const [maxPeople, setMaxPeople] = useState(2);
-	const [date, setDate] = useState("");
-	const [location, setLocation] = useState("");
-
+const AddEvents = ({ closePopup, event, editMode}) => {
+	const [title, setTitle] = useState(event ? event.title : "");
+	const [description, setDescription] =  useState(event ? event.description : "");
+	const [maxPeople, setMaxPeople] = useState(event ? event.maxPeople : 2);
+	const [date, setDate] = useState(event ? event.date : "");
+	const [location, setLocation] = useState(event ? event.location : "");
+	const maxCharacters = 24;
+	
 	// Function to increment maxPeople
 	const incrementPeople = () => {
 		setMaxPeople((prev) => prev + 1);
@@ -17,6 +18,15 @@ const AddEvents = ({ closePopup }) => {
 	// Function to decrement maxPeople
 	const decrementPeople = () => {
 		setMaxPeople((prev) => (prev > 2 ? prev - 1 : 2));
+	};
+
+	
+	const handleInputChange = (value, setValue) => {
+		if (value.length > maxCharacters) {
+		  alert(`Please keep the input under ${maxCharacters} characters.`);
+		} else {
+		  setValue(value);
+		}
 	};
 
 	const saveEventData = async () => {
@@ -40,6 +50,7 @@ const AddEvents = ({ closePopup }) => {
 
 		closePopup();
 
+		
 		try {
 			const user = auth.currentUser; // get the current user
 			const userEmail = user ? user.email : null; // get the user's email
@@ -73,11 +84,19 @@ const AddEvents = ({ closePopup }) => {
 	};
 	//..................
 
+
+
+	const handleUpdateEvent = async () => {
+		// TODO: Implementation of updating event data
+		console.log("not yet working")
+	};
+
+
 	return (
 		<div className="popup-container">
 			<div className="popup-content">
 				<div className="ce-header">
-					<h2 className="ce-header">Add New Event</h2>
+					<h2 className="ce-header">{editMode ? "Edit Event" : "Add New Event"}</h2>
 					<button className="close-button" onClick={closePopup}>
 						X
 					</button>
@@ -86,7 +105,7 @@ const AddEvents = ({ closePopup }) => {
 					type="text"
 					placeholder="Title"
 					value={title}
-					onChange={(e) => setTitle(e.target.value)}
+					onChange={(e) => handleInputChange(e.target.value, setTitle)}
 				/>{" "}
 				{/*Title Box*/}
 				<textarea
@@ -98,6 +117,7 @@ const AddEvents = ({ closePopup }) => {
 				<div className="max-people">
 					{" "}
 					{/*No. of People*/}
+					<p>Max People: </p>
 					<button onClick={decrementPeople}>-</button>
 					<span>{maxPeople}</span>
 					<button onClick={incrementPeople}>+</button>
@@ -111,11 +131,11 @@ const AddEvents = ({ closePopup }) => {
 					type="text"
 					placeholder="Location"
 					value={location}
-					onChange={(e) => setLocation(e.target.value)}
+					onChange={(e) => handleInputChange(e.target.value, setLocation)}
 				/>
 				<div className="create-button-container">
-					<button className="create-button" onClick={saveEventData}>
-						Create
+					<button className="create-button" onClick={editMode ? handleUpdateEvent : saveEventData}>
+						{editMode ? "Save Changes" : "Create"}
 					</button>
 				</div>
 			</div>
