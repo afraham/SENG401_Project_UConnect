@@ -7,17 +7,25 @@ import { auth } from "../firebase";
 function MyEvents() {
 	// State to manage if the popup is shown or not
 	const [showPopup, setShowPopup] = useState(false);
-
 	const [events, setEvents] = useState([]);
+	const [currentEvent, setCurrentEvent] = useState(null);
+
+	const handleEditEvent = (event) => {
+		setCurrentEvent(event); 
+  		setShowPopup(true);
+	};
 
 	// Function to show the popup
-	const handleShowPopup = () => {
+	const handleShowPopup = (event = null) => {
+		setCurrentEvent(event);
 		setShowPopup(true);
 	};
 
 	// Function to hide the popup
 	const handleClosePopup = () => {
+		setCurrentEvent(null);
 		setShowPopup(false);
+		
 	};
 
 	const fetchEvents = async () => {
@@ -66,12 +74,18 @@ function MyEvents() {
 			<div className="my-events-page">
 				<p><b>ADD AN EVENT!</b></p>
 				<div className="event-button-container">
-					<button className="event-button" onClick={handleShowPopup}>
+					<button className="event-button" onClick={() => handleShowPopup(null)}>
 						{" "}
 						+{" "}
 					</button>
 				</div>
-				{showPopup && <AddEvents closePopup={handleClosePopup} />}
+				{showPopup && 
+					<AddEvents 
+						closePopup={handleClosePopup} 
+						event={currentEvent} 
+						editMode={Boolean(currentEvent)}
+					/>
+				}
 				
 			</div>
 			<hr className="myevents-line"></hr>
@@ -101,7 +115,8 @@ function MyEvents() {
 									<p className="location"><i class="fa fa-map-marker"></i> {event.location}</p>
 								</div>
 								<div className="right-align">
-									<button className="edit-button">Edit</button>
+									<button className="edit-button" onClick={() => handleEditEvent(event)}>Edit</button>
+
 								</div>
 							</div>
 						</div>
