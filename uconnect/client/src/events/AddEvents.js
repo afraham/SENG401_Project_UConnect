@@ -44,6 +44,9 @@ const AddEvents = ({ closePopup }) => {
 			const user = auth.currentUser; // get the current user
 			const userEmail = user ? user.email : null; // get the user's email
 
+			const pending = []
+			const approved = []
+
 			const spotsTaken = 0;
 			const response = await fetch("http://localhost:8000/api/events", {
 				method: "POST",
@@ -58,6 +61,8 @@ const AddEvents = ({ closePopup }) => {
 					date,
 					location,
 					userEmail,
+					pending,
+					approved
 				}),
 			});
 

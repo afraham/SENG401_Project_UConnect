@@ -60,8 +60,8 @@ function FindEvents() {
         console.log("Event ID:", eventId); // Log the eventId
         console.log("userEmail:", userEmail);
         try {
-            const response = await fetch(`http://localhost:8000/api/events/join`, {
-                method: 'POST',
+            const response = await fetch(`http://localhost:8000/api/events/${eventId}/join`, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },

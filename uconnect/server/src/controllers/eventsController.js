@@ -68,20 +68,27 @@ exports.requestToJoinEvent = async (req, res) => {
 	const { userEmail } = req.body;
   
 	try {
-	  const event = await Event.findById(eventId);
-	  if (!event) {
-		return res.status(404).json({ message: 'Event not found' });
-	  }
-  
-	  // Add the user's email to the participants array
-	  event.participants.push(userEmail);
-	  await event.save();
-  
-	  console.log(`User ${userEmail} joined event ${eventId}`);
-	  res.status(200).json({ message: 'Join request successful', event: event });
+		console.log(`User ${userEmail} joined event ${eventId}`);
+		res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+
+		await client.connect();
+		const database = db.db('create_events')
+		const result = await database.collection('events').findOneAndUpdate(
+            { _id: ObjectId(eventId) },
+            { $push: { pending: userEmail } },
+            { returnOriginal: false }
+        );
+
+		if (result.value) {
+            res.status(200).json({ message: 'Event joined successfully' });
+        } else {
+            // If item not found
+            res.status(404).json({ message: 'Item not found' });
+        }
 	} catch (error) {
-	  console.error('Error joining event:', error);
-	  res.status(500).json({ message: 'Internal Server Error' });
+		console.error('Error joining event:', error);
+		res.status(500).json({ message: 'Internal Server Error' });
+	} finally {
+		client.close();
 	}
 };
-  
