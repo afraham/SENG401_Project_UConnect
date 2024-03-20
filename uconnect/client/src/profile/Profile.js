@@ -3,7 +3,13 @@ import "./Profile.css";
 import default_picture from "../images/default_picture.jpg";
 import { auth } from "../firebase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen, faX, faBookmark, faPlus, faCheck } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPen,
+  faX,
+  faBookmark,
+  faPlus,
+  faCheck,
+} from "@fortawesome/free-solid-svg-icons";
 
 function Profile() {
   const [isEditing, setIsEditing] = useState(false);
@@ -25,12 +31,20 @@ function Profile() {
     setProfileInfo(updatedInfo);
     setIsEditing(false);
   };
+  
 
   const handleImageUpload = (event) => {
-    setProfileInfo({
-      ...profileInfo,
-      picture: URL.createObjectURL(event.target.files[0]),
-    });
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setProfileInfo({
+          ...profileInfo,
+          picture: reader.result, // Set the base64-encoded image data
+        });
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleAddInterest = () => {
@@ -49,6 +63,8 @@ function Profile() {
       interests: profileInfo.interests.filter((i) => i !== interest),
     });
   };
+
+  const default_picture = '"../images/default_picture.jpg"';
 
   return (
     <>
@@ -72,6 +88,9 @@ function Profile() {
                 />
               )}
             </div>
+            {isEditing && profileInfo.picture && (
+              <img className="avatar-prev" src={profileInfo.picture} alt="Preview" />
+            )}
 
             <div className="profile-name-email">
               {/* Name */}
