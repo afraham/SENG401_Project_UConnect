@@ -49,6 +49,12 @@
 	},
 	"devDependencies": {
 		"@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-		"concurrently": "^8.2.2"
+		"concurrently": "^8.2.2",
+		"jest": "^27.5.1"
+	},
+	"jest": {
+		"setupFiles": [
+			"./src/tests/jest.setup.js"
+		]
 	}
 }
