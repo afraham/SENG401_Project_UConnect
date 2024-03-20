@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./AddEvents.css";
 import { auth } from "../firebase";
 
-const AddEvents = ({ closePopup, event}) => {
+const AddEvents = ({ closePopup, event, editMode}) => {
 	const [title, setTitle] = useState(event ? event.title : "");
 	const [description, setDescription] =  useState(event ? event.description : "");
 	const [maxPeople, setMaxPeople] = useState(event ? event.maxPeople : 2);
@@ -84,14 +84,19 @@ const AddEvents = ({ closePopup, event}) => {
 	};
 	//..................
 
-	
+
+
+	const handleUpdateEvent = async () => {
+		// TODO: Implementation of updating event data
+		console.log("not yet working")
+	};
 
 
 	return (
 		<div className="popup-container">
 			<div className="popup-content">
 				<div className="ce-header">
-					<h2 className="ce-header">Add New Event</h2>
+					<h2 className="ce-header">{editMode ? "Edit Event" : "Add New Event"}</h2>
 					<button className="close-button" onClick={closePopup}>
 						X
 					</button>
@@ -129,8 +134,8 @@ const AddEvents = ({ closePopup, event}) => {
 					onChange={(e) => handleInputChange(e.target.value, setLocation)}
 				/>
 				<div className="create-button-container">
-					<button className="create-button" onClick={saveEventData}>
-						Create
+					<button className="create-button" onClick={editMode ? handleUpdateEvent : saveEventData}>
+						{editMode ? "Save Changes" : "Create"}
 					</button>
 				</div>
 			</div>

@@ -11,12 +11,13 @@ function MyEvents() {
 	const [currentEvent, setCurrentEvent] = useState(null);
 
 	const handleEditEvent = (event) => {
-		setCurrentEvent(event);
-		handleShowPopup();
+		setCurrentEvent(event); 
+  		setShowPopup(true);
 	};
 
 	// Function to show the popup
-	const handleShowPopup = () => {
+	const handleShowPopup = (event = null) => {
+		setCurrentEvent(event);
 		setShowPopup(true);
 	};
 
@@ -73,12 +74,18 @@ function MyEvents() {
 			<div className="my-events-page">
 				<p><b>ADD AN EVENT!</b></p>
 				<div className="event-button-container">
-					<button className="event-button" onClick={handleShowPopup}>
+					<button className="event-button" onClick={() => handleShowPopup(null)}>
 						{" "}
 						+{" "}
 					</button>
 				</div>
-				{showPopup && <AddEvents closePopup={handleClosePopup} event={currentEvent} />}
+				{showPopup && 
+					<AddEvents 
+						closePopup={handleClosePopup} 
+						event={currentEvent} 
+						editMode={Boolean(currentEvent)}
+					/>
+				}
 				
 			</div>
 			<hr className="myevents-line"></hr>
