@@ -112,8 +112,3 @@ textarea {
   background-color: #0056b3; /* Darker background on hover */
   transition: background-color 0.3s;
 }
-
-.title-input-error {
-  /* Highlight in red when there's an error */
-  border: 2px solid red !important;
-}
