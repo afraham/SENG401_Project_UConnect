@@ -62,3 +62,26 @@ exports.getEventsByEmail = async (req, res) => {
 		res.status(500).send({ message: "Internal Server Error" });
 	}
 };
+
+exports.requestToJoinEvent = async (req, res) => {
+	const { eventId } = req.params;
+	const { userEmail } = req.body;
+  
+	try {
+	  const event = await Event.findById(eventId);
+	  if (!event) {
+		return res.status(404).json({ message: 'Event not found' });
+	  }
+  
+	  // Add the user's email to the participants array
+	  event.participants.push(userEmail);
+	  await event.save();
+  
+	  console.log(`User ${userEmail} joined event ${eventId}`);
+	  res.status(200).json({ message: 'Join request successful', event: event });
+	} catch (error) {
+	  console.error('Error joining event:', error);
+	  res.status(500).json({ message: 'Internal Server Error' });
+	}
+};
+  
