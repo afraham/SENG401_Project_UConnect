@@ -1,4 +1,5 @@
 const db = require("../db/db");
+const { ObjectId } = require('mongodb')
 
 exports.createEvent = async (req, res) => {
 	try {
@@ -92,9 +93,8 @@ exports.getMyPendingEventsByEmail = async (req, res) => {
 	const userEmail = req.query.userEmail;
 
     try {
-
-		    const database = db.db("create_events");
-		    const collection = database.collection("events");;
+		const database = db.db("create_events");
+		const collection = database.collection("events");;
         const result = await collection.find({pending: userEmail }).toArray();
         if (result.length > 0) {
 			res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
