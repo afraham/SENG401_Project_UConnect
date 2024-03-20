@@ -13,7 +13,9 @@ function MyEvents() {
   const [events, setEvents] = useState([]);
   const [currentEvent, setCurrentEvent] = useState(null);
   const [showManagePopup, setShowManagePopup] = useState(false);
-	const [pendingEvents, setPendingEvents] = useState([]);
+  const [pendingEvents, setPendingEvents] = useState([]);
+  const [activeTab, setActiveTab] = useState("myEvents"); // State to track active tab
+
   // Edit Event
   const handleEditEvent = (event) => {
     setCurrentEvent(event);
@@ -23,26 +25,29 @@ function MyEvents() {
   // Delete Event
   const handleDeleteEvent = async (event) => {
     try {
-        const response = await fetch(`http://localhost:8000/api/events/${event._id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-
-        if (response.ok) {
-            // Remove the deleted event from the events state
-            setEvents((currentEvents) =>
-                currentEvents.filter((e) => e._id !== event._id)
-            );
-            console.log('Event deleted successfully');
-        } else {
-            console.error('Failed to delete event');
+      const response = await fetch(
+        `http://localhost:8000/api/events/${event._id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
+      );
+
+      if (response.ok) {
+        // Remove the deleted event from the events state
+        setEvents((currentEvents) =>
+          currentEvents.filter((e) => e._id !== event._id)
+        );
+        console.log("Event deleted successfully");
+      } else {
+        console.error("Failed to delete event");
+      }
     } catch (error) {
-        console.error('Error deleting event:', error);
+      console.error("Error deleting event:", error);
     }
-};
+  };
 
   // Function to show the popup
   const handleShowPopup = (event = null) => {
@@ -56,32 +61,32 @@ function MyEvents() {
     setShowPopup(false);
   };
 
-	const fetchPendingEvents = async () => {
-		try {
-			const user = auth.currentUser;
-			const userEmail = user ? user.email : null;
+  const fetchPendingEvents = async () => {
+    try {
+      const user = auth.currentUser;
+      const userEmail = user ? user.email : null;
 
-			if (userEmail) {
-				console.log(userEmail)
-				const response = await fetch(
-					`http://localhost:8000/api/pendingEventsByEmail?userEmail=${userEmail}`
-				);
-				if (!response.ok) {
-					throw new Error(`HTTP error! status: ${response.status}`);
-				}
-				const data = await response.json();
-				console.log(data); // Log the data
-				const eventsWithExpansion = data.map((event) => ({
-					...event,
-					isExpanded: false,
-				}));
-				setPendingEvents(eventsWithExpansion); // Assuming data is an array of events
-				console.log("Fetched successfully")
-			}
-		} catch (error) {
-			console.error("Error fetching events:", error);
-		}
-	};
+      if (userEmail) {
+        console.log(userEmail);
+        const response = await fetch(
+          `http://localhost:8000/api/pendingEventsByEmail?userEmail=${userEmail}`
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log(data); // Log the data
+        const eventsWithExpansion = data.map((event) => ({
+          ...event,
+          isExpanded: false,
+        }));
+        setPendingEvents(eventsWithExpansion); // Assuming data is an array of events
+        console.log("Fetched successfully");
+      }
+    } catch (error) {
+      console.error("Error fetching events:", error);
+    }
+  };
 
   const handleManageEvent = (event) => {
     setCurrentEvent(event);
@@ -89,7 +94,6 @@ function MyEvents() {
     console.log("showManagePopup set to true:");
     console.log("showManagePopup set to true:", showManagePopup);
   };
-
 
   const fetchEvents = async () => {
     try {
@@ -116,11 +120,11 @@ function MyEvents() {
     }
   };
 
-  	useEffect(() => {
-		fetchEvents();
-		fetchPendingEvents();
-	}, []);
-  
+  useEffect(() => {
+    fetchEvents();
+    fetchPendingEvents();
+  }, []);
+
   useEffect(() => {
     console.log("showManagePopup set to true:", showManagePopup);
   }, [showManagePopup]);
@@ -161,8 +165,29 @@ function MyEvents() {
         )}
       </div>
       <hr className="myevents-line"></hr>
-      <div className="event-list">
-        {Array.isArray(events) &&
+      <div className="event-tab">
+        <button
+          className={activeTab === "myEvents" ? "active-tab" : ""}
+          onClick={() => setActiveTab("myEvents")}
+        >
+          My Events
+        </button>
+        <button
+          className={activeTab === "pending" ? "active-tab" : ""}
+          onClick={() => setActiveTab("pending")}
+        >
+          Pending
+        </button>
+        <button
+          className={activeTab === "joined" ? "active-tab" : ""}
+          onClick={() => setActiveTab("joined")}
+        >
+          Joined
+        </button>
+      </div>
+      <div className="myevent-list">
+        {activeTab === "myEvents" && // Only render if activeTab is "My Events"
+          Array.isArray(events) &&
           events.map((event, index) => (
             <div
               className={`event-card ${event.isExpanded ? "expanded" : ""}`}
@@ -217,15 +242,52 @@ function MyEvents() {
               </div>
             </div>
           ))}
+
+        {activeTab === "pending" && // Only render if activeTab is "Pending"
+          Array.isArray(pendingEvents) &&
+          pendingEvents.map((event, index) => (
+            <div
+              className={`event-card ${event.isExpanded ? "expanded" : ""}`}
+              key={index}
+              onClick={() => toggleExpansion(index)}
+            >
+              <div className="top-box">
+                <div className="left-align">
+                  <p className="event-title">{event.title}</p>
+                </div>
+                <div className="right-align">
+                  <p className="capacity">
+                    {event.spotsTaken}/{event.maxPeople}
+                  </p>
+                  <p className="capacity">
+                    <i class="fa fa-group"></i>
+                  </p>
+                </div>
+              </div>
+              <p
+                className={`description ${event.isExpanded ? "expanded" : ""}`}
+              >
+                {event.description}
+              </p>
+              <div className="bottom-box">
+                <div className="left-align">
+                  <p className="location">
+                    <i class="fa fa-map-marker"></i> {event.location}
+                  </p>
+                </div>
+                <div className="right-align">
+                  <button
+                    className="pending-button"
+                    onClick={() => handleDeleteEvent(event)}
+                  >
+                    PENDING
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
       </div>
-      <div>
-				{Array.isArray(pendingEvents) &&
-					pendingEvents.map((event, index) => (
-					<h1>
-						{event.title}
-					</h1>
-					))}
-			</div>
+
       {showManagePopup && (
         <ManageEvents
           event={currentEvent}

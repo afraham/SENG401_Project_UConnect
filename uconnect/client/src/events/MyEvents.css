@@ -11,6 +11,47 @@
   justify-content: center;
 }
 
+.event-tab button {
+  background-color: transparent;
+  border: none;
+  font-size: 18px;
+  color: #020000;
+  margin-right: 1em;
+  margin-bottom: 0.5em;
+  font-weight: 500;
+  margin-left: 0.5em;
+}
+
+.pending-button {
+  background-color: rgb(255, 119, 22);
+  border: none;
+  border-radius: 20px;
+  color: white;
+  padding: 5px 10px;
+}
+
+.event-tab {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 20px;
+  margin: 2em;
+  margin-bottom: 0;
+}
+
+.active-tab {
+  color: #ff5555;
+  text-decoration: underline;
+}
+.myevent-list {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: rgb(233, 233, 233);
+  padding: 20px;
+  margin: 2em;
+  margin-top: 0;
+  border-radius: 10px;
+}
+
 .event-button {
   background-color: #ffffff; /* Background color */
   border-radius: 15px; /* Rounded corners */
