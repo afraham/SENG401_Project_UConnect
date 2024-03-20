@@ -7,8 +7,13 @@ import { auth } from "../firebase";
 function MyEvents() {
 	// State to manage if the popup is shown or not
 	const [showPopup, setShowPopup] = useState(false);
-
 	const [events, setEvents] = useState([]);
+	const [currentEvent, setCurrentEvent] = useState(null);
+
+	const handleEditEvent = (event) => {
+		setCurrentEvent(event);
+		handleShowPopup();
+	};
 
 	// Function to show the popup
 	const handleShowPopup = () => {
@@ -17,7 +22,9 @@ function MyEvents() {
 
 	// Function to hide the popup
 	const handleClosePopup = () => {
+		setCurrentEvent(null);
 		setShowPopup(false);
+		
 	};
 
 	const fetchEvents = async () => {
@@ -71,7 +78,7 @@ function MyEvents() {
 						+{" "}
 					</button>
 				</div>
-				{showPopup && <AddEvents closePopup={handleClosePopup} />}
+				{showPopup && <AddEvents closePopup={handleClosePopup} event={currentEvent} />}
 				
 			</div>
 			<hr className="myevents-line"></hr>
@@ -101,7 +108,8 @@ function MyEvents() {
 									<p className="location"><i class="fa fa-map-marker"></i> {event.location}</p>
 								</div>
 								<div className="right-align">
-									<button className="edit-button">Edit</button>
+									<button className="edit-button" onClick={() => handleEditEvent(event)}>Edit</button>
+
 								</div>
 							</div>
 						</div>

@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import "./AddEvents.css";
 import { auth } from "../firebase";
 
-const AddEvents = ({ closePopup }) => {
-	const [title, setTitle] = useState("");
-	const [description, setDescription] = useState("");
-	const [maxPeople, setMaxPeople] = useState(2);
-	const [date, setDate] = useState("");
-	const [location, setLocation] = useState("");
+const AddEvents = ({ closePopup, event}) => {
+	const [title, setTitle] = useState(event ? event.title : "");
+	const [description, setDescription] =  useState(event ? event.description : "");
+	const [maxPeople, setMaxPeople] = useState(event ? event.maxPeople : 2);
+	const [date, setDate] = useState(event ? event.date : "");
+	const [location, setLocation] = useState(event ? event.location : "");
 	const maxCharacters = 24;
 	
 	// Function to increment maxPeople
@@ -50,6 +50,7 @@ const AddEvents = ({ closePopup }) => {
 
 		closePopup();
 
+		
 		try {
 			const user = auth.currentUser; // get the current user
 			const userEmail = user ? user.email : null; // get the user's email
