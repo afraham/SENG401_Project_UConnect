@@ -94,13 +94,32 @@ exports.getMyPendingEventsByEmail = async (req, res) => {
 
     try {
 		const database = db.db("create_events");
-		const collection = database.collection("events");;
+		const collection = database.collection("events");
         const result = await collection.find({pending: userEmail }).toArray();
         if (result.length > 0) {
 			res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
             res.status(200).json(result);
         } else {
             res.status(400).json({ message: 'No matching items found' });
+        }
+    } catch (error) {
+        console.error('Error searching items:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+exports.getMyJoinedEventsByEmail = async (req, res) => {
+	const userEmail = req.query.userEmail;
+
+    try {
+		const database = db.db("create_events");
+		const collection = database.collection("events");
+        const result = await collection.find({approved: userEmail }).toArray();
+        if (result.length > 0) {
+			res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+            res.status(200).json(result);
+        } else {
+            res.status(400).json({ message: 'No matching items found, this may not be an error!' });
         }
     } catch (error) {
         console.error('Error searching items:', error);
@@ -129,6 +148,61 @@ exports.deleteEvent = async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });
     }
 };
+
+exports.approveUser = async (req, res) => {
+	const { eventId } = req.params;
+	const { userEmail } = req.body;
+
+	try {
+		const database = db.db("create_events");
+		const collection = database.collection("events");
+
+		const result = await collection.updateOne(
+            { _id: new ObjectId(eventId) },
+            {
+				$inc: { spotsTaken: 1 },
+                $pull: { pending: userEmail }, // Remove element from array
+                $push: { approved: userEmail } // Append element to another array
+            },
+			{ returnOriginal: false }
+        );
+
+		res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+
+        if (result.modifiedCount === 0) {
+            return res.status(404).json({ message: 'Item not found or element not removed' });
+        }
+		res.status(200).json({ message: 'Approved user successfully' });
+	} catch (error) {
+		res.status(500).json({ message: "Internal Server Error" });
+	}
+}
+
+exports.denyUser = async (req, res) => {
+	const { eventId } = req.params;
+	const { userEmail } = req.body;
+
+	try {
+		const database = db.db("create_events");
+		const collection = database.collection("events");
+		const result = await collection.updateOne(
+            { _id: new ObjectId(eventId) },
+            {
+                $pull: { pending: userEmail }, // Remove element from array
+            },
+			{ returnOriginal: false }
+        );
+
+		res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+
+        if (result.modifiedCount === 0) {
+            return res.status(404).json({ message: 'Item not found or element not removed' });
+        }
+		res.status(200).json({ message: 'Denied user successfully' });
+	} catch (error) {
+		res.status(500).json({ message: "Internal Server Error" });
+	}
+}
 
 // exports.updateEvent = async (req, res) => {
 //     const { eventId } = req.params;
@@ -191,5 +265,4 @@ exports.updateEvent = async (req, res) => {
 };
 
 
-  
   
