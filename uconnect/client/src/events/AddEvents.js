@@ -114,8 +114,6 @@ const AddEvents = ({ closePopup, event, editMode, updateEvents }) => {
 				userEmail, // Assuming userEmail is required for the update
 			};
 	
-			console.log(JSON.stringify(updatedEventData));
-	
 			const response = await fetch(`http://localhost:8000/api/events/${eventId}/edit`, {
 				method: "PATCH", // Use PATCH method for partial updates
 				headers: {
