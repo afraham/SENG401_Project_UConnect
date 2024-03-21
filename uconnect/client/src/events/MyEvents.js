@@ -116,10 +116,10 @@ function MyEvents() {
     }
   };
 
-  	useEffect(() => {
-		fetchEvents();
-		fetchPendingEvents();
-	}, []);
+useEffect(() => {
+	fetchEvents();
+	fetchPendingEvents();
+}, []);
   
   useEffect(() => {
     console.log("showManagePopup set to true:", showManagePopup);
@@ -218,14 +218,14 @@ function MyEvents() {
             </div>
           ))}
       </div>
-      <div>
-				{Array.isArray(pendingEvents) &&
-					pendingEvents.map((event, index) => (
-					<h1>
-						{event.title}
-					</h1>
-					))}
-			</div>
+	<div>
+		{Array.isArray(pendingEvents) &&
+			pendingEvents.map((event, index) => (
+			<h1>
+				{event.title}
+			</h1>
+			))}
+	</div>
       {showManagePopup && (
         <ManageEvents
           event={currentEvent}

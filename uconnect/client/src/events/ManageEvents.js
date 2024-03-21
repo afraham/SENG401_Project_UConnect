@@ -1,6 +1,50 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
-const ManageEvents = ({ closePopup, event, title }) => {
+const ManageEvents = ({ closePopup, event, title}) => {
+
+
+  const [selectedEvent, setSelectedEvent] = useState();
+  const handleApprove = async (userEmail) => {
+    console.log(`Approved ${userEmail}`)
+    console.log(event._id)
+    try {
+      const response = await fetch(`http://localhost:8000/api/events/approve/${event._id}`, {
+          method: 'PUT',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userEmail }) // Just pass userEmail directly
+      });
+
+      if (response.ok) {
+          console.log('Request Approved');
+
+      } else {
+          console.error('Request to approve failed:', response.status, response.statusText);
+          // Handle error case here
+      }
+    } catch (error) {
+        console.error('Error approving user:', error);
+        // Handle error case here
+    }
+  }
+
+  useEffect(() => {
+    setSelectedEvent(event);
+  })
+  
+
+  const handleDeny = async (email) => {
+    console.log(`Denied ${email}`)
+
+    try {
+      return
+  } catch (error) {
+      console.error('Error denying user:', error);
+      // Handle error case here
+  }
+  }
+
   return (
     <div className="popup-container">
       <div className="popup-content">
@@ -9,10 +53,13 @@ const ManageEvents = ({ closePopup, event, title }) => {
           <div className="requests">
             <h3>Requests</h3>
             <div className="request-list">
+              {Array.isArray(event.pending) && event.pending.map((request, index) =>
               <div className="request">
-          
+                <h1>{request}</h1>
+                <button onClick={() => handleApprove(request)}>Approve</button>
+                <button onClick={() => handleDeny(request)}>Deny</button>
               </div>
-    
+              )}
             </div>
 
           </div>
