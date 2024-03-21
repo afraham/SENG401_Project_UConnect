@@ -96,12 +96,8 @@ exports.getMyPendingEventsByEmail = async (req, res) => {
 		const database = db.db("create_events");
 		const collection = database.collection("events");
         const result = await collection.find({pending: userEmail }).toArray();
-        if (result.length > 0) {
-			res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-            res.status(200).json(result);
-        } else {
-            res.status(400).json({ message: 'No matching items found' });
-        }
+		res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+		res.status(200).json(result);
     } catch (error) {
         console.error('Error searching items:', error);
         res.status(500).json({ message: 'Internal server error' });
@@ -115,12 +111,8 @@ exports.getMyJoinedEventsByEmail = async (req, res) => {
 		const database = db.db("create_events");
 		const collection = database.collection("events");
         const result = await collection.find({approved: userEmail }).toArray();
-        if (result.length > 0) {
-			res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-            res.status(200).json(result);
-        } else {
-            res.status(400).json({ message: 'No matching items found, this may not be an error!' });
-        }
+		res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+		res.status(200).json(result);
     } catch (error) {
         console.error('Error searching items:', error);
         res.status(500).json({ message: 'Internal server error' });

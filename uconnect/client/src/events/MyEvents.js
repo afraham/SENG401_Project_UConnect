@@ -22,6 +22,13 @@ function MyEvents() {
     setCurrentEvent(event);
     setShowPopup(true);
   };
+  //
+  const confirmDelete = (event) => {
+    const isConfirmed = window.confirm(`Are you sure you want to delete your event, ${event.title}?`);
+    if (isConfirmed) {
+      handleDeleteEvent(event);
+    }
+  };
 
   // Delete Event
   const handleDeleteEvent = async (event) => {
@@ -98,7 +105,6 @@ function MyEvents() {
       const userEmail = user ? user.email : null;
 
       if (userEmail) {
-        console.log(userEmail);
         const response = await fetch(
           `http://localhost:8000/api/pendingEventsByEmail?userEmail=${userEmail}`
         );
@@ -106,7 +112,6 @@ function MyEvents() {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        console.log(data); // Log the data
         const eventsWithExpansion = data.map((event) => ({
           ...event,
           isExpanded: false,
@@ -132,7 +137,6 @@ function MyEvents() {
 					throw new Error(`HTTP error! status: ${response.status}`);
 				}
 				const data = await response.json();
-				console.log(data); // Log the data
 				const eventsWithExpansion = data.map((event) => ({
 					...event,
 					isExpanded: false,
@@ -149,8 +153,6 @@ function MyEvents() {
   const handleManageEvent = (event) => {
     setCurrentEvent(event);
     setShowManagePopup(true); // Show manage popup when "Manage" button is clicked
-    console.log("showManagePopup set to true:");
-    console.log("showManagePopup set to true:", showManagePopup);
   };
 
   const fetchEvents = async () => {
@@ -166,7 +168,6 @@ function MyEvents() {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        console.log(data); // Log the data
         const eventsWithExpansion = data.map((event) => ({
           ...event,
           isExpanded: false,
@@ -183,10 +184,6 @@ function MyEvents() {
     fetchPendingEvents();
     fetchJoinedEvents();
   }, []);
-
-  useEffect(() => {
-    console.log("showManagePopup set to true:", showManagePopup);
-  }, [showManagePopup]);
 
   const toggleExpansion = (index) => {
     setEvents((currentEvents) =>
@@ -293,7 +290,7 @@ function MyEvents() {
                   </button>
                   <button
                     className="delete-button"
-                    onClick={() => handleDeleteEvent(event)}
+                    onClick={() => confirmDelete(event)}
                   >
                     <FontAwesomeIcon icon={faTrash} />
                   </button>
