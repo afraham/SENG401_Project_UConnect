@@ -322,8 +322,10 @@ function MyEvents() {
       {showManagePopup && (
         <ManageEvents
           event={currentEvent}
+          setCurrent = {setCurrentEvent}
           title={currentEvent.title} // Pass the title as a prop
           closePopup={() => setShowManagePopup(false)}
+          refetchEvents={fetchEvents}
         />
       )}
     </div>

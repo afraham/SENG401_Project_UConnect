@@ -76,8 +76,8 @@ exports.requestToJoinEvent = async (req, res) => {
             { $push: { pending: userEmail } },
             { returnOriginal: false }
         );
-		      if (result) {
-			      res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+		if (result) {
+			res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
             res.status(200).json({ message: 'Event joined successfully' });
         } else {
             // If item not found
@@ -157,7 +157,7 @@ exports.approveUser = async (req, res) => {
 		const database = db.db("create_events");
 		const collection = database.collection("events");
 
-		const result = await collection.updateOne(
+		const result = await collection.findOneAndUpdate(
             { _id: new ObjectId(eventId) },
             {
 				$inc: { spotsTaken: 1 },
@@ -172,7 +172,7 @@ exports.approveUser = async (req, res) => {
         if (result.modifiedCount === 0) {
             return res.status(404).json({ message: 'Item not found or element not removed' });
         }
-		res.status(200).json({ message: 'Approved user successfully' });
+		res.status(200).json(result);
 	} catch (error) {
 		res.status(500).json({ message: "Internal Server Error" });
 	}
@@ -185,12 +185,12 @@ exports.denyUser = async (req, res) => {
 	try {
 		const database = db.db("create_events");
 		const collection = database.collection("events");
-		const result = await collection.updateOne(
+		const result = await collection.findOneAndUpdate(
             { _id: new ObjectId(eventId) },
             {
-                $pull: { pending: userEmail }, // Remove element from array
+                $pull: { pending: userEmail } // Remove element from array
             },
-			{ returnOriginal: false }
+			{ new: true }
         );
 
 		res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
@@ -198,7 +198,7 @@ exports.denyUser = async (req, res) => {
         if (result.modifiedCount === 0) {
             return res.status(404).json({ message: 'Item not found or element not removed' });
         }
-		res.status(200).json({ message: 'Denied user successfully' });
+		res.status(200).json(result);
 	} catch (error) {
 		res.status(500).json({ message: "Internal Server Error" });
 	}

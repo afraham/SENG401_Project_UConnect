@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 
-const ManageEvents = ({ closePopup, event, title}) => {
+const ManageEvents = ({ closePopup, event, title, setCurrent, refetchEvents }) => {
 
+  const [handledRequests, setHandledRequests] = useState(event.pending.map(() => 'unhandled'))
 
-  const handleApprove = async (userEmail) => {
+  const handleClosePopup = () => {
+    refetchEvents();
+    closePopup();
+  }
+  const handleApprove = async (userEmail, index) => {
 
     if (event.spotsTaken >= event.maxPeople) {
       console.log("Max amount of users already in event, please add more spots if you would like to accept more users.") // Perhaps add a display to user to indicate this?
@@ -19,8 +24,11 @@ const ManageEvents = ({ closePopup, event, title}) => {
         });
   
         if (response.ok) {
-            console.log('Request Approved');
-  
+          setHandledRequests(prevReqs => {
+            const newReqs = [...prevReqs];
+            newReqs[index] = 'approved'; // Update the status of the item
+            return newReqs;
+          });
         } else {
             console.error('Request to approve failed:', response.status, response.statusText);
             // Handle error case here
@@ -31,7 +39,7 @@ const ManageEvents = ({ closePopup, event, title}) => {
       }
     }
   }
-  const handleDeny = async (userEmail) => {
+  const handleDeny = async (userEmail, index) => {
     try {
       const response = await fetch(`http://localhost:8000/api/events/deny/${event._id}`, {
           method: 'PUT',
@@ -40,13 +48,15 @@ const ManageEvents = ({ closePopup, event, title}) => {
           },
           body: JSON.stringify({ userEmail }) // Just pass userEmail directly
       });
-
       if (response.ok) {
-          console.log('User denied');
-
+        setHandledRequests(prevReqs => {
+          const newReqs = [...prevReqs];
+          newReqs[index] = 'denied'; // Update the status of the item
+          return newReqs;
+        });
       } else {
-          console.error('Request to deny failed:', response.status, response.statusText);
-          // Handle error case here
+        console.error('Request to deny failed:', response.status, response.statusText);
+        // Handle error case here
       }
     } catch (error) {
         console.error('Error denying user:', error);
@@ -63,16 +73,22 @@ const ManageEvents = ({ closePopup, event, title}) => {
             <h3>Requests</h3>
             <div className="request-list">
               {Array.isArray(event.pending) && event.pending.map((request, index) =>
-              <div className="request">
+              <div className="request" key={index}>
                 <h1>{request}</h1>
-                <button onClick={() => handleApprove(request)}>Approve</button>
-                <button onClick={() => handleDeny(request)}>Deny</button>
+                {handledRequests[index] === 'unhandled' && (
+                  <div>
+                    <button onClick={() => handleApprove(request, index)}>Approve</button>
+                    <button onClick={() => handleDeny(request, index)}>Deny</button>
+                  </div>
+                )}
+                {handledRequests[index] === 'denied' && <span>Denied</span>}
+                {handledRequests[index] === 'approved' && <span>Accepted</span>}
               </div>
               )}
             </div>
 
           </div>
-          <button className="close-button" onClick={closePopup}>
+          <button className="close-button" onClick={handleClosePopup}>
             X
           </button>
         </div>

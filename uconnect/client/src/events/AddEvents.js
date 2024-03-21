@@ -58,7 +58,7 @@ const AddEvents = ({ closePopup, event, editMode, updateEvents }) => {
 			const pending = []
 			const approved = []
 
-			const spotsTaken = 0;
+			const spotsTaken = 1;
 			const response = await fetch("http://localhost:8000/api/events", {
 				method: "POST",
 				headers: {
