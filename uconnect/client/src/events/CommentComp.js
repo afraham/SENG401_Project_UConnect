@@ -36,7 +36,6 @@ function CommentComp() {
                 console.log("User not signed in, could not send message")
             }
             else {
-                console.log(`Send this comment ${inputValue} from ${userEmail}`)
                 const newComment = {
                     userEmail: userEmail,
                     message: inputValue
@@ -73,7 +72,7 @@ function CommentComp() {
                         <p>{comment.userEmail}: {comment.message}</p>
                     </div>
                 ))
-            };
+            }
             </div>
             <form onSubmit={handleSendComment}>
             <input

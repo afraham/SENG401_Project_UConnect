@@ -57,6 +57,7 @@ const AddEvents = ({ closePopup, event, editMode, updateEvents }) => {
 
 			const pending = []
 			const approved = []
+			const comments = []
 
 			const spotsTaken = 1;
 			const response = await fetch("http://localhost:8000/api/events", {
@@ -73,7 +74,8 @@ const AddEvents = ({ closePopup, event, editMode, updateEvents }) => {
 					location,
 					userEmail,
 					pending,
-					approved
+					approved,
+					comments
 				}),
 			});
 
