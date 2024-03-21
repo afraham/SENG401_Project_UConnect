@@ -129,3 +129,67 @@ exports.deleteEvent = async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });
     }
 };
+
+// exports.updateEvent = async (req, res) => {
+//     const { eventId } = req.params;
+//     const eventData = req.body;
+
+//     try {
+//         console.log("Updating event with ID:", eventId);
+//         console.log("Event data:", eventData);
+
+//         const database = db.db("create_events");
+//         const collection = database.collection("events");
+
+//         const result = await collection.findOneAndUpdate(
+//             { _id: new ObjectId(eventId) },
+//             { $set: eventData },
+//             { returnOriginal: false }
+//         );
+
+//         console.log("Update result:", result);
+
+//         if (result.value) {
+//             res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+//             res.status(200).json({ message: "Event updated successfully", event: result.value });
+//         } else {
+//             res.status(400).json({ message: "Event not found" });
+//         }
+//     } catch (error) {
+//         console.error("Error updating event:", error);
+//         res.status(500).json({ message: "Internal Server Error", error: error.message });
+//     }
+// };
+
+exports.updateEvent = async (req, res) => {
+    const { eventId } = req.params; // Extract eventId from request parameters
+    const eventDataToUpdate = req.body; // Updated event data sent from the client
+
+    try {
+		console.log("hello world");
+        // Find the event by ID and update only the specified fields
+		const database = db.db('create_events')
+		const updatedEvent = await database.collection('events').findOneAndUpdate(
+			{ _id: new ObjectId(eventId) },
+			{ $set: eventDataToUpdate },
+			{ returnOriginal: false }
+		);
+
+        // Check if event exists
+        if (!updatedEvent) {
+			console.log("Event ID:", eventId);
+			console.log(eventDataToUpdate);
+            return res.status(404).json({ error: 'Event not found' });
+        }
+
+        // Send the updated event as response
+        res.status(200).json({ message: 'Event updated successfully', event: updatedEvent });
+    } catch (error) {
+        console.error("Error updating event:", error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
+
+  
+  
