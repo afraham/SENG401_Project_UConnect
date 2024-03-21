@@ -90,13 +90,54 @@ const AddEvents = ({ closePopup, event, editMode, updateEvents }) => {
 	};
 	//..................
 
-
-
 	const handleUpdateEvent = async () => {
-		// TODO: Implementation of updating event data
-		console.log("not yet working")
+		try {
+			if (
+				!title.trim() ||
+				!description.trim() ||
+				!date.trim() ||
+				!location.trim()
+			) {
+				alert("Please fill in all fields.");
+				return; // Stop the function if any field is empty
+			}
+	
+			const user = auth.currentUser; // get the current user
+			const userEmail = user ? user.email : null; // get the user's email
+	
+			const updatedEventData = {
+				title,
+				description,
+				maxPeople,
+				date,
+				location,
+				userEmail, // Assuming userEmail is required for the update
+			};
+	
+			console.log(JSON.stringify(updatedEventData));
+	
+			const response = await fetch(`http://localhost:8000/api/events/${event._id}/edit`, {
+				method: "PATCH", // Use PATCH method for partial updates
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(updatedEventData),
+			});
+	
+			if (response.ok) {
+				console.log("Event data updated successfully");
+				updateEvents();
+				closePopup();
+			} else {
+				console.error("Failed to update event data desc:", response.status);
+				console.error("Response data:", await response.json());
+			}
+		} catch (error) {
+			console.error("Error updating event data:", error);
+		}
 	};
-
+	
+	
 
 	return (
 		<div className="popup-container">

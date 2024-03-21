@@ -129,3 +129,38 @@ exports.deleteEvent = async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });
     }
 };
+
+exports.updateEvent = async (req, res) => {
+    const { eventId } = req.params;
+    const eventData = req.body;
+
+    try {
+        console.log("Updating event with ID:", eventId);
+        console.log("Event data:", eventData);
+
+        const database = db.db("create_events");
+        const collection = database.collection("events");
+
+        const result = await collection.findOneAndUpdate(
+            { _id: new ObjectId(eventId) },
+            { $set: eventData },
+            { returnOriginal: false }
+        );
+
+        console.log("Update result:", result);
+
+        if (result.value) {
+            res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+            res.status(200).json({ message: "Event updated successfully", event: result.value });
+        } else {
+            res.status(400).json({ message: "Event not found" });
+        }
+    } catch (error) {
+        console.error("Error updating event:", error);
+        res.status(500).json({ message: "Internal Server Error", error: error.message });
+    }
+};
+
+
+  
+  
