@@ -28,9 +28,15 @@ exports.getEvents = async (req, res) => {
 		let events;
 
 		if (userEmail) {
-			events = await collection.find({ userEmail: userEmail }).toArray();
+			events = await collection.find({ 
+				$and: [
+					 {userEmail: { $ne: userEmail }},
+					 {pending: { $nin: [userEmail] }},
+					 {approved: { $nin: [userEmail] }}
+				]}).toArray();
 		} else {
-			events = await collection.find().toArray();
+			res.status(400).send({ message: "No userEmail provided" });
+			return;
 		}
 
 		res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
@@ -232,7 +238,6 @@ exports.updateEvent = async (req, res) => {
     const eventDataToUpdate = req.body; // Updated event data sent from the client
 
     try {
-		console.log("hello world");
         // Find the event by ID and update only the specified fields
 		const database = db.db('create_events')
 		const updatedEvent = await database.collection('events').findOneAndUpdate(

@@ -75,10 +75,10 @@ function MyEvents() {
   
   const handleLeaveButton = async (event) => {
 
-    const user = auth.currentUser;
-    const userEmail = user ? user.email : null;
-
     try {
+      const user = auth.currentUser;
+			const userEmail = user ? user.email : null;
+
       const response = await fetch(`http://localhost:8000/api/events/leave/${event._id}`, {
           method: 'PUT',
           headers: {
@@ -226,19 +226,19 @@ function MyEvents() {
           className={activeTab === "myEvents" ? "active-tab" : ""}
           onClick={() => setActiveTab("myEvents")}
         >
-          My Events
+          My Events ({events.length})
         </button>
         <button
           className={activeTab === "pending" ? "active-tab" : ""}
           onClick={() => setActiveTab("pending")}
         >
-          Pending
+          Pending ({pendingEvents.length})
         </button>
         <button
           className={activeTab === "joined" ? "active-tab" : ""}
           onClick={() => setActiveTab("joined")}
         >
-          Joined
+          Joined ({joinedEvents.length})
         </button>
       </div>
       <div className="myevent-list">

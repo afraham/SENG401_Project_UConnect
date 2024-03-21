@@ -8,8 +8,12 @@ function FindEvents() {
     useEffect(() => {
         // Function to fetch events from API
         const fetchEvents = async () => {
+
+            const user = auth.currentUser;
+			const userEmail = user ? user.email : null;
+
             try {
-                const response = await fetch("http://localhost:8000/api/events");
+                const response = await fetch(`http://localhost:8000/api/events?userEmail=${userEmail}`);
                 const data = await response.json();
                 console.log(data); // Log the data
                 const eventsWithExpansion = data.map(event => ({
