@@ -13,6 +13,7 @@ router.get("/api/joinedEventsByEmail", eventsController.getMyJoinedEventsByEmail
 router.delete("/api/events/:eventId", eventsController.deleteEvent); // Add this line for delete
 router.put("/api/events/approve/:eventId", eventsController.approveUser);
 router.put("/api/events/deny/:eventId", eventsController.denyUser);
+router.put("/api/events/leave/:eventId", eventsController.userLeftEvent);
 router.delete("/api/events/:eventId", eventsController.deleteEvent);
 router.patch("/api/events/:eventId/edit", eventsController.updateEvent);
 

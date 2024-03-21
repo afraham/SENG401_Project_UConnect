@@ -123,3 +123,16 @@
 .edit-button:hover {
   background-color: #003a79;
 }
+
+.leave-button {
+    background-color: red;
+    height: 30px;
+    width: 100px;
+    color: white;
+    font-size: 12px;
+    padding: 0px 0px 0px 0px;
+    border-radius: 15px;
+    border: none;
+    margin-top: 10px;
+    
+}

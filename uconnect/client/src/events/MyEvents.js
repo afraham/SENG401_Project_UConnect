@@ -65,6 +65,32 @@ function MyEvents() {
   const handlePendingButton = (event = null) => {
     console.log("Will implement later");
   };
+  
+  const handleLeaveButton = async (event) => {
+
+    const user = auth.currentUser;
+    const userEmail = user ? user.email : null;
+
+    try {
+      const response = await fetch(`http://localhost:8000/api/events/leave/${event._id}`, {
+          method: 'PUT',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userEmail }) // Just pass userEmail directly
+      });
+      if (response.ok) {
+        console.log("Successfully left event.")
+        fetchJoinedEvents();
+      } else {
+        console.error('Request to deny failed:', response.status, response.statusText);
+        // Handle error case here
+      }
+    } catch (error) {
+        console.error('Error leaving event:', error);
+        // Handle error case here
+    }
+  }
 
   const fetchPendingEvents = async () => {
     try {
@@ -115,6 +141,7 @@ function MyEvents() {
 				console.log("Fetched joined successfully")
 			}
 		} catch (error) {
+      setJoinedEvents([]);
 			console.error("Error fetching joined events:", error);
 		}
 	};
@@ -313,6 +340,50 @@ function MyEvents() {
                     onClick={() => handlePendingButton(event)}
                   >
                     PENDING
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+
+          {activeTab === "joined" && // Only render if activeTab is "Pending"
+          Array.isArray(joinedEvents) &&
+          joinedEvents.map((event, index) => (
+            <div
+              className={`event-card ${event.isExpanded ? "expanded" : ""}`}
+              key={index}
+              onClick={() => toggleExpansion(index)}
+            >
+              <div className="top-box">
+                <div className="left-align">
+                  <p className="event-title">{event.title}</p>
+                </div>
+                <div className="right-align">
+                  <p className="capacity">
+                    {event.spotsTaken}/{event.maxPeople}
+                  </p>
+                  <p className="capacity">
+                    <i class="fa fa-group"></i>
+                  </p>
+                </div>
+              </div>
+              <p
+                className={`description ${event.isExpanded ? "expanded" : ""}`}
+              >
+                {event.description}
+              </p>
+              <div className="bottom-box">
+                <div className="left-align">
+                  <p className="location">
+                    <i class="fa fa-map-marker"></i> {event.location}
+                  </p>
+                </div>
+                <div className="right-align">
+                  <button
+                    className="leave-button"
+                    onClick={() => handleLeaveButton(event)}
+                  >
+                    Leave
                   </button>
                 </div>
               </div>
