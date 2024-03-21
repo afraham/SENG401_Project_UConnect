@@ -15,7 +15,6 @@ function MyEvents() {
   const [showManagePopup, setShowManagePopup] = useState(false);
 	const [pendingEvents, setPendingEvents] = useState([]);
   const [joinedEvents, setJoinedEvents] = useState([]);
-  const [pendingEvents, setPendingEvents] = useState([]);
   const [activeTab, setActiveTab] = useState("myEvents"); // State to track active tab
   
   // Edit Event
