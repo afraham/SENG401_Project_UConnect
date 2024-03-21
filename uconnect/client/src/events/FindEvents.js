@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "./FindEvents.css";
 import { auth } from "../firebase"; // Import Firebase auth
 
@@ -117,7 +118,9 @@ function FindEvents() {
                                     >
                                         {event.requestStatus === 'Pending' ? 'Pending' : 'Request To Join'}
                                     </button>
-                              
+                                    <Link to={`/user/event-page/${event._id}`}>
+                                        <button>Chat</button>
+                                    </Link>
                                 </div>
                             </div>
                         </div>

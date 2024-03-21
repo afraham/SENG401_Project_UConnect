@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "./MyEvents.css";
 import "./FindEvents.css";
 import AddEvents from "./AddEvents";
@@ -282,6 +283,9 @@ function MyEvents() {
                   </p>
                 </div>
                 <div className="right-align">
+                <Link to={`/user/event-page/${event._id}`}>
+                    <button>Chat</button>
+                  </Link>
                   <button
                     className="edit-button"
                     onClick={() => handleEditEvent(event)}
@@ -376,6 +380,9 @@ function MyEvents() {
                   </p>
                 </div>
                 <div className="right-align">
+                <Link to={`/user/event-page/${event._id}`}>
+                    <button>Chat</button>
+                  </Link>
                   <button
                     className="leave-button"
                     onClick={() => handleLeaveButton(event)}

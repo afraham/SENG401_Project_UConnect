@@ -7,6 +7,7 @@ import NoPage from "./layouts/NoPage.js";
 import Profile from "./profile/Profile.js";
 import MyEvents from "./events/MyEvents.js";
 import FindEvents from "./events/FindEvents.js";
+import CommentComp from './events/CommentComp.js';
 
 function App() {
 	const [isSignedIn, setSignedIn] = useState(false);
@@ -20,6 +21,7 @@ function App() {
 					<Route index element={<FindEvents />} />
 					<Route path="/user/myevents" element={<MyEvents />} />
 					<Route path="/user/myprofile" element={<Profile />} />
+					<Route path="/user/event-page/:eventId" element={<CommentComp />} />
 				</Route>
 				<Route path="*" element={<NoPage />} />
 			</Routes>
