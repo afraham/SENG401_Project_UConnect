@@ -156,3 +156,30 @@ exports.approveUser = async (req, res) => {
 		res.status(500).json({ message: "Internal Server Error" });
 	}
 }
+
+exports.denyUser = async (req, res) => {
+	const { eventId } = req.params;
+	const { userEmail } = req.body;
+
+	try {
+		const database = db.db("create_events");
+		const collection = database.collection("events");
+		const result = await collection.updateOne(
+            { _id: new ObjectId(eventId) },
+            {
+                $pull: { pending: userEmail }, // Remove element from array
+            },
+			{ returnOriginal: false }
+        );
+
+		res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+
+        if (result.modifiedCount === 0) {
+            return res.status(404).json({ message: 'Item not found or element not removed' });
+        }
+		res.status(200).json({ message: 'Denied user successfully' });
+	} catch (error) {
+		res.status(500).json({ message: "Internal Server Error" });
+	}
+}
+

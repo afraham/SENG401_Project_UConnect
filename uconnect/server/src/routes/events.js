@@ -11,5 +11,6 @@ router.get("/api/eventsByEmail", getEventsByEmail);
 router.get("/api/pendingEventsByEmail", eventsController.getMyPendingEventsByEmail);
 router.delete("/api/events/:eventId", eventsController.deleteEvent); // Add this line for delete
 router.put("/api/events/approve/:eventId", eventsController.approveUser);
+router.put("/api/events/deny/:eventId", eventsController.denyUser);
 
 module.exports = router;

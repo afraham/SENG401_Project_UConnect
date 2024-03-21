@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 const ManageEvents = ({ closePopup, event, title}) => {
 
 
-  const [selectedEvent, setSelectedEvent] = useState();
   const handleApprove = async (userEmail) => {
     console.log(`Approved ${userEmail}`)
     console.log(event._id)
@@ -28,21 +27,29 @@ const ManageEvents = ({ closePopup, event, title}) => {
         // Handle error case here
     }
   }
-
-  useEffect(() => {
-    setSelectedEvent(event);
-  })
-  
-
-  const handleDeny = async (email) => {
-    console.log(`Denied ${email}`)
-
+  const handleDeny = async (userEmail) => {
+    console.log(`Approved ${userEmail}`)
+    console.log(event._id)
     try {
-      return
-  } catch (error) {
-      console.error('Error denying user:', error);
-      // Handle error case here
-  }
+      const response = await fetch(`http://localhost:8000/api/events/deny/${event._id}`, {
+          method: 'PUT',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userEmail }) // Just pass userEmail directly
+      });
+
+      if (response.ok) {
+          console.log('User denied');
+
+      } else {
+          console.error('Request to deny failed:', response.status, response.statusText);
+          // Handle error case here
+      }
+    } catch (error) {
+        console.error('Error denying user:', error);
+        // Handle error case here
+    }
   }
 
   return (
