@@ -90,7 +90,7 @@ const AddEvents = ({ closePopup, event, editMode, updateEvents }) => {
 	};
 	//..................
 
-	const handleUpdateEvent = async () => {
+	const handleUpdateEvent = async (eventId) => {
 		try {
 			if (
 				!title.trim() ||
@@ -116,7 +116,7 @@ const AddEvents = ({ closePopup, event, editMode, updateEvents }) => {
 	
 			console.log(JSON.stringify(updatedEventData));
 	
-			const response = await fetch(`http://localhost:8000/api/events/${event._id}/edit`, {
+			const response = await fetch(`http://localhost:8000/api/events/${eventId}/edit`, {
 				method: "PATCH", // Use PATCH method for partial updates
 				headers: {
 					"Content-Type": "application/json",
@@ -137,8 +137,6 @@ const AddEvents = ({ closePopup, event, editMode, updateEvents }) => {
 		}
 	};
 	
-	
-
 	return (
 		<div className="popup-container">
 			<div className="popup-content">
@@ -181,7 +179,7 @@ const AddEvents = ({ closePopup, event, editMode, updateEvents }) => {
 					onChange={(e) => handleInputChange(e.target.value, setLocation)}
 				/>
 				<div className="create-button-container">
-					<button className="create-button" onClick={editMode ? handleUpdateEvent : saveEventData}>
+					<button className="create-button" onClick={editMode ? () => handleUpdateEvent(event._id) : saveEventData}>
 						{editMode ? "Save Changes" : "Create"}
 					</button>
 				</div>
