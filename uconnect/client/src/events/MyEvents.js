@@ -61,6 +61,10 @@ function MyEvents() {
     setShowPopup(false);
   };
 
+  const handlePendingButton = (event = null) => {
+    console.log("Will implement later");
+  };
+
   const fetchPendingEvents = async () => {
     try {
       const user = auth.currentUser;
@@ -278,7 +282,7 @@ function MyEvents() {
                 <div className="right-align">
                   <button
                     className="pending-button"
-                    onClick={() => handleDeleteEvent(event)}
+                    onClick={() => handlePendingButton(event)}
                   >
                     PENDING
                   </button>
