@@ -4,32 +4,34 @@ const ManageEvents = ({ closePopup, event, title}) => {
 
 
   const handleApprove = async (userEmail) => {
-    console.log(`Approved ${userEmail}`)
-    console.log(event._id)
-    try {
-      const response = await fetch(`http://localhost:8000/api/events/approve/${event._id}`, {
-          method: 'PUT',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ userEmail }) // Just pass userEmail directly
-      });
 
-      if (response.ok) {
-          console.log('Request Approved');
-
-      } else {
-          console.error('Request to approve failed:', response.status, response.statusText);
+    if (event.spotsTaken >= event.maxPeople) {
+      console.log("Max amount of users already in event, please add more spots if you would like to accept more users.") // Perhaps add a display to user to indicate this?
+    }
+    else {
+      try {
+        const response = await fetch(`http://localhost:8000/api/events/approve/${event._id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userEmail }) // Just pass userEmail directly
+        });
+  
+        if (response.ok) {
+            console.log('Request Approved');
+  
+        } else {
+            console.error('Request to approve failed:', response.status, response.statusText);
+            // Handle error case here
+        }
+      } catch (error) {
+          console.error('Error approving user:', error);
           // Handle error case here
       }
-    } catch (error) {
-        console.error('Error approving user:', error);
-        // Handle error case here
     }
   }
   const handleDeny = async (userEmail) => {
-    console.log(`Approved ${userEmail}`)
-    console.log(event._id)
     try {
       const response = await fetch(`http://localhost:8000/api/events/deny/${event._id}`, {
           method: 'PUT',

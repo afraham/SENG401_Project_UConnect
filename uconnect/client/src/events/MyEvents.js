@@ -14,6 +14,7 @@ function MyEvents() {
   const [currentEvent, setCurrentEvent] = useState(null);
   const [showManagePopup, setShowManagePopup] = useState(false);
 	const [pendingEvents, setPendingEvents] = useState([]);
+  const [joinedEvents, setJoinedEvents] = useState([]);
   // Edit Event
   const handleEditEvent = (event) => {
     setCurrentEvent(event);
@@ -83,6 +84,32 @@ function MyEvents() {
 		}
 	};
 
+  const fetchJoinedEvents = async () => {
+		try {
+			const user = auth.currentUser;
+			const userEmail = user ? user.email : null;
+
+			if (userEmail) {
+				const response = await fetch(
+					`http://localhost:8000/api/joinedEventsByEmail?userEmail=${userEmail}`
+				);
+				if (!response.ok) {
+					throw new Error(`HTTP error! status: ${response.status}`);
+				}
+				const data = await response.json();
+				console.log(data); // Log the data
+				const eventsWithExpansion = data.map((event) => ({
+					...event,
+					isExpanded: false,
+				}));
+				setJoinedEvents(eventsWithExpansion); // Assuming data is an array of events
+				console.log("Fetched joined successfully")
+			}
+		} catch (error) {
+			console.error("Error fetching joined events:", error);
+		}
+	};
+
   const handleManageEvent = (event) => {
     setCurrentEvent(event);
     setShowManagePopup(true); // Show manage popup when "Manage" button is clicked
@@ -116,10 +143,11 @@ function MyEvents() {
     }
   };
 
-useEffect(() => {
-	fetchEvents();
-	fetchPendingEvents();
-}, []);
+  useEffect(() => {
+    fetchEvents();
+    fetchPendingEvents();
+    fetchJoinedEvents();
+  }, []);
   
   useEffect(() => {
     console.log("showManagePopup set to true:", showManagePopup);
@@ -221,6 +249,15 @@ useEffect(() => {
 	<div>
 		{Array.isArray(pendingEvents) &&
 			pendingEvents.map((event, index) => (
+			<h1>
+				{event.title}
+			</h1>
+			))}
+	</div>
+  <div>
+    <h1>Accepted Events, please replace me!</h1>
+		{Array.isArray(pendingEvents) &&
+			joinedEvents.map((event, index) => (
 			<h1>
 				{event.title}
 			</h1>
