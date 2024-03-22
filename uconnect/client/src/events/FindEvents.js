@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./FindEvents.css";
 import { auth } from "../firebase"; // Import Firebase auth
 
 function FindEvents() {
     const [events, setEvents] = useState([]);
-
+    const navigate = useNavigate();
+    
+  
     useEffect(() => {
         // Function to fetch events from API
         const fetchEvents = async () => {
@@ -37,17 +40,10 @@ function FindEvents() {
 
     // State to store user's email
     const [userEmail, setUserEmail] = useState("");
+    
 
-    // Function to toggle event card expansion
-    const toggleExpansion = (index) => {
-        setEvents(currentEvents =>
-            currentEvents.map((event, i) => {
-                if (i === index) {
-                    return { ...event, isExpanded: !event.isExpanded };
-                }
-                return event;
-            })
-        );
+    const goToEventDetails = (event) => {
+        navigate(`/user/events/${event._id}`, { state: { event } });
     };
 
     const handleRequestToJoin = async (eventId, userEmail, index) => {
@@ -90,9 +86,9 @@ function FindEvents() {
                         <div
                             className={`event-card ${event.isExpanded ? 'expanded' : ''}`}
                             key={index}
-                            onClick={() => toggleExpansion(index)}
+                            
                         >
-                            <div className="top-box">
+                            <div className="top-box" >
                                 <div className="left-align">
                                     <p className="event-title">{event.title}</p>
                                 </div>
@@ -104,10 +100,11 @@ function FindEvents() {
                                     <p className="capacity"><i class="fa fa-group"></i></p>
                                 </div>
                             </div>
-                            <p className={`description ${event.isExpanded ? 'expanded' : ''}`}>{event.description}</p>
+                            <p className={`description ${event.isExpanded ? 'expanded' : ''}`} onClick={() => goToEventDetails(event)}>{event.description}</p>
                             <div className="bottom-box">
                                 <div className="left-align">
-                                    <p className="location"><i class="fa fa-map-marker"></i> {event.location}</p>
+                                    
+                                    <p className="location"><i class="fa fa-clock-o"></i> {event.date.split('T')[0]}</p>
                                 </div>
                                 <div className="right-align">
                                     <button
