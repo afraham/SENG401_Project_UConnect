@@ -81,8 +81,33 @@ function MyEvents() {
     setShowPopup(false);
   };
 
-  const handlePendingButton = (event = null) => {
-    console.log("Will implement later");
+  const handlePendingButton = async (eventId) => {
+    try {
+        const user = auth.currentUser;
+        const userEmail = user ? user.email : null;
+
+        const response = await fetch(`http://localhost:8000/api/events/cancelPending/${eventId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userEmail })
+        });
+
+        console.log("this is the eventId:", eventId);
+        console.log("this is the email:", JSON.stringify({ userEmail }));
+
+        if (response.ok) {
+            console.log("Successfully removed pending request.")
+            fetchPendingEvents(); // Refetch pending events to update the UI
+        } else {
+            console.error('Request to remove pending request failed:', response.status, response.statusText);
+            // Handle error case here
+        }
+    } catch (error) {
+        console.error('Error removing pending request:', error);
+        // Handle error case here
+    }
   };
 
   const handleLeaveButton = async (event) => {
@@ -356,9 +381,9 @@ function MyEvents() {
                 <div className="right-align">
                   <button
                     className="pending-button"
-                    onClick={() => handlePendingButton(event)}
+                    onClick={() => handlePendingButton(event._id)}
                   >
-                    PENDING
+                    CANCEL
                   </button>
                 </div>
               </div>
