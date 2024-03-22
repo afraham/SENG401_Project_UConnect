@@ -7,6 +7,7 @@ import NoPage from "./layouts/NoPage.js";
 import Profile from "./profile/Profile.js";
 import MyEvents from "./events/MyEvents.js";
 import FindEvents from "./events/FindEvents.js";
+import EventDetails from './events/EventDetails';
 
 function App() {
 	const [isSignedIn, setSignedIn] = useState(false);
@@ -16,12 +17,16 @@ function App() {
 			<Routes>
 				<Route path="/" element={<SignIn changeSignInState={setSignedIn} />} />
 				<Route path="signup" element={<SignUp />} />
+				
 				<Route path="/user" element={<Layout signInState={isSignedIn} />}>
 					<Route index element={<FindEvents />} />
 					<Route path="/user/myevents" element={<MyEvents />} />
 					<Route path="/user/myprofile" element={<Profile />} />
+					<Route path="/user/events/:eventId" element={<EventDetails />} />
 				</Route>
+				
 				<Route path="*" element={<NoPage />} />
+				
 			</Routes>
 		</BrowserRouter>
 	);
