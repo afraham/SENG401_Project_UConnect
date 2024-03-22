@@ -18,7 +18,7 @@ const corsOptions = {
 	],
 };
 
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(eventsRoutes);
 
 app.listen(port, () => {
