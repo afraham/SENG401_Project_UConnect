@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./MyEvents.css";
 import "./FindEvents.css";
 import AddEvents from "./AddEvents";
@@ -16,6 +17,7 @@ function MyEvents() {
   const [pendingEvents, setPendingEvents] = useState([]);
   const [joinedEvents, setJoinedEvents] = useState([]);
   const [activeTab, setActiveTab] = useState("myEvents"); // State to track active tab
+  const navigate = useNavigate();
   
 
   // Edit Event
@@ -23,6 +25,13 @@ function MyEvents() {
     setCurrentEvent(event);
     setShowPopup(true);
   };
+
+  //Individual event page
+  const goToEventDetails = (event) => {
+	navigate(`/user/events/${event._id}`, { state: { event } });
+  };
+
+
   //
   const confirmDelete = (event) => {
     const isConfirmed = window.confirm(
@@ -261,7 +270,6 @@ function MyEvents() {
             <div
               className={`event-card ${event.isExpanded ? "expanded" : ""}`}
               key={index}
-              onClick={() => toggleExpansion(index)}
             >
               <div className="top-box">
                 <div className="left-align">
@@ -285,13 +293,14 @@ function MyEvents() {
               </div>
               <p
                 className={`description ${event.isExpanded ? "expanded" : ""}`}
+				onClick={() => goToEventDetails(event)}
               >
                 {event.description}
               </p>
               <div className="bottom-box">
                 <div className="left-align">
                   <p className="location">
-                    <i class="fa fa-map-marker"></i> {event.location}
+                    <i class="fa fa-clock-o"></i> {event.date.split('T')[0]}
                   </p>
                 </div>
                 <div className="right-align">
@@ -341,7 +350,7 @@ function MyEvents() {
               <div className="bottom-box">
                 <div className="left-align">
                   <p className="location">
-                    <i class="fa fa-map-marker"></i> {event.location}
+                    <i class="fa fa-clock-o"></i> {event.date.split('T')[0]}
                   </p>
                 </div>
                 <div className="right-align">
@@ -385,7 +394,7 @@ function MyEvents() {
               <div className="bottom-box">
                 <div className="left-align">
                   <p className="location">
-                    <i class="fa fa-map-marker"></i> {event.location}
+                    <i class="fa fa-clock-o"></i> {event.date.split('T')[0]}
                   </p>
                 </div>
                 <div className="right-align">
