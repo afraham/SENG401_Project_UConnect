@@ -3,6 +3,8 @@
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
+		"@fortawesome/free-solid-svg-icons": "^6.5.1",
+		"@fortawesome/react-fontawesome": "^0.2.0",
 		"@testing-library/jest-dom": "^5.17.0",
 		"@testing-library/react": "^13.4.0",
 		"@testing-library/user-event": "^13.5.0",
@@ -19,7 +21,9 @@
 	},
 	"scripts": {
 		"start": "cd client && npm start",
+		"build-client": "cd client && npm run build",
 		"build": "cd client && npm run build",
+		"install-server": "cd server && npm install",
 		"start-server": "node server/src/app.js",
 		"test": "cd client && npm test",
 		"eject": "cd client && npm run eject",
@@ -45,6 +49,12 @@
 	},
 	"devDependencies": {
 		"@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-		"concurrently": "^8.2.2"
+		"concurrently": "^8.2.2",
+		"jest": "^27.5.1"
+	},
+	"jest": {
+		"setupFiles": [
+			"./src/tests/jest.setup.js"
+		]
 	}
 }

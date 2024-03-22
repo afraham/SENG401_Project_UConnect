@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import "./AddEvents.css";
 import { auth } from "../firebase";
 
-const AddEvents = ({ closePopup }) => {
-	const [title, setTitle] = useState("");
-	const [description, setDescription] = useState("");
-	const [maxPeople, setMaxPeople] = useState(2);
-	const [date, setDate] = useState("");
-	const [location, setLocation] = useState("");
+const AddEvents = ({ closePopup, event, editMode, updateEvents }) => {
+	const [title, setTitle] = useState(event ? event.title : "");
+	const [description, setDescription] =  useState(event ? event.description : "");
+	const [maxPeople, setMaxPeople] = useState(event ? event.maxPeople : 2);
+	const [date, setDate] = useState(event ? event.date : "");
+	const [location, setLocation] = useState(event ? event.location : "");
 	const maxCharacters = 24;
 	
 	// Function to increment maxPeople
@@ -50,11 +50,15 @@ const AddEvents = ({ closePopup }) => {
 
 		closePopup();
 
+		
 		try {
 			const user = auth.currentUser; // get the current user
 			const userEmail = user ? user.email : null; // get the user's email
 
-			const spotsTaken = 0;
+			const pending = []
+			const approved = []
+
+			const spotsTaken = 1;
 			const response = await fetch("http://localhost:8000/api/events", {
 				method: "POST",
 				headers: {
@@ -68,11 +72,14 @@ const AddEvents = ({ closePopup }) => {
 					date,
 					location,
 					userEmail,
+					pending,
+					approved
 				}),
 			});
 
 			if (response.ok) {
 				console.log("Event data sent successfully");
+				updateEvents();
 				closePopup();
 			} else {
 				console.error("Failed to send event data");
@@ -83,14 +90,56 @@ const AddEvents = ({ closePopup }) => {
 	};
 	//..................
 
+	const handleUpdateEvent = async (eventId) => {
+		try {
+			if (
+				!title.trim() ||
+				!description.trim() ||
+				!date.trim() ||
+				!location.trim()
+			) {
+				alert("Please fill in all fields.");
+				return; // Stop the function if any field is empty
+			}
 	
-
-
+			const user = auth.currentUser; // get the current user
+			const userEmail = user ? user.email : null; // get the user's email
+	
+			const updatedEventData = {
+				title,
+				description,
+				maxPeople,
+				date,
+				location,
+				userEmail, // Assuming userEmail is required for the update
+			};
+	
+			const response = await fetch(`http://localhost:8000/api/events/${eventId}/edit`, {
+				method: "PATCH", // Use PATCH method for partial updates
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(updatedEventData),
+			});
+	
+			if (response.ok) {
+				console.log("Event data updated successfully");
+				updateEvents();
+				closePopup();
+			} else {
+				console.error("Failed to update event data desc:", response.status);
+				console.error("Response data:", await response.json());
+			}
+		} catch (error) {
+			console.error("Error updating event data:", error);
+		}
+	};
+	
 	return (
 		<div className="popup-container">
 			<div className="popup-content">
 				<div className="ce-header">
-					<h2 className="ce-header">Add New Event</h2>
+					<h2 className="ce-header">{editMode ? "Edit Event" : "Add New Event"}</h2>
 					<button className="close-button" onClick={closePopup}>
 						X
 					</button>
@@ -128,8 +177,8 @@ const AddEvents = ({ closePopup }) => {
 					onChange={(e) => handleInputChange(e.target.value, setLocation)}
 				/>
 				<div className="create-button-container">
-					<button className="create-button" onClick={saveEventData}>
-						Create
+					<button className="create-button" onClick={editMode ? () => handleUpdateEvent(event._id) : saveEventData}>
+						{editMode ? "Save Changes" : "Create"}
 					</button>
 				</div>
 			</div>

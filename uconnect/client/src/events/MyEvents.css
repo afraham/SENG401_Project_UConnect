@@ -1,49 +1,131 @@
 .my-events-page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 40px; /* add space before text*/
-    
-}
-  
-.event-button-container {
-    margin-top: -20px; /*remove gap b/w btn&txt */
-    display: flex;
-    justify-content: center;
-    
-}
-  
-.event-button {
-    background-color: #ffffff; /* Background color */
-    border-radius: 15px; /* Rounded corners */
-    padding: 10px 20px; /* Padding inside the button */
-    font-size: 100px; /* Font size of + */
-    color: #a1a0a0;
-    cursor: pointer;
-    outline: none; 
-    width: 280px; 
-    height: 160px;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2), /* dark Shadow for right and bottom */
-               -5px -5px 10px rgba(255, 255, 255, 0.5); /* Light shadow for top and left */
-    border: none;
-    margin-top: 4px;
-}
-  
-.event-button:hover {
-    background-color: #d1d1d1; /* Light grey background on hover */
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2), /* Smaller shadow for a pressed effect */
-               -2px -2px 5px rgba(255, 255, 255, 0.5);
-    color: #ff5555;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40px; /* add space before text*/
 }
 
-.myevents-line{
-    display: block;
-    border: solid #ff5555 2px;
-    margin: 40px 20px 20px 20px;
+.event-button-container {
+  margin-top: -20px; /*remove gap b/w btn&txt */
+  display: flex;
+  justify-content: center;
+}
+
+.event-tab button {
+  background-color: transparent;
+  border: none;
+  font-size: 18px;
+  color: #020000;
+  margin-right: 1em;
+  margin-bottom: 0.5em;
+  font-weight: 500;
+  margin-left: 0.5em;
+}
+
+.pending-button {
+  background-color: rgb(255, 119, 22);
+  border: none;
+  border-radius: 20px;
+  color: white;
+  padding: 5px 10px;
+}
+
+.event-tab {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 20px;
+  margin: 2em;
+  margin-bottom: 0;
+}
+
+.active-tab {
+  color: #ff5555;
+  text-decoration: underline;
+}
+.myevent-list {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: rgb(233, 233, 233);
+  padding: 20px;
+  margin: 2em;
+  margin-top: 0;
+  border-radius: 10px;
+}
+
+.event-button {
+  background-color: #ffffff; /* Background color */
+  border-radius: 15px; /* Rounded corners */
+  padding: 10px 20px; /* Padding inside the button */
+  font-size: 100px; /* Font size of + */
+  color: #a1a0a0;
+  cursor: pointer;
+  outline: none;
+  width: 280px;
+  height: 160px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2),
+    /* dark Shadow for right and bottom */ -5px -5px 10px
+      rgba(255, 255, 255, 0.5); /* Light shadow for top and left */
+  border: none;
+  margin-top: 4px;
+}
+
+.event-button:hover {
+  background-color: #d1d1d1; /* Light grey background on hover */
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2),
+    /* Smaller shadow for a pressed effect */ -2px -2px 5px
+      rgba(255, 255, 255, 0.5);
+  color: #ff5555;
+}
+
+.delete-button {
+  background-color: #ff0000;
+  height: 30px;
+  width: 30px;
+  color: white;
+  margin-left: 5px;
+  font-size: 12px;
+  padding: 0px 0px 0px 0px;
+  border-radius: 15px;
+  border: none;
+  margin-top: 10px;
+  transition: 0.3s;
+}
+.delete-button:hover {
+  background-color: #d10000;
+}
+.myevents-line {
+  display: block;
+  border: solid #ff5555 2px;
+  margin: 40px 20px 20px 20px;
+}
+
+.manage-button {
+  border: none;
+  background-color: transparent;
+  color: #007bff;
+  text-decoration: underline;
+  font-style: italic;
 }
 
 .edit-button {
-    background-color: #007bff;
+  background-color: #007bff;
+  height: 30px;
+  width: 30px;
+  color: white;
+  font-size: 12px;
+  padding: 0px 0px 0px 0px;
+  border-radius: 15px;
+  border: none;
+  margin-top: 10px;
+  transition: 0.3s;
+}
+
+.edit-button:hover {
+  background-color: #003a79;
+}
+
+.leave-button {
+    background-color: red;
     height: 30px;
     width: 100px;
     color: white;
