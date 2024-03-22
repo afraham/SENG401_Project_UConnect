@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {auth} from "./firebase";
 import SignIn from "./sign-ins/SignIn.js";
 import SignUp from "./sign-ins/SignUp.js";
 import Layout from "./layouts/Layout.js";
@@ -10,6 +12,22 @@ import FindEvents from "./events/FindEvents.js";
 
 function App() {
 	const [isSignedIn, setSignedIn] = useState(false);
+
+	useEffect(() => {
+	    const unsubscribe = auth.onAuthStateChanged((user) => {
+	      if (user) {
+	        setSignedIn(true);
+	      } else {
+	        setSignedIn(false);
+	      }
+	    });
+	
+	    return unsubscribe;
+	  }, []);
+
+
+    return unsubscribe;
+  }, []);
 
 	return (
 		<BrowserRouter>
