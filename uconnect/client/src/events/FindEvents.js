@@ -4,6 +4,8 @@ import { auth } from "../firebase"; // Import Firebase auth
 
 function FindEvents() {
     const [events, setEvents] = useState([]);
+    const [userEmail, setUserEmail] = useState(""); // State to store user's email
+    const [searchQuery, setSearchQuery] = useState("")
 
     useEffect(() => {
         // Function to fetch events from API
@@ -35,8 +37,8 @@ function FindEvents() {
         }
     }, []); // Empty dependency array ensures the effect runs only once after initial render
 
-    // State to store user's email
-    const [userEmail, setUserEmail] = useState("");
+
+
 
     // Function to toggle event card expansion
     const toggleExpansion = (index) => {
@@ -84,9 +86,17 @@ function FindEvents() {
     return (
         <div>
             <br /><br /><br /><br />
+            <div className="search-bar">
+                <input
+                    type="text"
+                    placeholder="Search events..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                />
+            </div>
             <div className="event-list">
-                {Array.isArray(events) &&
-                    events.map((event, index) => (
+            {Array.isArray(events) && events.filter(event => event.title.toLowerCase().includes(searchQuery.toLowerCase())).length > 0 ? (
+                    events.filter(event => event.title.toLowerCase().includes(searchQuery.toLowerCase())).map((event, index) => (
                         <div
                             className={`event-card ${event.isExpanded ? 'expanded' : ''}`}
                             key={index}
@@ -121,7 +131,10 @@ function FindEvents() {
                                 </div>
                             </div>
                         </div>
-                    ))}
+                    ))
+                    ) : (
+                        <div className="no-events-message">No events match "{searchQuery}"</div>
+                    )}
             </div>
         </div>
     );

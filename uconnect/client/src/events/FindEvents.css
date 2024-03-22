@@ -112,4 +112,11 @@
     margin-bottom: 0px;
 }
 
+.search-bar{
+    background-color: blue;
+}
 
+.no-events-message{
+    background-color: red;
+   
+}
