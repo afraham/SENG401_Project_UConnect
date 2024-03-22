@@ -9,6 +9,7 @@
 	"scripts": {
 		"start": "react-scripts start",
 		"start-server": "node src/Express.js",
+		"install-server": "npm install",
 		"build": "react-scripts build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject"
