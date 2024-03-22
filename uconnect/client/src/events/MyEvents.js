@@ -14,11 +14,12 @@ function MyEvents() {
   const [events, setEvents] = useState([]);
   const [currentEvent, setCurrentEvent] = useState(null);
   const [showManagePopup, setShowManagePopup] = useState(false);
-	const [pendingEvents, setPendingEvents] = useState([]);
+  const [pendingEvents, setPendingEvents] = useState([]);
   const [joinedEvents, setJoinedEvents] = useState([]);
   const [activeTab, setActiveTab] = useState("myEvents"); // State to track active tab
   const navigate = useNavigate();
   
+
   // Edit Event
   const handleEditEvent = (event) => {
     setCurrentEvent(event);
@@ -33,7 +34,9 @@ function MyEvents() {
 
   //
   const confirmDelete = (event) => {
-    const isConfirmed = window.confirm(`Are you sure you want to delete your event, ${event.title}?`);
+    const isConfirmed = window.confirm(
+      `Are you sure you want to delete your event, ${event.title}?`
+    );
     if (isConfirmed) {
       handleDeleteEvent(event);
     }
@@ -81,32 +84,38 @@ function MyEvents() {
   const handlePendingButton = (event = null) => {
     console.log("Will implement later");
   };
-  
-  const handleLeaveButton = async (event) => {
 
+  const handleLeaveButton = async (event) => {
     try {
       const user = auth.currentUser;
-			const userEmail = user ? user.email : null;
+      const userEmail = user ? user.email : null;
 
-      const response = await fetch(`http://localhost:8000/api/events/leave/${event._id}`, {
-          method: 'PUT',
+      const response = await fetch(
+        `http://localhost:8000/api/events/leave/${event._id}`,
+        {
+          method: "PUT",
           headers: {
-              'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify({ userEmail }) // Just pass userEmail directly
-      });
+          body: JSON.stringify({ userEmail }), // Just pass userEmail directly
+        }
+      );
       if (response.ok) {
-        console.log("Successfully left event.")
+        console.log("Successfully left event.");
         fetchJoinedEvents();
       } else {
-        console.error('Request to deny failed:', response.status, response.statusText);
+        console.error(
+          "Request to deny failed:",
+          response.status,
+          response.statusText
+        );
         // Handle error case here
       }
     } catch (error) {
-        console.error('Error leaving event:', error);
-        // Handle error case here
+      console.error("Error leaving event:", error);
+      // Handle error case here
     }
-  }
+  };
 
   const fetchPendingEvents = async () => {
     try {
@@ -134,30 +143,30 @@ function MyEvents() {
   };
 
   const fetchJoinedEvents = async () => {
-		try {
-			const user = auth.currentUser;
-			const userEmail = user ? user.email : null;
+    try {
+      const user = auth.currentUser;
+      const userEmail = user ? user.email : null;
 
-			if (userEmail) {
-				const response = await fetch(
-					`http://localhost:8000/api/joinedEventsByEmail?userEmail=${userEmail}`
-				);
-				if (!response.ok) {
-					throw new Error(`HTTP error! status: ${response.status}`);
-				}
-				const data = await response.json();
-				const eventsWithExpansion = data.map((event) => ({
-					...event,
-					isExpanded: false,
-				}));
-				setJoinedEvents(eventsWithExpansion); // Assuming data is an array of events
-				console.log("Fetched joined successfully")
-			}
-		} catch (error) {
+      if (userEmail) {
+        const response = await fetch(
+          `http://localhost:8000/api/joinedEventsByEmail?userEmail=${userEmail}`
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        const eventsWithExpansion = data.map((event) => ({
+          ...event,
+          isExpanded: false,
+        }));
+        setJoinedEvents(eventsWithExpansion); // Assuming data is an array of events
+        console.log("Fetched joined successfully");
+      }
+    } catch (error) {
       setJoinedEvents([]);
-			console.error("Error fetching joined events:", error);
-		}
-	};
+      console.error("Error fetching joined events:", error);
+    }
+  };
 
   const handleManageEvent = (event) => {
     setCurrentEvent(event);
@@ -229,6 +238,10 @@ function MyEvents() {
           />
         )}
       </div>
+
+
+
+      
       <hr className="myevents-line"></hr>
       <div className="event-tab">
         <button
@@ -352,7 +365,7 @@ function MyEvents() {
             </div>
           ))}
 
-          {activeTab === "joined" && // Only render if activeTab is "Pending"
+        {activeTab === "joined" && // Only render if activeTab is "Pending"
           Array.isArray(joinedEvents) &&
           joinedEvents.map((event, index) => (
             <div
@@ -399,7 +412,7 @@ function MyEvents() {
       {showManagePopup && (
         <ManageEvents
           event={currentEvent}
-          setCurrent = {setCurrentEvent}
+          setCurrent={setCurrentEvent}
           title={currentEvent.title} // Pass the title as a prop
           closePopup={() => setShowManagePopup(false)}
           refetchEvents={fetchEvents}

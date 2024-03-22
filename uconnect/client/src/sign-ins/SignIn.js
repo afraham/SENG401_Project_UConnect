@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./SignIn.css";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, setPersistence, browserLocalPersistence } from "firebase/auth";
 import { auth } from "../firebase";
 
 function SignIn({ changeSignInState }) {
@@ -12,6 +12,7 @@ function SignIn({ changeSignInState }) {
 	const handleSignIn = async (e) => {
 		e.preventDefault(); // Prevents the default form submission behavior
 		try {
+			await setPersistence(auth, browserLocalPersistence);
 			await signInWithEmailAndPassword(auth, email, password);
 			console.log("User signed in successfully");
 			// Upon successful sign in, you can redirect the user or change the application state
@@ -19,6 +20,7 @@ function SignIn({ changeSignInState }) {
 			changeSignInState(true);
 		} catch (error) {
 			console.error("Error signing in:", error.message);
+			console.error("Error setting persistence or signing in:", error.message);
 			// Handle errors here, such as displaying a notification to the user
 		}
 	};
