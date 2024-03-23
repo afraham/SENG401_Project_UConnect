@@ -176,7 +176,7 @@ const AddEvents = ({ closePopup, event, editMode, updateEvents }) => {
 					type="text"
 					placeholder="Location"
 					value={location}
-					onChange={(e) => handleInputChange(e.target.value, setLocation)}
+					onChange={(e) => setLocation(e.target.value)}
 				/>
 				<div className="create-button-container">
 					<button className="create-button" onClick={editMode ? () => handleUpdateEvent(event._id) : saveEventData}>
