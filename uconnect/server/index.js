@@ -2,8 +2,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const eventsRoutes = require("./routes/events");
-const db = require("./db/db");
+const eventsRoutes = require("./src/routes/events");
+const db = require("./src/db/db");
 
 const app = express();
 const port = 8000;
@@ -19,6 +19,13 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+
+// adding a route for the root URL
+// displays a message to the backend deployment (mainly used for debugging)
+app.get("/", (req, res) => {
+	res.status(200).json({ message: "Hello from the backend!" });
+});
+
 app.use(eventsRoutes);
 
 app.listen(port, () => {
