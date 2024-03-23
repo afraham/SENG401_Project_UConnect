@@ -8,7 +8,7 @@
 	},
 	"scripts": {
 		"start": "react-scripts start",
-		"start-server": "node api/index.js",
+		"start-server": "node ./index.js",
 		"install-server": "npm install",
 		"build": "react-scripts build",
 		"test": "react-scripts test",

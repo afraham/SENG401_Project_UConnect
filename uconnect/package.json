@@ -24,7 +24,7 @@
 		"build-client": "cd client && npm run build",
 		"build": "cd client && npm run build",
 		"install-server": "cd server && npm install",
-		"start-server": "node server/api/index.js",
+		"start-server": "node server/index.js",
 		"test": "cd client && npm test",
 		"eject": "cd client && npm run eject",
 		"dev": "concurrently \"npm run start\" \"npm run start-server\""
