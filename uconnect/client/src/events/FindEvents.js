@@ -53,21 +53,18 @@ function FindEvents() {
 		};
 
 		fetchEvents();
+
+		// Set the user's email from Firebase Auth
+        const user = auth.currentUser;
+        if (user) {
+            setUserEmail(user.email);
+        }
 	}, []);
+
+
 
 	const goToEventDetails = (event) => {
 		navigate(`/user/events/${event._id}`, { state: { event } });
-	};
-
-	const toggleExpansion = (index) => {
-		setEvents((currentEvents) =>
-			currentEvents.map((event, i) => {
-				if (i === index) {
-					return { ...event, isExpanded: !event.isExpanded };
-				}
-				return event;
-			})
-		);
 	};
 
 	const handleRequestToJoin = async (eventId, userEmail, index) => {
@@ -114,10 +111,7 @@ function FindEvents() {
 
 	return (
 		<div>
-			<br />
-			<br />
-			<br />
-			<br />
+			<br/>
 			<div className="search-bar">
 				<input
 					type="text"
@@ -178,7 +172,7 @@ function FindEvents() {
 											}
 										>
 											{event.requestStatus === "Pending"
-												? "Pending"
+												? "FULL"
 												: "Request To Join"}
 										</button>
 									</div>
