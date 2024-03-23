@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import "./ManageEvents.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCheck,
-  faX,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faX } from "@fortawesome/free-solid-svg-icons";
+import default_picture from "../images/default_picture.jpg";
 
 const ManageEvents = ({
   closePopup,
@@ -102,9 +100,14 @@ const ManageEvents = ({
               {Array.isArray(event.pending) &&
                 event.pending.map((request, index) => (
                   <div className="request" key={index}>
-                    <h1>{request}</h1>
+                    <img
+                      src={default_picture}
+                      alt="Profile"
+                      className="avatar"
+                    ></img>
+                    <p>{request}</p>
                     {handledRequests[index] === "unhandled" && (
-                      <div>
+                      <div className="buttons">
                         <button
                           className="approve-button"
                           onClick={() => handleApprove(request, index)}
@@ -119,9 +122,9 @@ const ManageEvents = ({
                         </button>
                       </div>
                     )}
-                    {handledRequests[index] === "denied" && <span>Denied</span>}
+                    {handledRequests[index] === "denied" && <span className = "request-outcome">DENIED</span>}
                     {handledRequests[index] === "approved" && (
-                      <span>Accepted</span>
+                      <span className = "request-outcome">ACCEPTED</span>
                     )}
                   </div>
                 ))}
