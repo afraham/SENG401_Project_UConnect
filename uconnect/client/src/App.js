@@ -8,7 +8,6 @@ import NoPage from "./layouts/NoPage.js";
 import Profile from "./profile/Profile.js";
 import MyEvents from "./events/MyEvents.js";
 import FindEvents from "./events/FindEvents.js";
-import CommentComp from './events/CommentComp.js';
 import EventDetails from './events/EventDetails';
 
 function App() {

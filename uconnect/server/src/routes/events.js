@@ -10,7 +10,6 @@ router.put("/api/events/:eventId/join", eventsController.requestToJoinEvent)
 router.get("/api/eventsByEmail", getEventsByEmail);
 router.get("/api/pendingEventsByEmail", eventsController.getMyPendingEventsByEmail);
 router.get("/api/joinedEventsByEmail", eventsController.getMyJoinedEventsByEmail);
-router.get("/api/eventById/:eventId", eventsController.getEventById);
 router.put("/api/eventById/:eventId", eventsController.addCommentToEvent);
 router.delete("/api/events/:eventId", eventsController.deleteEvent); // Add this line for delete
 router.put("/api/events/approve/:eventId", eventsController.approveUser);

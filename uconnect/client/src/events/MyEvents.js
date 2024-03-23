@@ -329,9 +329,6 @@ function MyEvents() {
                   </p>
                 </div>
                 <div className="right-align">
-                <Link to={`/user/event-page/${event._id}`}>
-                    <button>Chat</button>
-                  </Link>
                   <button
                     className="edit-button"
                     onClick={() => handleEditEvent(event)}
@@ -426,9 +423,6 @@ function MyEvents() {
                   </p>
                 </div>
                 <div className="right-align">
-                <Link to={`/user/event-page/${event._id}`}>
-                    <button>Chat</button>
-                  </Link>
                   <button
                     className="leave-button"
                     onClick={() => handleLeaveButton(event)}

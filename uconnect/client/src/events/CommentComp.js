@@ -2,29 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { auth } from "../firebase";
 
-function CommentComp() {
+function CommentComp({ commentHistory }) {
 
     const { eventId } = useParams();
     const [inputValue, setInputValue] = useState('');
-    const [comments, setComments] = useState([])
-
-    useEffect(() => {
-        // This useEffect is moreso temporary, depending on how event page is implemented. May just pass event as a prop. Add to useState if so.
-        const fetchEventById = async () => {
-            try {
-                const response = await fetch(`http://localhost:8000/api/eventById/${eventId}`)
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                  }
-                const event = await response.json();
-                setComments(event.comments); // Assuming data is an array of events
-            } catch (error) {
-            console.error("Error fetching event", error);
-            }
-        }
-
-        fetchEventById();
-    }, []);
+    const [comments, setComments] = useState(commentHistory)
 
     const handleSendComment = async (e) => {
         e.preventDefault();
@@ -60,6 +42,10 @@ function CommentComp() {
         }
         
     }
+
+    useEffect(() => {
+        setComments(commentHistory)
+    }, [commentHistory]);
 
 
     return (
