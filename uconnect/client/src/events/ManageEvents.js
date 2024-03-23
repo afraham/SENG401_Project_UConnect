@@ -22,10 +22,9 @@ const ManageEvents = ({
   };
   const handleApprove = async (userEmail, index) => {
     if (event.spotsTaken >= event.maxPeople) {
-      console.log(
-        "Max amount of users already in event, please add more spots if you would like to accept more users."
-      ); // Perhaps add a display to user to indicate this?
-    } else {
+      alert('Max amount of users Reached')
+    }
+    else {
       try {
         const response = await fetch(
           `http://localhost:8000/api/events/approve/${event._id}`,
