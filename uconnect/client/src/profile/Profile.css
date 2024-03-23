@@ -1,0 +1,188 @@
+/* Profile container */
+.myprofile-container {
+  max-width: 600px;
+  margin: 0 auto;
+  margin-top: 30px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1),
+    -10px -10px 10px rgba(227, 227, 227, 0.5);
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 3%;
+}
+/* Display name */
+.displayName {
+  font-size: 24px;
+  font-weight: light;
+  margin: auto;
+  margin-left: 20px;
+}
+
+.email {
+  font-size: 18px;
+  font-weight: light;
+  margin: auto;
+  margin-left: 20px;
+}
+
+/* Bio section */
+.bio {
+  font-size: 16px;
+  margin-bottom: 10px;
+  background-color: rgb(240, 240, 240);
+  padding: 1em;
+  border-radius: 8px;
+}
+
+.bio-input {
+  font-size: 16px;
+  background-color: rgb(240, 240, 240);
+  border-radius: 8px;
+  width: 80%;
+}
+
+
+.profile-bio-interests {
+  margin: 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.profile-bio-interests p {
+  font-size: 24px;
+  margin-bottom: 0.05em;
+}
+
+.profile-bio-interests textarea {
+  font-size: 16px;
+  background-color: rgb(240, 240, 240);
+  border-radius: 8px;
+  max-width: 1000px;
+  height: 10px;
+}
+.bio text {
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+/* Interests section */
+.interests {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* Adjust as needed */
+}
+
+/* Edit icon */
+.edit-icon,
+.save-icon {
+  background-color: transparent;
+  border: none;
+  color: grey;
+  transition: 0.3s;
+  font-size: larger;
+  display: flex;
+  justify-content: flex-end;
+}
+.edit-icon:hover,
+.save-icon:hover {
+  background-color: transparent;
+  border: none;
+  color: rgb(11, 92, 19);
+}
+
+.add-interest {
+  background-color: transparent;
+  color: rgba(100, 194, 215, 1);
+  border-radius: 50px;
+  border: none;
+  background-color: #ffffff;
+  font-size: 16px;
+}
+.remove-button {
+  background-color: transparent;
+  border: none;
+  color: #ffffff;
+}
+
+/* Modal (pop-up form) */
+/* .modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+} */
+.avatar-prev{
+  width: 100px;
+  border-radius: 50px;
+}
+
+.image-upload {
+  position: relative;
+  width: 100px; /* Adjust as needed */
+  height: 100px; /* Adjust as needed */
+}
+
+.image-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.displayName-input {
+  border: none;
+  outline: none;
+  font-size: 24px;
+  font-weight: light;
+  margin: auto;
+  margin-left: 20px;
+  background-color: transparent;
+  width: 100%;
+}
+
+.avatar {
+  width: 100px;
+  border-radius: 50px;
+}
+
+/* Container for the interests section */
+.interests-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 10px; /* Adjust as needed */
+}
+
+/* Individual interest blocks */
+.interests-container .interest-block {
+  display: inline-block;
+  padding: 10px; /* Adjust as needed */
+  background-color: rgba(100, 194, 215, 1); /* Adjust as needed */
+  color: white; /* Adjust as needed */
+  border-radius: 20px; /* Adjust as needed */
+}
+
+/* Input field for adding new interest */
+.new-interest-input {
+  display: inline-block;
+  padding: 10px; /* Adjust as needed */
+  color: white; /* Adjust as needed */
+  border-radius: 20px; /* Adjust as needed */
+  background-color: rgba(100, 194, 215, 1); /* Adjust as needed */
+}
