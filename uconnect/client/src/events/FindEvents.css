@@ -123,6 +123,7 @@
     align-items: center;
     padding: 10px;
     margin-bottom: 50px;
+    cursor: pointer;
 }
 
 .search-bar input[type="text"] {
