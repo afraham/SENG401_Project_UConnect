@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./MyEvents.css";
 import "./FindEvents.css";
 import AddEvents from "./AddEvents";
@@ -13,18 +14,29 @@ function MyEvents() {
   const [events, setEvents] = useState([]);
   const [currentEvent, setCurrentEvent] = useState(null);
   const [showManagePopup, setShowManagePopup] = useState(false);
-	const [pendingEvents, setPendingEvents] = useState([]);
+  const [pendingEvents, setPendingEvents] = useState([]);
   const [joinedEvents, setJoinedEvents] = useState([]);
   const [activeTab, setActiveTab] = useState("myEvents"); // State to track active tab
+  const navigate = useNavigate();
   
+
   // Edit Event
   const handleEditEvent = (event) => {
     setCurrentEvent(event);
     setShowPopup(true);
   };
+
+  //Individual event page
+  const goToEventDetails = (event) => {
+	navigate(`/user/events/${event._id}`, { state: { event } });
+  };
+
+
   //
   const confirmDelete = (event) => {
-    const isConfirmed = window.confirm(`Are you sure you want to delete your event, ${event.title}?`);
+    const isConfirmed = window.confirm(
+      `Are you sure you want to delete your event, ${event.title}?`
+    );
     if (isConfirmed) {
       handleDeleteEvent(event);
     }
@@ -69,35 +81,66 @@ function MyEvents() {
     setShowPopup(false);
   };
 
-  const handlePendingButton = (event = null) => {
-    console.log("Will implement later");
-  };
-  
-  const handleLeaveButton = async (event) => {
+  const handlePendingButton = async (eventId) => {
+    try {
+        const user = auth.currentUser;
+        const userEmail = user ? user.email : null;
 
+        const response = await fetch(`http://localhost:8000/api/events/cancelPending/${eventId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userEmail })
+        });
+
+        console.log("this is the eventId:", eventId);
+        console.log("this is the email:", JSON.stringify({ userEmail }));
+
+        if (response.ok) {
+            console.log("Successfully removed pending request.")
+            fetchPendingEvents(); // Refetch pending events to update the UI
+        } else {
+            console.error('Request to remove pending request failed:', response.status, response.statusText);
+            // Handle error case here
+        }
+    } catch (error) {
+        console.error('Error removing pending request:', error);
+        // Handle error case here
+    }
+  };
+
+  const handleLeaveButton = async (event) => {
     try {
       const user = auth.currentUser;
-			const userEmail = user ? user.email : null;
+      const userEmail = user ? user.email : null;
 
-      const response = await fetch(`http://localhost:8000/api/events/leave/${event._id}`, {
-          method: 'PUT',
+      const response = await fetch(
+        `http://localhost:8000/api/events/leave/${event._id}`,
+        {
+          method: "PUT",
           headers: {
-              'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify({ userEmail }) // Just pass userEmail directly
-      });
+          body: JSON.stringify({ userEmail }), // Just pass userEmail directly
+        }
+      );
       if (response.ok) {
-        console.log("Successfully left event.")
+        console.log("Successfully left event.");
         fetchJoinedEvents();
       } else {
-        console.error('Request to deny failed:', response.status, response.statusText);
+        console.error(
+          "Request to deny failed:",
+          response.status,
+          response.statusText
+        );
         // Handle error case here
       }
     } catch (error) {
-        console.error('Error leaving event:', error);
-        // Handle error case here
+      console.error("Error leaving event:", error);
+      // Handle error case here
     }
-  }
+  };
 
   const fetchPendingEvents = async () => {
     try {
@@ -125,30 +168,30 @@ function MyEvents() {
   };
 
   const fetchJoinedEvents = async () => {
-		try {
-			const user = auth.currentUser;
-			const userEmail = user ? user.email : null;
+    try {
+      const user = auth.currentUser;
+      const userEmail = user ? user.email : null;
 
-			if (userEmail) {
-				const response = await fetch(
-					`http://localhost:8000/api/joinedEventsByEmail?userEmail=${userEmail}`
-				);
-				if (!response.ok) {
-					throw new Error(`HTTP error! status: ${response.status}`);
-				}
-				const data = await response.json();
-				const eventsWithExpansion = data.map((event) => ({
-					...event,
-					isExpanded: false,
-				}));
-				setJoinedEvents(eventsWithExpansion); // Assuming data is an array of events
-				console.log("Fetched joined successfully")
-			}
-		} catch (error) {
+      if (userEmail) {
+        const response = await fetch(
+          `http://localhost:8000/api/joinedEventsByEmail?userEmail=${userEmail}`
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        const eventsWithExpansion = data.map((event) => ({
+          ...event,
+          isExpanded: false,
+        }));
+        setJoinedEvents(eventsWithExpansion); // Assuming data is an array of events
+        console.log("Fetched joined successfully");
+      }
+    } catch (error) {
       setJoinedEvents([]);
-			console.error("Error fetching joined events:", error);
-		}
-	};
+      console.error("Error fetching joined events:", error);
+    }
+  };
 
   const handleManageEvent = (event) => {
     setCurrentEvent(event);
@@ -220,6 +263,10 @@ function MyEvents() {
           />
         )}
       </div>
+
+
+
+      
       <hr className="myevents-line"></hr>
       <div className="event-tab">
         <button
@@ -248,7 +295,6 @@ function MyEvents() {
             <div
               className={`event-card ${event.isExpanded ? "expanded" : ""}`}
               key={index}
-              onClick={() => toggleExpansion(index)}
             >
               <div className="top-box">
                 <div className="left-align">
@@ -272,13 +318,14 @@ function MyEvents() {
               </div>
               <p
                 className={`description ${event.isExpanded ? "expanded" : ""}`}
+				onClick={() => goToEventDetails(event)}
               >
                 {event.description}
               </p>
               <div className="bottom-box">
                 <div className="left-align">
                   <p className="location">
-                    <i class="fa fa-map-marker"></i> {event.location}
+                    <i class="fa fa-clock-o"></i> {event.date.split('T')[0]}
                   </p>
                 </div>
                 <div className="right-align">
@@ -328,22 +375,22 @@ function MyEvents() {
               <div className="bottom-box">
                 <div className="left-align">
                   <p className="location">
-                    <i class="fa fa-map-marker"></i> {event.location}
+                    <i class="fa fa-clock-o"></i> {event.date.split('T')[0]}
                   </p>
                 </div>
                 <div className="right-align">
                   <button
                     className="pending-button"
-                    onClick={() => handlePendingButton(event)}
+                    onClick={() => handlePendingButton(event._id)}
                   >
-                    PENDING
+                    CANCEL
                   </button>
                 </div>
               </div>
             </div>
           ))}
 
-          {activeTab === "joined" && // Only render if activeTab is "Pending"
+        {activeTab === "joined" && // Only render if activeTab is "Pending"
           Array.isArray(joinedEvents) &&
           joinedEvents.map((event, index) => (
             <div
@@ -372,7 +419,7 @@ function MyEvents() {
               <div className="bottom-box">
                 <div className="left-align">
                   <p className="location">
-                    <i class="fa fa-map-marker"></i> {event.location}
+                    <i class="fa fa-clock-o"></i> {event.date.split('T')[0]}
                   </p>
                 </div>
                 <div className="right-align">
@@ -390,7 +437,7 @@ function MyEvents() {
       {showManagePopup && (
         <ManageEvents
           event={currentEvent}
-          setCurrent = {setCurrentEvent}
+          setCurrent={setCurrentEvent}
           title={currentEvent.title} // Pass the title as a prop
           closePopup={() => setShowManagePopup(false)}
           refetchEvents={fetchEvents}

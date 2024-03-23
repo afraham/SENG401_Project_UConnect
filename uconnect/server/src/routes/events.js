@@ -16,5 +16,7 @@ router.put("/api/events/deny/:eventId", eventsController.denyUser);
 router.put("/api/events/leave/:eventId", eventsController.userLeftEvent);
 router.delete("/api/events/:eventId", eventsController.deleteEvent);
 router.patch("/api/events/:eventId/edit", eventsController.updateEvent);
+router.put("/api/events/cancelPending/:eventId", eventsController.cancelPending);
+
 
 module.exports = router;
