@@ -3,6 +3,7 @@ import "./ManageEvents.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faX } from "@fortawesome/free-solid-svg-icons";
 import default_picture from "../images/default_picture.jpg";
+import no_reqs_dino from "../images/no-reqs-dino.png";
 
 const ManageEvents = ({
   closePopup,
@@ -12,7 +13,7 @@ const ManageEvents = ({
   refetchEvents,
 }) => {
   const [handledRequests, setHandledRequests] = useState(
-    event.pending.map(() => "unhandled")
+    new Array(event.pending.length).fill("unhandled")
   );
 
   const handleClosePopup = () => {
@@ -93,17 +94,19 @@ const ManageEvents = ({
     <div className="popup-container">
       <div className="popup-content">
         <div className="ce-header">
-          <h2 className="ce-header">Manage {title}</h2>
+          <h2 className="ce-header">
+            Manage <span className="formatted-title">{title}</span>
+          </h2>
           <div className="requests">
             <h3>Requests</h3>
-            <div className="request-list">
-              {Array.isArray(event.pending) &&
-                event.pending.map((request, index) => (
+            {Array.isArray(event.pending) && event.pending.length > 0 ? (
+              <div className="request-list">
+                {event.pending.map((request, index) => (
                   <div className="request" key={index}>
                     <img
                       src={default_picture}
                       alt="Profile"
-                      className="avatar"
+                      className="request-avatar"
                     ></img>
                     <p>{request}</p>
                     {handledRequests[index] === "unhandled" && (
@@ -122,17 +125,25 @@ const ManageEvents = ({
                         </button>
                       </div>
                     )}
-                    {handledRequests[index] === "denied" && <span className = "request-outcome">DENIED</span>}
+                    {handledRequests[index] === "denied" && (
+                      <span className="request-outcome">DENIED</span>
+                    )}
                     {handledRequests[index] === "approved" && (
-                      <span className = "request-outcome">ACCEPTED</span>
+                      <span className="request-outcome">ACCEPTED</span>
                     )}
                   </div>
                 ))}
-            </div>
+              </div>
+            ) : (
+              <div className="no-reqs">
+                <img className="no-reqs-img" alt="no-reqs-dino" src={no_reqs_dino} />
+                <p>No request right now, come back later!</p>
+              </div>
+            )}
+            <button className="close-button" onClick={handleClosePopup}>
+              X
+            </button>
           </div>
-          <button className="close-button" onClick={handleClosePopup}>
-            X
-          </button>
         </div>
       </div>
     </div>
