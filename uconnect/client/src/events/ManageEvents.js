@@ -22,9 +22,8 @@ const ManageEvents = ({
   };
   const handleApprove = async (userEmail, index) => {
     if (event.spotsTaken >= event.maxPeople) {
-      alert('Max amount of users Reached')
-    }
-    else {
+      alert("Max amount of users Reached");
+    } else {
       try {
         const response = await fetch(
           `http://localhost:8000/api/events/approve/${event._id}`,
@@ -135,8 +134,12 @@ const ManageEvents = ({
               </div>
             ) : (
               <div className="no-reqs">
-                <img className="no-reqs-img" alt="no-reqs-dino" src={no_reqs_dino} />
-                <p>No request right now, come back later!</p>
+                <img
+                  className="no-reqs-img"
+                  alt="no-reqs-dino"
+                  src={no_reqs_dino}
+                />
+                <p>No requests right now, come back later!</p>
               </div>
             )}
             <button className="close-button" onClick={handleClosePopup}>
