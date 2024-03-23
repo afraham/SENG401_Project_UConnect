@@ -59,6 +59,7 @@ function FindEvents() {
 		navigate(`/user/events/${event._id}`, { state: { event } });
 	};
 
+
 	const toggleExpansion = (index) => {
 		setEvents((currentEvents) =>
 			currentEvents.map((event, i) => {

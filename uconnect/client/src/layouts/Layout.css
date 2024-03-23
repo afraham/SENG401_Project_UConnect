@@ -43,3 +43,12 @@
   float: left; /* Align the logo to the left */
 }
 
+@media screen and (max-width: 619px) {
+
+  .navbar li {
+    width: 80px;
+    font-size: 16px;
+    padding: 11px;
+    margin-top: 7px;
+  }
+}
