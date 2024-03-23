@@ -77,7 +77,8 @@
 }
 
 .request-button {
-    background-color: #d3523e;
+    background-color: #0056b3;
+
     height: 30px;
     width: 100px;
     color: white;
@@ -151,22 +152,39 @@
 
 
 .no-events-message {
-    color: #d3523e; /* Soft red for text, easier on the eyes */
-    background-color: #f7f7f7; /* Light background to fit the overall theme */
-    border: 1px solid #d3523e; /* Subtle border matching the text color */
-    border-radius: 10px; /* Rounded corners for a modern look */
-    padding: 20px; /* Adequate padding for better readability */
-    margin: 20px auto; /* Center the message and add vertical space */
-    width: 80%; /* Or adjust to match your design's width constraints */
-    text-align: center; /* Center the text for better focus */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    font-size: 16px; /* Readable text size */
+    color: #d3523e; 
+    background-color: #f7f7f7; 
+    border: 1px solid #d3523e; 
+    border-radius: 10px; 
+    padding: 20px; 
+    margin: 20px auto; 
+    width: 80%; 
+    text-align: center; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    font-size: 16px; 
 }
 
-/* Optional: if you're using FontAwesome or another icon library */
+
 .no-events-message::before {
-    content: "\f12a"; /* FontAwesome's exclamation-circle icon */
+    content: "\f12a"; 
     font-family: FontAwesome;
     margin-right: 10px;
-    color: #d3523e; /* Icon color to match the text */
+    color: #d3523e; 
+}
+
+.request-button:not(.full):not(.pending):hover {
+    background-color: #0056b3;
+    transition: background-color 0.3s;
+}
+
+
+.request-button.full,
+.request-button.full:hover { 
+    background-color: red;
+    cursor: not-allowed; 
+}
+
+
+.request-button.pending:hover {
+    background-color: #5a5555; 
 }
