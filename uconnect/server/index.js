@@ -3,6 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const eventsRoutes = require("./src/routes/events");
+const profileRoutes = require("./src/routes/profiles"); // Import profiles routes
 const db = require("./src/db/db");
 
 const app = express();
@@ -26,7 +27,11 @@ app.get("/", (req, res) => {
 	res.status(200).json({ message: "Hello from the backend!" });
 });
 
+// Adding events routes
 app.use(eventsRoutes);
+
+// Adding profiles routes
+app.use(profileRoutes);
 
 app.listen(port, () => {
 	console.log(`Server is running on port ${port}`);
