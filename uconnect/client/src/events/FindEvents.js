@@ -76,7 +76,7 @@ function FindEvents() {
 	
     return (
         <div>
-            <br /><br /><br /><br />
+            <br/>
             <div className="search-bar">
                 <input
                     type="text"
