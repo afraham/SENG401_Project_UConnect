@@ -10,69 +10,104 @@ function FindEvents() {
     const navigate = useNavigate();
   
     useEffect(() => {
-        // Function to fetch events from API
-        const fetchEvents = async () => {
+    const fetchEvents = async () => {
+      let eventsFromStorage = JSON.parse(localStorage.getItem("events"));
+      const user = auth.currentUser;
+      const userEmail = user ? user.email : null;
 
-            const user = auth.currentUser;
-			const userEmail = user ? user.email : null;
-
-            try {
-                const response = await fetch(`http://localhost:8000/api/events?userEmail=${userEmail}`);
-                const data = await response.json();
-                console.log(data); // Log the data
-                const eventsWithExpansion = data.map(event => ({
-                    ...event,
-                    isExpanded: false
-                }));
-                setEvents(eventsWithExpansion); // Assuming data is an array of events
-            } catch (error) {
-                console.error("Error fetching events:", error);
-            }
-        };
-
-        fetchEvents();
-
-        // Set the user's email from Firebase Auth
-        const user = auth.currentUser;
-        if (user) {
-            setUserEmail(user.email);
-        }
-    }, []); // Empty dependency array ensures the effect runs only once after initial render
-
-    const goToEventDetails = (event) => {
-        navigate(`/user/events/${event._id}`, { state: { event } });
-    };
-
-    const handleRequestToJoin = async (eventId, userEmail, index) => {
-        // Update the event's state to indicate that the request is pending
-        setEvents(currentEvents =>
-            currentEvents.map((event, i) => {
-                if (i === index) {
-                    return { ...event, isExpanded: event.isExpanded, requestStatus: 'Pending' };
-                }
-                return event;
-            })
+      try {
+        const response = await fetch(
+          `http://localhost:8000/api/events?userEmail=${userEmail}`
         );
-        try {
-            const response = await fetch(`http://localhost:8000/api/events/${eventId}/join`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ userEmail }) // Just pass userEmail directly
-            });
-    
-            if (response.ok) {
-                console.log('Request to join sent successfully');
-            } else {
-                console.error('Failed to send request to join:', response.status, response.statusText);
-                // Handle error case here
-            }
-        } catch (error) {
-            console.error('Error sending request to join:', error);
-            // Handle error case here
+        if (response.ok) {
+          const data = await response.json();
+          const eventsWithExpansionAndStatus = data.map((event) => {
+            const storedEvent = eventsFromStorage?.find(
+              (e) => e._id === event._id
+            );
+            return {
+              ...event,
+              isExpanded: false,
+              requestStatus: storedEvent?.requestStatus || "NotRequested", // Use status from storage if available
+            };
+          });
+          setEvents(eventsWithExpansionAndStatus);
+          localStorage.setItem(
+            "events",
+            JSON.stringify(eventsWithExpansionAndStatus)
+          ); // Update local storage with fresh data
+        } else {
+          console.error("Failed to fetch events:", response.statusText);
+
+          if (eventsFromStorage) {
+            setEvents(eventsFromStorage);
+          }
         }
+      } catch (error) {
+        console.error("Error fetching events:", error);
+
+        if (eventsFromStorage) {
+          setEvents(eventsFromStorage);
+        }
+      }
     };
+
+    fetchEvents();
+  }, []);
+
+  const toggleExpansion = (index) => {
+    setEvents((currentEvents) =>
+      currentEvents.map((event, i) => {
+        if (i === index) {
+          return { ...event, isExpanded: !event.isExpanded };
+        }
+        return event;
+      })
+    );
+  };
+
+  const handleRequestToJoin = async (eventId, userEmail, index) => {
+    const updatedEvents = events.map((event, i) => {
+      if (i === index) {
+        return {
+          ...event,
+          isExpanded: event.isExpanded,
+          requestStatus: "Pending",
+        };
+      }
+      return event;
+    });
+
+    setEvents(updatedEvents);
+
+    localStorage.setItem("events", JSON.stringify(updatedEvents));
+
+    try {
+      const response = await fetch(
+        `http://localhost:8000/api/events/${eventId}/join`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userEmail }),
+        }
+      );
+
+      if (response.ok) {
+        console.log("Request to join sent successfully");
+      } else {
+        console.error(
+          "Failed to send request to join:",
+          response.status,
+          response.statusText
+        );
+      }
+    } catch (error) {
+      console.error("Error sending request to join:", error);
+    }
+  };
+
 	
     return (
         <div>
