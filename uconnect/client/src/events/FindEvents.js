@@ -8,69 +8,53 @@ function FindEvents() {
   const [userEmail, setUserEmail] = useState(""); // State to store user's email
   const [searchQuery, setSearchQuery] = useState("");
 
-
   useEffect(() => {
     const fetchEvents = async () => {
       let eventsFromStorage = JSON.parse(localStorage.getItem("events"));
-      const user = auth.currentUser;
-      const userEmail = user ? user.email : null;
 
-      try {
-        const response = await fetch(
-          `http://localhost:8000/api/events?userEmail=${userEmail}`
-        );
-        if (response.ok) {
-          const data = await response.json();
-          const eventsWithExpansionAndStatus = data.map((event) => {
-            const storedEvent = eventsFromStorage?.find(
-              (e) => e._id === event._id
-            );
-            return {
+      if (!eventsFromStorage) {
+        // If no events in local storage, fetch from backend
+        const user = auth.currentUser;
+        const userEmail = user ? user.email : null;
+
+        try {
+          const response = await fetch(
+            `http://localhost:8000/api/events?userEmail=${userEmail}`
+          );
+          if (response.ok) {
+            const data = await response.json();
+            const eventsWithExpansionAndStatus = data.map((event) => ({
               ...event,
               isExpanded: false,
-              requestStatus: storedEvent?.requestStatus || "NotRequested", // Use status from storage if available
-            };
-          });
-          setEvents(eventsWithExpansionAndStatus);
-          localStorage.setItem(
-            "events",
-            JSON.stringify(eventsWithExpansionAndStatus)
-          ); // Update local storage with fresh data
-        } else {
-          console.error("Failed to fetch events:", response.statusText);
+              requestStatus: "NotRequested", // Initial request status for new events
+            }));
 
-          if (eventsFromStorage) {
-            setEvents(eventsFromStorage);
+            setEvents(eventsWithExpansionAndStatus);
+            localStorage.setItem("events", JSON.stringify(eventsWithExpansionAndStatus)); // Update local storage with new data
+          } else {
+            console.error("Failed to fetch events:", response.statusText);
           }
+        } catch (error) {
+          console.error("Error fetching events:", error);
         }
-      } catch (error) {
-        console.error("Error fetching events:", error);
-
-        if (eventsFromStorage) {
-          setEvents(eventsFromStorage);
-        }
+      } else {
+        // Use events from local storage
+        setEvents(eventsFromStorage);
       }
     };
 
     fetchEvents();
 
     // Set the user's email from Firebase Auth
-    const user = auth.currentUser;
-    if (user) {
-      setUserEmail(user.email);
-    }
-  }, []);
+    const setUserEmailFromAuth = () => {
+      const user = auth.currentUser;
+      if (user) {
+        setUserEmail(user.email);
+      }
+    };
 
-  const toggleExpansion = (index) => {
-    setEvents((currentEvents) =>
-      currentEvents.map((event, i) => {
-        if (i === index) {
-          return { ...event, isExpanded: !event.isExpanded };
-        }
-        return event;
-      })
-    );
-  };
+    setUserEmailFromAuth();
+  }, []);
 
   const handleRequestToJoin = async (eventId, userEmail, index) => {
     const updatedEvents = events.map((event, i) => {
@@ -138,7 +122,6 @@ function FindEvents() {
               <div
                 className={`event-card ${event.isExpanded ? "expanded" : ""}`}
                 key={index}
-                onClick={() => toggleExpansion(index)}
               >
                 <div className="top-box">
                   <div className="left-align">
