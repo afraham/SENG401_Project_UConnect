@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./FindEvents.css";
 import { auth } from "../firebase"; // Import Firebase auth
 
@@ -6,6 +7,7 @@ function FindEvents() {
   const [events, setEvents] = useState([]);
   const [userEmail, setUserEmail] = useState(""); // State to store user's email
   const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -51,6 +53,12 @@ function FindEvents() {
     };
 
     fetchEvents();
+
+    // Set the user's email from Firebase Auth
+    const user = auth.currentUser;
+    if (user) {
+      setUserEmail(user.email);
+    }
   }, []);
 
   const toggleExpansion = (index) => {
@@ -109,9 +117,6 @@ function FindEvents() {
   return (
     <div>
       <br />
-      <br />
-      <br />
-      <br />
       <div className="search-bar">
         <input
           type="text"
@@ -144,7 +149,7 @@ function FindEvents() {
                       {event.spotsTaken}/{event.maxPeople}
                     </p>
                     <p className="capacity">
-                      <i class="fa fa-group"></i>
+                      <i className="fa fa-group"></i>
                     </p>
                   </div>
                 </div>
@@ -158,7 +163,8 @@ function FindEvents() {
                 <div className="bottom-box">
                   <div className="left-align">
                     <p className="location">
-                      <i class="fa fa-map-marker"></i> {event.location}
+                      <i className="fa fa-clock-o"></i>{" "}
+                      {event.date.split("T")[0]}
                     </p>
                   </div>
                   <div className="right-align">
@@ -176,9 +182,7 @@ function FindEvents() {
                       }
                       onClick={(e) => {
                         e.stopPropagation(); // Prevent event card expansion when clicking the button
-                        if (event.spotsTaken < event.maxPeople) {
-                          handleRequestToJoin(event._id, userEmail, index);
-                        }
+                        handleRequestToJoin(event._id, userEmail, index);
                       }}
                     >
                       {event.spotsTaken === event.maxPeople

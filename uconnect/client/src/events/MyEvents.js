@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./MyEvents.css";
 import "./FindEvents.css";
 import AddEvents from "./AddEvents";
@@ -16,6 +17,7 @@ function MyEvents() {
   const [pendingEvents, setPendingEvents] = useState([]);
   const [joinedEvents, setJoinedEvents] = useState([]);
   const [activeTab, setActiveTab] = useState("myEvents"); // State to track active tab
+  const navigate = useNavigate();
   
 
   // Edit Event
@@ -23,6 +25,13 @@ function MyEvents() {
     setCurrentEvent(event);
     setShowPopup(true);
   };
+
+  //Individual event page
+  const goToEventDetails = (event) => {
+	navigate(`/user/events/${event._id}`, { state: { event } });
+  };
+
+
   //
   const confirmDelete = (event) => {
     const isConfirmed = window.confirm(
@@ -72,8 +81,33 @@ function MyEvents() {
     setShowPopup(false);
   };
 
-  const handlePendingButton = (event = null) => {
-    console.log("Will implement later");
+  const handlePendingButton = async (eventId) => {
+    try {
+        const user = auth.currentUser;
+        const userEmail = user ? user.email : null;
+
+        const response = await fetch(`http://localhost:8000/api/events/cancelPending/${eventId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userEmail })
+        });
+
+        console.log("this is the eventId:", eventId);
+        console.log("this is the email:", JSON.stringify({ userEmail }));
+
+        if (response.ok) {
+            console.log("Successfully removed pending request.")
+            fetchPendingEvents(); // Refetch pending events to update the UI
+        } else {
+            console.error('Request to remove pending request failed:', response.status, response.statusText);
+            // Handle error case here
+        }
+    } catch (error) {
+        console.error('Error removing pending request:', error);
+        // Handle error case here
+    }
   };
 
   const handleLeaveButton = async (event) => {
@@ -261,7 +295,6 @@ function MyEvents() {
             <div
               className={`event-card ${event.isExpanded ? "expanded" : ""}`}
               key={index}
-              onClick={() => toggleExpansion(index)}
             >
               <div className="top-box">
                 <div className="left-align">
@@ -285,13 +318,14 @@ function MyEvents() {
               </div>
               <p
                 className={`description ${event.isExpanded ? "expanded" : ""}`}
+				onClick={() => goToEventDetails(event)}
               >
                 {event.description}
               </p>
               <div className="bottom-box">
                 <div className="left-align">
                   <p className="location">
-                    <i class="fa fa-map-marker"></i> {event.location}
+                    <i class="fa fa-clock-o"></i> {event.date.split('T')[0]}
                   </p>
                 </div>
                 <div className="right-align">
@@ -341,15 +375,15 @@ function MyEvents() {
               <div className="bottom-box">
                 <div className="left-align">
                   <p className="location">
-                    <i class="fa fa-map-marker"></i> {event.location}
+                    <i class="fa fa-clock-o"></i> {event.date.split('T')[0]}
                   </p>
                 </div>
                 <div className="right-align">
                   <button
                     className="pending-button"
-                    onClick={() => handlePendingButton(event)}
+                    onClick={() => handlePendingButton(event._id)}
                   >
-                    PENDING
+                    CANCEL
                   </button>
                 </div>
               </div>
@@ -385,7 +419,7 @@ function MyEvents() {
               <div className="bottom-box">
                 <div className="left-align">
                   <p className="location">
-                    <i class="fa fa-map-marker"></i> {event.location}
+                    <i class="fa fa-clock-o"></i> {event.date.split('T')[0]}
                   </p>
                 </div>
                 <div className="right-align">
