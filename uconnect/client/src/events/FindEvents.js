@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+
 import "./FindEvents.css";
 import { auth } from "../firebase"; // Import Firebase auth
 
@@ -7,7 +7,7 @@ function FindEvents() {
   const [events, setEvents] = useState([]);
   const [userEmail, setUserEmail] = useState(""); // State to store user's email
   const [searchQuery, setSearchQuery] = useState("");
-  const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchEvents = async () => {
