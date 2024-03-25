@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 
 const corsOptions = {
   origin: [
-    "http://localhost:8000",
+    "http://localhost:3000",
     "https://u-connect-frontend.vercel.app/",
     "https://u-connect-server.vercel.app/",
   ],
