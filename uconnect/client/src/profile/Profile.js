@@ -11,6 +11,7 @@ import {
   faCheck,
 } from "@fortawesome/free-solid-svg-icons";
 
+
 function Profile() {
   const [isEditing, setIsEditing] = useState(false);
   const [profileInfo, setProfileInfo] = useState({
@@ -27,9 +28,20 @@ function Profile() {
     setIsEditing(true);
   };
 
-  const handleSaveClick = (updatedInfo) => {
-    setProfileInfo(updatedInfo);
-    setIsEditing(false);
+  const handleSaveClick = async (updatedInfo) => {
+    try {
+      await fetch("http://localhost:8000/api/profiles", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedInfo),
+      });
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Error saving profile:", error);
+    }
+    
   };
   
 
@@ -205,5 +217,7 @@ function Profile() {
     </>
   );
 }
+
+
 
 export default Profile;
