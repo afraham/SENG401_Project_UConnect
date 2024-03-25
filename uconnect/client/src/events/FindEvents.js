@@ -172,7 +172,7 @@ function FindEvents() {
 											}
 										>
 											{event.requestStatus === "Pending"
-												? "FULL"
+												? "Pending"
 												: "Request To Join"}
 										</button>
 									</div>
