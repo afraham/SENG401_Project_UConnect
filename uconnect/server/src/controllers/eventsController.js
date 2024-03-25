@@ -242,6 +242,27 @@ exports.updateEvent = async (req, res) => {
 	}
 };
 
+exports.addCommentToEvent = async (req, res) => {
+	const data = req.body
+	const { eventId } = req.params;
+	try {
+		const database = db.db("create_events");
+		const collection = database.collection("events");
+		const result = await collection.findOneAndUpdate(
+			{ _id: new ObjectId(eventId) },
+			{
+				$push: { comments: data }
+			},
+			{ returnNewDocument: true }
+		)
+
+		res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+		res.status(200).json(result);
+	} catch (error) {
+		res.status(500).json({ message: "Internal Server Error" });
+	}
+}
+
 exports.userLeftEvent = async (req, res) => {
 	const { eventId } = req.params;
 	const { userEmail } = req.body;
