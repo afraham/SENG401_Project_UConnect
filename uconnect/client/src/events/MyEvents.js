@@ -296,13 +296,15 @@ function MyEvents() {
                   <p className="capacity">
                     <i class="fa fa-group"></i>
                   </p>
-
-                  <button
-                    className="manage-button"
-                    onClick={() => handleManageEvent(event)}
-                  >
-                    Manage
-                  </button>
+                  <div className="manage-button-container">
+                    <button
+                      className="manage-button"
+                      onClick={() => handleManageEvent(event)}
+                    >
+                      <i class="fa fa-user-plus"></i>
+                    </button>
+                    {event.pending.length > 0 && <span className="pending-requests-bubble">{event.pending.length}</span>}
+                    </div>
                 </div>
               </div>
               <p
