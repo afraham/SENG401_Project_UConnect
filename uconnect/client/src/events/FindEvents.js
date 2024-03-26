@@ -115,7 +115,7 @@ function FindEvents() {
   };
   return (
     <div>
-      <br />
+      <br/>
       <div className="search-bar">
         <input
           type="text"
@@ -176,7 +176,7 @@ function FindEvents() {
                       }
                     >
                       {event.requestStatus === "Pending"
-                        ? "FULL"
+                        ? "Pending"
                         : "Request To Join"}
                     </button>
                   </div>

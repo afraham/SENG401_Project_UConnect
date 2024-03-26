@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import the FontAwesomeIcon component
 import { faClock, faCalendarAlt, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons'; // Import specific icons
@@ -8,7 +8,7 @@ import CommentComp from './CommentComp';
 const EventDetails = () => {
    // Get the event ID from the URL parameter
   const { state } = useLocation(); // This will give you access to the state passed through navigate
-  const [event, setSelectedEvent] = useState(state.event)
+  const event = state.event;
   const [date, time] = event.date.split('T');
 
   if (!event) {
@@ -37,9 +37,10 @@ const EventDetails = () => {
                     <FontAwesomeIcon icon={faMapMarkerAlt} className="location-icon" />
                     {event.location}
                 </div>
-                <div>
-                    <CommentComp commentHistory={event.comments}/>
-                </div>
+                
+            </div>
+            <div>
+                <CommentComp commentHistory={event.comments}/>
             </div>
         </div>
     </div>
