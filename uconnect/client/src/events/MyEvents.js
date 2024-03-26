@@ -11,15 +11,45 @@ import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 function MyEvents() {
   // State to manage if the popup is shown or not
   const [showPopup, setShowPopup] = useState(false);
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState(() => {
+    const savedEvents = localStorage.getItem("events");
+    return savedEvents ? JSON.parse(savedEvents) : [];
+  });
   const [currentEvent, setCurrentEvent] = useState(null);
   const [showManagePopup, setShowManagePopup] = useState(false);
-  const [pendingEvents, setPendingEvents] = useState([]);
-  const [joinedEvents, setJoinedEvents] = useState([]);
-  const [activeTab, setActiveTab] = useState("myEvents"); // State to track active tab
+  const [pendingEvents, setPendingEvents] = useState(() => {
+    const savedPendingEvents = localStorage.getItem("pendingEvents");
+    return savedPendingEvents ? JSON.parse(savedPendingEvents) : [];
+  });
+  const [joinedEvents, setJoinedEvents] = useState(() => {
+    const savedJoinedEvents = localStorage.getItem("joinedEvents");
+    return savedJoinedEvents ? JSON.parse(savedJoinedEvents) : [];
+  });
+  const [activeTab, setActiveTab] = useState("myEvents");
   const navigate = useNavigate();
-  
 
+  useEffect(() => {
+    localStorage.setItem("events", JSON.stringify(events));
+  }, [events]);
+
+  // Save pendingEvents to localStorage when they change
+  useEffect(() => {
+    localStorage.setItem("pendingEvents", JSON.stringify(pendingEvents));
+  }, [pendingEvents]);
+
+  // Save joinedEvents to localStorage when they change
+  useEffect(() => {
+    localStorage.setItem("joinedEvents", JSON.stringify(joinedEvents));
+  }, [joinedEvents]);
+
+  useEffect(() => {
+    // Call your fetch functions here to update state if needed
+    // Note: You might want to check if there's data in localStorage before fetching
+    // to avoid unnecessary network requests
+    fetchEvents();
+    fetchPendingEvents();
+    fetchJoinedEvents();
+  }, []);
   // Edit Event
   const handleEditEvent = (event) => {
     setCurrentEvent(event);
@@ -28,9 +58,8 @@ function MyEvents() {
 
   //Individual event page
   const goToEventDetails = (event) => {
-	navigate(`/user/events/${event._id}`, { state: { event } });
+    navigate(`/user/events/${event._id}`, { state: { event } });
   };
-
 
   //
   const confirmDelete = (event) => {
@@ -83,30 +112,37 @@ function MyEvents() {
 
   const handlePendingButton = async (eventId) => {
     try {
-        const user = auth.currentUser;
-        const userEmail = user ? user.email : null;
+      const user = auth.currentUser;
+      const userEmail = user ? user.email : null;
 
-        const response = await fetch(`http://localhost:8000/api/events/cancelPending/${eventId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ userEmail })
-        });
-
-        console.log("this is the eventId:", eventId);
-        console.log("this is the email:", JSON.stringify({ userEmail }));
-
-        if (response.ok) {
-            console.log("Successfully removed pending request.")
-            fetchPendingEvents(); // Refetch pending events to update the UI
-        } else {
-            console.error('Request to remove pending request failed:', response.status, response.statusText);
-            // Handle error case here
+      const response = await fetch(
+        `http://localhost:8000/api/events/cancelPending/${eventId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userEmail }),
         }
-    } catch (error) {
-        console.error('Error removing pending request:', error);
+      );
+
+      console.log("this is the eventId:", eventId);
+      console.log("this is the email:", JSON.stringify({ userEmail }));
+
+      if (response.ok) {
+        console.log("Successfully removed pending request.");
+        fetchPendingEvents(); // Refetch pending events to update the UI
+      } else {
+        console.error(
+          "Request to remove pending request failed:",
+          response.status,
+          response.statusText
+        );
         // Handle error case here
+      }
+    } catch (error) {
+      console.error("Error removing pending request:", error);
+      // Handle error case here
     }
   };
 
@@ -222,12 +258,6 @@ function MyEvents() {
     }
   };
 
-  useEffect(() => {
-    fetchEvents();
-    fetchPendingEvents();
-    fetchJoinedEvents();
-  }, []);
-
   return (
     <div>
       <div className="my-events-page">
@@ -253,9 +283,6 @@ function MyEvents() {
         )}
       </div>
 
-
-
-      
       <hr className="myevents-line"></hr>
       <div className="event-tab">
         <button
@@ -296,6 +323,7 @@ function MyEvents() {
                   <p className="capacity">
                     <i class="fa fa-group"></i>
                   </p>
+
                   <div className="manage-button-container">
                     <button
                       className="manage-button"
@@ -303,22 +331,30 @@ function MyEvents() {
                     >
                       <i class="fa fa-user-plus"></i>
                     </button>
-                    {event.pending.length > 0 && <span onClick={() => handleManageEvent(event)} className="pending-requests-bubble">{event.pending.length}</span>}
-                    </div>
+                    {event.pending.length > 0 && (
+                      <span
+                        onClick={() => handleManageEvent(event)}
+                        className="pending-requests-bubble"
+                      >
+                        {event.pending.length}
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
               <p
                 className={`description ${event.isExpanded ? "expanded" : ""}`}
-				onClick={() => goToEventDetails(event)}
+                onClick={() => goToEventDetails(event)}
               >
                 {event.description}
               </p>
               <div className="bottom-box">
                 <div className="left-align">
                   <p className="location">
-                    <i class="fa fa-clock-o"></i> {event.date.split('T')[0]}
+                    <i class="fa fa-clock-o"></i> {event.date.split("T")[0]}
                   </p>
                 </div>
+
                 <div className="right-align">
                   <button
                     className="edit-button"
@@ -343,7 +379,6 @@ function MyEvents() {
             <div
               className={`event-card ${event.isExpanded ? "expanded" : ""}`}
               key={index}
-              
             >
               <div className="top-box">
                 <div className="left-align">
@@ -367,7 +402,7 @@ function MyEvents() {
               <div className="bottom-box">
                 <div className="left-align">
                   <p className="location">
-                    <i class="fa fa-clock-o"></i> {event.date.split('T')[0]}
+                    <i class="fa fa-clock-o"></i> {event.date.split("T")[0]}
                   </p>
                 </div>
                 <div className="right-align">
@@ -380,11 +415,9 @@ function MyEvents() {
                 </div>
               </div>
             </div>
-            
-          ))} 
+          ))}
 
-
-        {activeTab === "joined" && // Only render if activeTab is "Pending"
+        {activeTab === "joined" && // Only render if activeTab is "Joined"
           Array.isArray(joinedEvents) &&
           joinedEvents.map((event, index) => (
             <div
@@ -413,7 +446,7 @@ function MyEvents() {
               <div className="bottom-box">
                 <div className="left-align">
                   <p className="location">
-                    <i class="fa fa-clock-o"></i> {event.date.split('T')[0]}
+                    <i class="fa fa-clock-o"></i> {event.date.split("T")[0]}
                   </p>
                 </div>
                 <div className="right-align">
