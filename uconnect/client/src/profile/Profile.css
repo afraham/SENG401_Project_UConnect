@@ -46,7 +46,7 @@
   font-size: 16px;
   background-color: rgb(240, 240, 240);
   border-radius: 8px;
-  width: 80%;
+  width: 100%;
 }
 
 
@@ -55,6 +55,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  
 }
 .profile-bio-interests p {
   font-size: 24px;
@@ -185,4 +186,15 @@
   color: white; /* Adjust as needed */
   border-radius: 20px; /* Adjust as needed */
   background-color: rgba(100, 194, 215, 1); /* Adjust as needed */
+}
+
+
+@media screen and (max-width: 619px) {
+
+  .myprofile-container {
+    width: 430px;
+  }
+  
+
+  
 }
