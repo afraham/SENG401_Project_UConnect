@@ -20,19 +20,43 @@ function MyEvents() {
   const navigate = useNavigate();
   
 
-  // Edit Event
+  /*
+  handleEditEvent
+  Prepares the selected event for editing by setting it as the current event and showing the popup form.
+  
+  Params:
+    - event: Object, the event to edit
+  
+  Returns: None, but updates state to show the edit popup.
+  */
   const handleEditEvent = (event) => {
     setCurrentEvent(event);
     setShowPopup(true);
   };
 
-  //Individual event page
+  /*
+  goToEventDetails
+  Navigates to the detailed view of the selected event.
+  
+  Params:
+    - event: Object, the event to view in detail
+  
+  Returns: None, but triggers navigation to the event details page.
+  */
   const goToEventDetails = (event) => {
 	navigate(`/user/events/${event._id}`, { state: { event } });
   };
 
 
-  //
+  /*
+  confirmDelete
+  Asks for confirmation before deleting an event. Calls handleDeleteEvent if confirmed.
+  
+  Params:
+    - event: Object, the event to potentially delete
+  
+  Returns: None, but may trigger event deletion.
+  */
   const confirmDelete = (event) => {
     const isConfirmed = window.confirm(
       `Are you sure you want to delete your event, ${event.title}?`
@@ -42,7 +66,15 @@ function MyEvents() {
     }
   };
 
-  // Delete Event
+  /*
+  handleDeleteEvent
+  Deletes the specified event from the database and updates the local state to reflect the change.
+  
+  Params:
+    - event: Object, the event to delete
+  
+  Returns: None, but updates the events state to remove the deleted event.
+  */
   const handleDeleteEvent = async (event) => {
     try {
       const response = await fetch(
@@ -69,18 +101,42 @@ function MyEvents() {
     }
   };
 
-  // Function to show the popup
+  /*
+  handleShowPopup
+  Shows the popup form for adding a new event or editing an existing one.
+  
+  Params:
+    - event: Object (optional), the event to edit, if any
+  
+  Returns: None, but updates state to show the popup.
+  */
   const handleShowPopup = (event = null) => {
     setCurrentEvent(event);
     setShowPopup(true);
   };
 
-  // Function to hide the popup
+  /*
+  handleClosePopup
+  Closes the popup form for adding or editing events.
+  
+  Params: None
+  
+  Returns: None, but updates state to hide the popup.
+  */
   const handleClosePopup = () => {
     setCurrentEvent(null);
     setShowPopup(false);
   };
 
+  /*
+  handlePendingButton
+  Handles the removal of a pending event from Myevents.
+  
+  Params:
+    - eventId: String, the ID of the event to cancel the pending request for
+  
+  Returns: None, but updates the pending events state upon success.
+  */
   const handlePendingButton = async (eventId) => {
     try {
         const user = auth.currentUser;
@@ -110,6 +166,15 @@ function MyEvents() {
     }
   };
 
+  /*
+  handleLeaveButton
+  Handles the action of leaving a joined event.
+  
+  Params:
+    - event: Object, the event to leave
+  
+  Returns: None, but updates the joined events state upon success.
+  */
   const handleLeaveButton = async (event) => {
     try {
       const user = auth.currentUser;
@@ -142,6 +207,14 @@ function MyEvents() {
     }
   };
 
+  /*
+  fetchPendingEvents
+  Fetches the list of events the user has pending requests to join.
+  
+  Params: None
+  
+  Returns: None, but updates the pendingEvents state with the fetched data.
+  */
   const fetchPendingEvents = async () => {
     try {
       const user = auth.currentUser;
@@ -159,7 +232,7 @@ function MyEvents() {
           ...event,
           isExpanded: false,
         }));
-        setPendingEvents(eventsWithExpansion); // Assuming data is an array of events
+        setPendingEvents(eventsWithExpansion); 
         console.log("Fetched successfully");
       }
     } catch (error) {
@@ -167,6 +240,14 @@ function MyEvents() {
     }
   };
 
+  /*
+  fetchJoinedEvents
+  Fetches the list of events the user has joined.
+  
+  Params: None
+  
+  Returns: None, but updates the joinedEvents state with the fetched data.
+  */
   const fetchJoinedEvents = async () => {
     try {
       const user = auth.currentUser;
@@ -184,7 +265,7 @@ function MyEvents() {
           ...event,
           isExpanded: false,
         }));
-        setJoinedEvents(eventsWithExpansion); // Assuming data is an array of events
+        setJoinedEvents(eventsWithExpansion);
         console.log("Fetched joined successfully");
       }
     } catch (error) {
@@ -193,11 +274,28 @@ function MyEvents() {
     }
   };
 
+  /*
+  handleManageEvent
+  Prepares the selected event for management by showing the manage popup.
+  
+  Params:
+    - event: Object, the event to manage
+  
+  Returns: None, but updates state to show the manage popup.
+  */
   const handleManageEvent = (event) => {
     setCurrentEvent(event);
     setShowManagePopup(true); // Show manage popup when "Manage" button is clicked
   };
 
+  /*
+  fetchEvents
+  Fetches the list of events created by the user.
+  
+  Params: None
+  
+  Returns: None, but updates the events state with the fetched data.
+  */
   const fetchEvents = async () => {
     try {
       const user = auth.currentUser;
@@ -215,7 +313,7 @@ function MyEvents() {
           ...event,
           isExpanded: false,
         }));
-        setEvents(eventsWithExpansion); // Assuming data is an array of events
+        setEvents(eventsWithExpansion);
       }
     } catch (error) {
       console.error("Error fetching events:", error);
@@ -228,8 +326,10 @@ function MyEvents() {
     fetchJoinedEvents();
   }, []);
 
+  //Rendering Myevents page
   return (
     <div>
+      {/* Add Event Button */}
       <div className="my-events-page">
         <p>
           <b>ADD AN EVENT!</b>
@@ -252,10 +352,7 @@ function MyEvents() {
           />
         )}
       </div>
-
-
-
-      
+      {/* Switching the tabs between MyEvents, Pending and Joined*/}
       <hr className="myevents-line"></hr>
       <div className="event-tab">
         <button
@@ -277,8 +374,9 @@ function MyEvents() {
           Joined ({joinedEvents.length})
         </button>
       </div>
+      {/* render if activeTab is "My Events" */}
       <div className="myevent-list">
-        {activeTab === "myEvents" && // Only render if activeTab is "My Events"
+        {activeTab === "myEvents" &&
           Array.isArray(events) &&
           events.map((event, index) => (
             <div
@@ -337,7 +435,8 @@ function MyEvents() {
             </div>
           ))}
 
-        {activeTab === "pending" && // Only render if activeTab is "Pending"
+        {/* render if activeTab is "Pending" */}
+        {activeTab === "pending" &&
           Array.isArray(pendingEvents) &&
           pendingEvents.map((event, index) => (
             <div
@@ -383,8 +482,8 @@ function MyEvents() {
             
           ))} 
 
-
-        {activeTab === "joined" && // Only render if activeTab is "Joined"
+        {/* render if activeTab is "Joined" */}
+        {activeTab === "joined" &&
           Array.isArray(joinedEvents) &&
           joinedEvents.map((event, index) => (
             <div
@@ -432,7 +531,7 @@ function MyEvents() {
         <ManageEvents
           event={currentEvent}
           setCurrent={setCurrentEvent}
-          title={currentEvent.title} // Pass the title as a prop
+          title={currentEvent.title}
           closePopup={() => setShowManagePopup(false)}
           refetchEvents={fetchEvents}
         />

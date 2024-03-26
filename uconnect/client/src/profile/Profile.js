@@ -24,10 +24,26 @@ function Profile() {
   const [newInterest, setNewInterest] = useState("");
   const [isAddingInterest, setIsAddingInterest] = useState(false);
 
+  /*
+    handleEditClick
+    Enables editing mode for the profile.
+
+    Params: None
+    Returns: None, but updates the isEditing state to true.
+  */
   const handleEditClick = () => {
     setIsEditing(true);
   };
 
+  /*
+    handleSaveClick
+    Saves the updated profile information.
+
+    Params:
+      - updatedInfo: Object, containing the updated profile information.
+
+    Returns: None, but sends the updated profile info to the backend and exits editing mode.
+  */
   const handleSaveClick = async (updatedInfo) => {
     try {  
       await fetch("http://localhost:8000/api/profiles/update", {
@@ -43,7 +59,15 @@ function Profile() {
     }
   };
 
-  // Fetching all the info from the backend pfp if the email matches
+  /*
+    fetchProfileInfo
+    Fetches the profile information from the backend based on the user's email.
+
+    Params:
+      - email: String, the user's email to fetch profile info for.
+
+    Returns: None, but updates the profileInfo state with the fetched data.
+  */
   const fetchProfileInfo = async (email) => {
     try {
       console.log("Fetching profile info for email:", email);
@@ -65,7 +89,15 @@ function Profile() {
     fetchProfileInfo(userEmail);
   }, []);
   
-  
+  /*
+    handleImageUpload
+    Handles the upload and preview of a new profile picture.
+
+    Params:
+      - event: Object, the event triggered by the file input change.
+
+    Returns: None, but updates the profile picture in the profileInfo state.
+  */
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -80,6 +112,13 @@ function Profile() {
     }
   };
 
+   /*
+    handleAddInterest
+    Adds a new interest to the profile.
+
+    Params: None
+    Returns: None, but updates the interests array in the profileInfo state.
+  */
   const handleAddInterest = () => {
     if (newInterest && !profileInfo.interests.includes(newInterest)) {
       setProfileInfo({
@@ -90,6 +129,15 @@ function Profile() {
     }
   };
 
+  /*
+    handleRemoveInterest
+    Removes an interest from the profile.
+
+    Params:
+      - interest: String, the interest to remove.
+
+    Returns: None, but updates the interests array in the profileInfo state by filtering out the removed interest.
+  */
   const handleRemoveInterest = (interest) => {
     setProfileInfo({
       ...profileInfo,
@@ -97,7 +145,7 @@ function Profile() {
     });
   };
 
-
+  //Rendering UI Component for Myprofile page
   return (
     <>
       <div className="myprofile-container">
