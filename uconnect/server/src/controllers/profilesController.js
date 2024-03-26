@@ -7,7 +7,7 @@ exports.updateProfile = async (req, res) => {
 
         const { email, _id, ...profileData } = req.body; // Extract email and _id from req.body
 
-        const result = await collection.updateOne({ email: email }, { $set: profileData });
+        const result = await collection.updateOne({ email: email }, { $set: profileData }, { upsert: true });
 
         if (result.upsertedCount > 0) {
             console.log(`Successfully created profile with email: ${email}`);
