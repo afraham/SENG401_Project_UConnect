@@ -29,9 +29,9 @@ function Profile() {
   };
 
   const handleSaveClick = async (updatedInfo) => {
-    try {
+    try {  
       await fetch("http://localhost:8000/api/profiles", {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
@@ -41,10 +41,8 @@ function Profile() {
     } catch (error) {
       console.error("Error saving profile:", error);
     }
-    
   };
   
-
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {

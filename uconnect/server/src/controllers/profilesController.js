@@ -1,19 +1,27 @@
 const db = require("../db/db");
 
-exports.createProfile = async (req, res) => {
+exports.updateProfile = async (req, res) => {
     try {
         const database = db.db("create_profiles");
         const collection = database.collection("profiles");
 
-        const profileData = req.body;
+        const { email, ...profileData } = req.body; // Extract email from req.body
 
-        const result = await collection.insertOne(profileData);
+        const result = await collection.updateOne({ email: email }, { $set: profileData }, { upsert: true });
 
-        console.log(`Successfully inserted profile with _id: ${result.insertedId}`);
+        if (result.upsertedCount > 0) {
+            console.log(`Successfully created profile with email: ${email}`);
+        } else {
+            console.log(`Successfully updated profile with email: ${email}`);
+        }
+
         res.setHeader("Access-Control-Allow-Origin", "*");
-        res.status(201).send({ message: "Profile created successfully" });
+        res.status(200).send({ message: "Profile updated/created successfully" });
     } catch (error) {
-        console.error("Error inserting profile:", error);
+        console.error("Error updating/creating profile:", error);
         res.status(500).send({ message: "Internal Server Error" });
     }
 };
+
+
+
