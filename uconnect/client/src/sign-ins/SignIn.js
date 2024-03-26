@@ -7,8 +7,18 @@ import { auth } from "../firebase";
 function SignIn({ changeSignInState }) {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-	const nav = useNavigate();
+	const nav = useNavigate(); // To navigate to main page after sign in
 
+
+	/*
+		handleSignIn
+		Handles the sign in process when the form is submitted.
+		
+		Params:
+			- e: Object, the event object to prevent default form submission behavior.
+		
+		Returns: None, but performs sign-in operation and navigates the user to a new route on success.
+	*/
 	const handleSignIn = async (e) => {
 		e.preventDefault(); // Prevents the default form submission behavior
 		try {
@@ -25,6 +35,7 @@ function SignIn({ changeSignInState }) {
 		}
 	};
 
+	//Render the Sign in component
 	return (
 		<div className="LoginPage">
 			<div className="SigninContainer">

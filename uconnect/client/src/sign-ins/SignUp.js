@@ -22,7 +22,7 @@ function SignUp() {
 		}
 	};
 
-
+	//Render the Sign up component
 	return (
 		<div className="LoginPage">
 			<div className="SigninContainer">
