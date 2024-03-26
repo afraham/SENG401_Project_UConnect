@@ -78,7 +78,7 @@ function FindEvents() {
         return {
           ...event,
           isExpanded: event.isExpanded,
-          requestStatus: "Pending",
+          requestStatus: 'Pending',
         };
       }
       return event;
@@ -86,7 +86,7 @@ function FindEvents() {
 
     setEvents(updatedEvents);
 
-    localStorage.setItem("events", JSON.stringify(updatedEvents));
+    //localStorage.setItem("events", JSON.stringify(updatedEvents));
 
     try {
       const response = await fetch(

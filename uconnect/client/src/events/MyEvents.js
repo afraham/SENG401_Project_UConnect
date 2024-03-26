@@ -303,7 +303,7 @@ function MyEvents() {
                     >
                       <i class="fa fa-user-plus"></i>
                     </button>
-                    {event.pending.length > 0 && <span className="pending-requests-bubble">{event.pending.length}</span>}
+                    {event.pending.length > 0 && <span onClick={() => handleManageEvent(event)} className="pending-requests-bubble">{event.pending.length}</span>}
                     </div>
                 </div>
               </div>
