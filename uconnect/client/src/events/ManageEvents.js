@@ -16,10 +16,31 @@ const ManageEvents = ({
     new Array(event.pending.length).fill("unhandled")
   );
 
+  /*
+  handleClosePopup
+  Handler for button press of ManageEvents popup close. 
+  Closes the popup and refetches user's events to update event's capacity on view.
+
+  Params: None
+  Returns: None
+  */
+
   const handleClosePopup = () => {
-    refetchEvents();
-    closePopup();
+    refetchEvents(); // Refetches and updates MyEvent's events state
+    closePopup(); // Close popup
   };
+
+
+  /*
+  handleApprove
+  Handler for button press to approve user into event.
+  Sends data to database to add user to approved list and removes user from pending list.
+  Increases event capacity and updates the requests state to prevent host from updating user multiple times.
+
+  Params: userEmail : String, index: int
+  Returns: Updates requests state
+  */
+
   const handleApprove = async (userEmail, index) => {
     if (event.spotsTaken >= event.maxPeople) {
       alert("Max amount of users Reached");
@@ -56,6 +77,17 @@ const ManageEvents = ({
       }
     }
   };
+
+    /*
+  handleDeny
+  Handler for button press to deny user into event.
+  Sends data to database to remove user from pending list
+  Does not increase event capacity, removes buttons to prevent further updates.
+
+  Params: userEmail : String, index: int
+  Returns: Updates requests state
+  */
+
   const handleDeny = async (userEmail, index) => {
     try {
       const response = await fetch(

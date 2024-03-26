@@ -1,5 +1,14 @@
 const db = require("../db/db");
 
+/*
+updateProfile
+Find profile by email and replace fields with new profiledata.
+
+Params: req, res
+Returns: None
+*/
+
+
 exports.updateProfile = async (req, res) => {
     try {
         const database = db.db("create_profiles");
@@ -7,7 +16,7 @@ exports.updateProfile = async (req, res) => {
 
         const { email, _id, ...profileData } = req.body; // Extract email and _id from req.body
 
-        const result = await collection.updateOne({ email: email }, { $set: profileData }, { upsert: true });
+        const result = await collection.updateOne({ email: email }, { $set: profileData }, { upsert: true }); // Find by email and set profileData to new profile data
 
         if (result.upsertedCount > 0) {
             console.log(`Successfully created profile with email: ${email}`);
@@ -23,14 +32,21 @@ exports.updateProfile = async (req, res) => {
     }
 };
 
+/*
+fetchProfileInfo
+Fetch entire profile item from user's email.
+
+Params: req, res
+Returns: None
+*/
 exports.fetchProfileInfo = async (req, res) => {
     try {
-      const email = req.params.email; // Change req.params to req.params.email
+      const email = req.params.email; 
       console.log("Email that was sent:", email);
       const database = db.db("create_profiles");
       const collection = database.collection("profiles");
   
-      const profile = await collection.findOne({ email: email });
+      const profile = await collection.findOne({ email: email }); // Find by userEmail
       //console.log("Profile found:", profile); // Log the profile
   
       if (!profile) {
