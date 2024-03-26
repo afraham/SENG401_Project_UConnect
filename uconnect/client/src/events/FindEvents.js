@@ -4,22 +4,30 @@ import "./FindEvents.css";
 import { auth } from "../firebase"; // Import Firebase auth
 
 function FindEvents() {
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState([]); // Array of all events retrieved from backend. All non-enrolled events.
   const [userEmail, setUserEmail] = useState(""); // State to store user's email
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState(""); // Search criteria by user
   const navigate = useNavigate();
 
-  // Function to fetch events from the backend
+
+  /*
+  fetchEvents
+  Function to fetch from database, fetches all events except those created by the user and/or joined/requested to join by the user.
+
+  Params: None
+  Returns: None but updates events state to the list of events user is not enrolled in.
+  */
+
   const fetchEvents = async () => {
     const user = auth.currentUser;
     if (!user) return; // Early return if user is not authenticated
-    const userEmail = user.email;
+    const userEmail = user.email; // Get user email from authenticated user
 
     let eventsFromStorage = JSON.parse(localStorage.getItem("events"));
 
     try {
       const response = await fetch(
-        `http://localhost:8000/api/events?userEmail=${userEmail}`
+        `http://localhost:8000/api/events?userEmail=${userEmail}` // API call to backend
       );
       if (response.ok) {
         const data = await response.json();
@@ -33,22 +41,22 @@ function FindEvents() {
             requestStatus: storedEvent?.requestStatus || "NotRequested",
           };
         });
-        setEvents(eventsWithExpansionAndStatus);
+        setEvents(eventsWithExpansionAndStatus); // Set events state to the returned events
         localStorage.setItem(
           "events",
           JSON.stringify(eventsWithExpansionAndStatus)
-        );
+        ); // Use local storage to store the events, storage is persistent
       } else {
         console.error("Failed to fetch events:", response.statusText);
-        setEvents(eventsFromStorage || []);
+        setEvents(eventsFromStorage || []); // If unable to retrieve, set events from local storage. Otherwise set to an empty array
       }
     } catch (error) {
       console.error("Error fetching events:", error);
-      setEvents(eventsFromStorage || []);
+      setEvents(eventsFromStorage || []); // If the server is off, use events from local storage, otherwise set to an empty array
     }
   };
 
-  // Effect to fetch events when the userEmail state changes
+  // Effect to fetch events when the userEmail state changes, in theory userEmail should never change.
   useEffect(() => {
     fetchEvents();
   }, [userEmail]);
@@ -71,7 +79,14 @@ function FindEvents() {
     navigate(`/user/events/${event._id}`, { state: { event } });
   };
 
-  // Handler for sending a request to join an event
+  /*
+  handleRequestToJoin
+  Handler for sending a request to join an event. Updates the event in the database
+  and updates the view telling the user that their request is pending.
+
+  Params: eventId : String, userEmail : String, index : int
+  Returns: Updated set of events
+  */
   const handleRequestToJoin = async (eventId, userEmail, index) => {
     const updatedEvents = events.map((event, i) => {
       if (i === index) {
@@ -112,6 +127,7 @@ function FindEvents() {
     } catch (error) {
       console.error("Error sending request to join:", error);
     }
+
   };
   return (
     <div>
