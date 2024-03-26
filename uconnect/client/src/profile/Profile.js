@@ -24,12 +24,24 @@ function Profile() {
   const [newInterest, setNewInterest] = useState("");
   const [isAddingInterest, setIsAddingInterest] = useState(false);
 
+  // Function to enable editing mode
   const handleEditClick = () => {
     setIsEditing(true);
   };
 
+  useEffect(() => {
+    const storedProfileInfo = localStorage.getItem('profileInfo');
+    if (storedProfileInfo) {
+      setProfileInfo(JSON.parse(storedProfileInfo));
+    } else {
+      const userEmail = auth.currentUser ? auth.currentUser.email : "email@example.com";
+      fetchProfileInfo(userEmail);
+    }
+  }, []);
+
   const handleSaveClick = async (updatedInfo) => {
-    try {  
+    try {
+      // Save to backend
       await fetch("http://localhost:8000/api/profiles/update", {
         method: "PUT",
         headers: {
@@ -37,6 +49,8 @@ function Profile() {
         },
         body: JSON.stringify(updatedInfo),
       });
+      // Save to localStorage
+      localStorage.setItem('profileInfo', JSON.stringify(updatedInfo));
       setIsEditing(false);
     } catch (error) {
       console.error("Error saving profile:", error);
