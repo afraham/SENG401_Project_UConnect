@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import the FontAwesomeIcon component
 import { faClock, faCalendarAlt, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons'; // Import specific icons
 import "./EventDetails.css";
+import CommentComp from './CommentComp';
 
 const EventDetails = () => {
    // Get the event ID from the URL parameter
@@ -36,6 +37,10 @@ const EventDetails = () => {
                     <FontAwesomeIcon icon={faMapMarkerAlt} className="location-icon" />
                     {event.location}
                 </div>
+                
+            </div>
+            <div>
+                <CommentComp commentHistory={event.comments}/>
             </div>
         </div>
     </div>
