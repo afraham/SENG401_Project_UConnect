@@ -11,6 +11,7 @@ import {
   faCheck,
 } from "@fortawesome/free-solid-svg-icons";
 
+
 function Profile() {
   const [isEditing, setIsEditing] = useState(false);
   const [profileInfo, setProfileInfo] = useState({
@@ -23,26 +24,12 @@ function Profile() {
   const [newInterest, setNewInterest] = useState("");
   const [isAddingInterest, setIsAddingInterest] = useState(false);
 
-  // Function to enable editing mode
   const handleEditClick = () => {
     setIsEditing(true);
   };
 
-  useEffect(() => {
-    const storedProfileInfo = localStorage.getItem("profileInfo");
-    if (storedProfileInfo) {
-      setProfileInfo(JSON.parse(storedProfileInfo));
-    } else {
-      const userEmail = auth.currentUser
-        ? auth.currentUser.email
-        : "email@example.com";
-      fetchProfileInfo(userEmail);
-    }
-  }, []);
-
   const handleSaveClick = async (updatedInfo) => {
-    try {
-      // Save to backend
+    try {  
       await fetch("http://localhost:8000/api/profiles/update", {
         method: "PUT",
         headers: {
@@ -50,8 +37,6 @@ function Profile() {
         },
         body: JSON.stringify(updatedInfo),
       });
-      // Save to localStorage
-      localStorage.setItem("profileInfo", JSON.stringify(updatedInfo));
       setIsEditing(false);
     } catch (error) {
       console.error("Error saving profile:", error);
@@ -62,31 +47,25 @@ function Profile() {
   const fetchProfileInfo = async (email) => {
     try {
       console.log("Fetching profile info for email:", email);
-      const response = await fetch(
-        `http://localhost:8000/api/profiles/${email}`
-      );
+      const response = await fetch(`http://localhost:8000/api/profiles/${email}`);
       if (!response.ok) {
-        throw new Error(
-          `Failed to fetch profile information: ${response.statusText}`
-        );
+        throw new Error(`Failed to fetch profile information: ${response.statusText}`);
       }
       const data = await response.json();
-      console.log("data to be updated: ", data);
       setProfileInfo(data);
     } catch (error) {
       console.error("Error fetching profile information:", error.message);
     }
   };
-
+  
   // Call the fetchProfileInfo function with the email when the component mounts
   useEffect(() => {
-    const userEmail = auth.currentUser
-      ? auth.currentUser.email
-      : "email@example.com";
+    const userEmail = auth.currentUser ? auth.currentUser.email : "email@example.com";
     console.log(userEmail);
     fetchProfileInfo(userEmail);
   }, []);
-
+  
+  
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -118,6 +97,7 @@ function Profile() {
     });
   };
 
+
   return (
     <>
       <div className="myprofile-container">
@@ -139,13 +119,10 @@ function Profile() {
                   className="image-input"
                 />
               )}
+        
             </label>
             {isEditing && profileInfo.picture && (
-              <img
-                className="avatar-prev"
-                src={profileInfo.picture}
-                alt="Preview"
-              />
+              <img className="avatar-prev" src={profileInfo.picture} alt="Preview" />
             )}
 
             <div className="profile-name-email">
@@ -261,5 +238,7 @@ function Profile() {
     </>
   );
 }
+
+
 
 export default Profile;

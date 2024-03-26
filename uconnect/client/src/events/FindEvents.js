@@ -78,7 +78,7 @@ function FindEvents() {
         return {
           ...event,
           isExpanded: event.isExpanded,
-          requestStatus: 'Pending',
+          requestStatus: "Pending",
         };
       }
       return event;
@@ -115,7 +115,7 @@ function FindEvents() {
   };
   return (
     <div>
-      <br/>
+      <br />
       <div className="search-bar">
         <input
           type="text"

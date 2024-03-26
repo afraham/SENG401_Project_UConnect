@@ -28,7 +28,6 @@ function MyEvents() {
   const [activeTab, setActiveTab] = useState("myEvents");
   const navigate = useNavigate();
 
-
   useEffect(() => {
     localStorage.setItem("events", JSON.stringify(events));
   }, [events]);
@@ -72,7 +71,7 @@ function MyEvents() {
     }
   };
 
-   // Delete Event
+  // Delete Event
   const handleDeleteEvent = async (event) => {
     try {
       const response = await fetch(
@@ -316,7 +315,6 @@ function MyEvents() {
               <div className="top-box">
                 <div className="left-align">
                   <p className="event-title">{event.title}</p>
-                  
                 </div>
                 <div className="right-align">
                   <p className="capacity">
@@ -326,12 +324,22 @@ function MyEvents() {
                     <i class="fa fa-group"></i>
                   </p>
 
-                  <button
-                    className="manage-button"
-                    onClick={() => handleManageEvent(event)}
-                  >
-                    Manage
-                  </button>
+                  <div className="manage-button-container">
+                    <button
+                      className="manage-button"
+                      onClick={() => handleManageEvent(event)}
+                    >
+                      <i class="fa fa-user-plus"></i>
+                    </button>
+                    {event.pending.length > 0 && (
+                      <span
+                        onClick={() => handleManageEvent(event)}
+                        className="pending-requests-bubble"
+                      >
+                        {event.pending.length}
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
               <p
@@ -346,7 +354,7 @@ function MyEvents() {
                     <i class="fa fa-clock-o"></i> {event.date.split("T")[0]}
                   </p>
                 </div>
-                
+
                 <div className="right-align">
                   <button
                     className="edit-button"
@@ -359,7 +367,6 @@ function MyEvents() {
                     onClick={() => confirmDelete(event)}
                   >
                     <FontAwesomeIcon icon={faTrash} />
-                    
                   </button>
                 </div>
               </div>
@@ -408,11 +415,9 @@ function MyEvents() {
                 </div>
               </div>
             </div>
-            
-          ))} 
+          ))}
 
-
-        {activeTab === "joined" && // Only render if activeTab is "Pending"
+        {activeTab === "joined" && // Only render if activeTab is "Joined"
           Array.isArray(joinedEvents) &&
           joinedEvents.map((event, index) => (
             <div
