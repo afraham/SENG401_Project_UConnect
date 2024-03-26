@@ -20,6 +20,31 @@ describe("POST /api/profiles", () => {
 		expect(res.body).toHaveProperty("message", "Profile created successfully");
 	});
 
-	// You can add more tests here to check for specific error cases,
-	// such as trying to create a profile with an email that already exists in the database
+	it("should return 400 if the name is blank", async () => {
+		const invalidProfileData = {
+			name: "",
+			email: "jest@user.com",
+			bio: "This is a test user created by Jest.",
+		};
+		const res = await request(app)
+			.post("/api/profiles")
+			.send(invalidProfileData);
+
+		expect(res.statusCode).toEqual(400);
+		expect(res.body).toHaveProperty("message", "Name is required");
+	});
+
+	it("should return 400 if the email is blank", async () => {
+		const invalidProfileData = {
+			name: "Jest User",
+			email: "",
+			bio: "This is a test user created by Jest.",
+		};
+		const res = await request(app)
+			.post("/api/profiles")
+			.send(invalidProfileData);
+
+		expect(res.statusCode).toEqual(400);
+		expect(res.body).toHaveProperty("message", "Email is required");
+	});
 });
