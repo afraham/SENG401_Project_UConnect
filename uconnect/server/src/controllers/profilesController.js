@@ -23,5 +23,25 @@ exports.updateProfile = async (req, res) => {
     }
 };
 
-
+exports.fetchProfileInfo = async (req, res) => {
+    try {
+      const email = req.params;
+      console.log("email that was sent:", email);
+      const database = db.db("create_profiles");
+      const collection = database.collection("profiles");
+  
+      const profile = await collection.findOne({ email: email });
+  
+      if (!profile) {
+        res.status(404).send({ message: "Profile not found" });
+        return;
+      }
+  
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.status(200).send(profile);
+    } catch (error) {
+      console.error("Error fetching profile information:", error);
+      res.status(500).send({ message: "Internal Server Error" });
+    }
+  };
 

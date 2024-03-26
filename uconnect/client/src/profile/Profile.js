@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Profile.css";
 import default_picture from "../images/default_picture.jpg";
 import { auth } from "../firebase";
@@ -30,7 +30,7 @@ function Profile() {
 
   const handleSaveClick = async (updatedInfo) => {
     try {  
-      await fetch("http://localhost:8000/api/profiles", {
+      await fetch("http://localhost:8000/api/profiles/update", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -42,6 +42,29 @@ function Profile() {
       console.error("Error saving profile:", error);
     }
   };
+
+  // Fetching all the info from the backend pfp if the email matches
+  const fetchProfileInfo = async (email) => {
+    try {
+      console.log("Fetching profile info for email:", email);
+      const response = await fetch(`http://localhost:8000/api/profiles/${email}`);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch profile information: ${response.statusText}`);
+      }
+      const data = await response.json();
+      setProfileInfo(data);
+    } catch (error) {
+      console.error("Error fetching profile information:", error);
+    }
+  };
+  
+  // Call the fetchProfileInfo function with the email when the component mounts
+  useEffect(() => {
+    const userEmail = auth.currentUser ? auth.currentUser.email : "email@example.com";
+    console.log(userEmail);
+    fetchProfileInfo(userEmail);
+  }, []);
+  
   
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
