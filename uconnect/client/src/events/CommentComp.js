@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { auth } from "../firebase";
+import "./CommentComp.css"
 
 function CommentComp({ commentHistory }) {
 
@@ -49,7 +50,7 @@ function CommentComp({ commentHistory }) {
 
 
     return (
-        <div>
+        <div className='comments-section'>
             <h2>Chat Box</h2>
             <div>
             {Array.isArray(comments) &&
