@@ -228,17 +228,6 @@ function MyEvents() {
     fetchJoinedEvents();
   }, []);
 
-  const toggleExpansion = (index) => {
-    setEvents((currentEvents) =>
-      currentEvents.map((event, i) => {
-        if (i === index) {
-          return { ...event, isExpanded: !event.isExpanded };
-        }
-        return event;
-      })
-    );
-  };
-
   return (
     <div>
       <div className="my-events-page">
@@ -352,7 +341,7 @@ function MyEvents() {
             <div
               className={`event-card ${event.isExpanded ? "expanded" : ""}`}
               key={index}
-              onClick={() => toggleExpansion(index)}
+              
             >
               <div className="top-box">
                 <div className="left-align">
@@ -369,6 +358,7 @@ function MyEvents() {
               </div>
               <p
                 className={`description ${event.isExpanded ? "expanded" : ""}`}
+                onClick={() => goToEventDetails(event)}
               >
                 {event.description}
               </p>
@@ -396,7 +386,6 @@ function MyEvents() {
             <div
               className={`event-card ${event.isExpanded ? "expanded" : ""}`}
               key={index}
-              onClick={() => toggleExpansion(index)}
             >
               <div className="top-box">
                 <div className="left-align">
@@ -413,6 +402,7 @@ function MyEvents() {
               </div>
               <p
                 className={`description ${event.isExpanded ? "expanded" : ""}`}
+                onClick={() => goToEventDetails(event)}
               >
                 {event.description}
               </p>
