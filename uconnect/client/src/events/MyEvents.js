@@ -384,7 +384,7 @@ function MyEvents() {
           ))} 
 
 
-        {activeTab === "joined" && // Only render if activeTab is "Pending"
+        {activeTab === "joined" && // Only render if activeTab is "Joined"
           Array.isArray(joinedEvents) &&
           joinedEvents.map((event, index) => (
             <div

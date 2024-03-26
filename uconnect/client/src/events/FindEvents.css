@@ -22,7 +22,7 @@
     height: auto; 
     overflow: hidden; /* Hide the overflow content */
     user-select: none;
-    cursor: pointer;
+   
     
 }
 
@@ -36,6 +36,7 @@
     margin-top: 0px;
     height: 21.6px; /* Height for the collapsed state */
     overflow: hidden;
+    cursor: pointer;
     
 }
 
@@ -92,6 +93,7 @@
 .request-button:hover{
     background-color: #0056b3;
     transition: background-color 0.3s;
+    cursor: pointer;
 }
 
 .pending {

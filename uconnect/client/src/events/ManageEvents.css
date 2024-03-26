@@ -152,3 +152,15 @@
   color: #ffffff; /* Red color on hover */
   background: #ff0000; /* Maintain the background color on hover */
 }
+
+
+@media screen and (max-width: 619px) {
+
+  .request-list {
+    
+    width: 290px;
+    
+  }
+  
+  
+}
