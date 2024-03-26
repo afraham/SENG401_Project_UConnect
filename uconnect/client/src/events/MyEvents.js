@@ -46,7 +46,7 @@ function MyEvents() {
   const handleDeleteEvent = async (event) => {
     try {
       const response = await fetch(
-        `http://localhost:8000/api/events/${event._id}`,
+        `http://localhost:8000/api/events/delete/${event._id}`,
         {
           method: "DELETE",
           headers: {
