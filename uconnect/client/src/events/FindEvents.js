@@ -85,7 +85,7 @@ function FindEvents() {
   and updates the view telling the user that their request is pending.
 
   Params: eventId : String, userEmail : String, index : int
-  Returns: Updated set of events
+  Returns: None, Updated set of events
   */
   const handleRequestToJoin = async (eventId, userEmail, index) => {
     const updatedEvents = events.map((event, i) => {

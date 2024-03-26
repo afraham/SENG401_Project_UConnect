@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { auth } from "../firebase";
 import "./CommentComp.css"
@@ -6,10 +6,10 @@ import "./CommentComp.css"
 function CommentComp({ commentHistory }) {
 
     const { eventId } = useParams(); // get eventId for parameter within url
-    const [inputValue, setInputValue] = useState('');
+    const [inputValue, setInputValue] = useState(''); // Input of user comment
     const [comments, setComments] = useState(commentHistory) // set comments as the event's current commentHistory
 
-
+    const chatListRef = useRef(null);
     /*
     handleSendComment
     Button press to send comment to chat history. No live update for users.
@@ -59,20 +59,21 @@ function CommentComp({ commentHistory }) {
     // useEffect to update user comments whenever commentHistory changes
     useEffect(() => {
         setComments(commentHistory)
+        chatListRef.current.scrollTop = chatListRef.current.scrollHeight;
     }, [commentHistory]);
 
 
     return (
         <div className='comments-section'>
             <h2>Chat Box</h2>
-            <div>
-            {Array.isArray(comments) &&
-                comments.map((comment, index) => (
-                    <div key={index}>
-                        <p>{comment.userEmail}: {comment.message}</p>
-                    </div>
-                ))
-            }
+            <div className='chat-list' ref={chatListRef}>
+                {Array.isArray(comments) &&
+                    comments.map((comment, index) => (
+                        <div className="chat-elements" key={index}>
+                            <p>{comment.userEmail}: {comment.message}</p>
+                        </div>
+                    ))
+                }
             </div>
             <form onSubmit={handleSendComment}>
             <input
