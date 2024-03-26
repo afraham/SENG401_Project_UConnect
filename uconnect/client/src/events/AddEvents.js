@@ -26,7 +26,7 @@ const AddEvents = ({ closePopup, event, editMode, updateEvents }) => {
         "Cannot reduce the number of spots available below the number of spots already taken."
       );
     } else {
-      setMaxPeople((prevMaxPeople) => prevMaxPeople - 1);
+      setMaxPeople((prev) => (prev > 2 ? prev - 1 : 2));
     }
   };
 
