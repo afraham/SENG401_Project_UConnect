@@ -50,3 +50,15 @@
     margin-right: 4px; /* Adds a little space between the icon and the text */
     /* If you're using Font Awesome, you might add classes like 'fa fa-calendar' for date and 'fa fa-clock-o' for time */
   }
+
+
+  @media screen and (max-width: 619px) {
+
+    .description-box{
+
+      max-width: 430px;
+    }
+    
+  
+    
+  }

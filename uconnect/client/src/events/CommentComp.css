@@ -69,3 +69,12 @@
     outline-color: #fe2908;
 }
 
+@media screen and (max-width: 619px) {
+
+    .comments-section{
+        width: 430px;
+    }
+    
+  
+    
+}

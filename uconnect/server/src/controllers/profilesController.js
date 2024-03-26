@@ -31,7 +31,7 @@ exports.fetchProfileInfo = async (req, res) => {
       const collection = database.collection("profiles");
   
       const profile = await collection.findOne({ email: email });
-      console.log("Profile found:", profile); // Log the profile
+      //console.log("Profile found:", profile); // Log the profile
   
       if (!profile) {
         res.status(404).send({ message: "Profile not found" });
