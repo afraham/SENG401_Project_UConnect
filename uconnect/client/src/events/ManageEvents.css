@@ -11,17 +11,129 @@
   z-index: 1000;
 }
 
+.request-avatar {
+  display: flex;
+  justify-self: flex-start;
+  max-height: 60px;
+  max-width: 60px;
+  border-radius: 50%;
+  position: relative;
+}
+
+.requests h3 {
+  margin-left: 30px;
+  font-weight: 400;
+}
+
+.request {
+  display: flex;
+  align-items: center;
+  background-color: rgb(239, 238, 238);
+  border-radius: 10px;
+  padding: 1em;
+  font-size: larger;
+  max-height: 60px;
+  margin-bottom: 1em;
+}
+
+.request:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.202);
+}
+
+.no-reqs {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.no-reqs-img {
+  max-height: 300px;
+  max-width: fit-content;
+}
+
+.request-list {
+  margin: 0px 30px 30px 30px;
+  position: relative;
+  border-radius: 10px;
+}
+
+.request-outcome {
+  background: #ff7b00;
+  color: white;
+  border-radius: 15px;
+  padding: 0.4em 1em; /* Adjust padding for better readability */
+  height: 30px;
+  min-width: 70px; /* Set minimum width to ensure content is visible */
+  font-size: 14px; /* Increased font size for better visibility */
+  border: none;
+  text-align: center;
+  display: flex;
+  align-items: center; /* Vertically center content */
+  justify-content: center;
+  margin-left: auto;
+}
+
+.request p {
+  margin-left: 1em;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  right: 0;
+  font-size: larger;
+  margin-left: auto;
+}
+
+.approve-button {
+  background-color: #00b44b;
+  color: rgb(255, 255, 255);
+  border: none;
+  border-radius: 10px;
+  margin-bottom: 5px;
+  height: 30px;
+  width: 30px;
+  transition: 0.3s;
+}
+
+.approve-button:hover {
+  background-color: #00a03e;
+}
+
+.deny-button {
+  background-color: #ff0000;
+  color: rgb(255, 255, 255);
+  border: none;
+  border-radius: 10px;
+  height: 30px;
+  width: 30px;
+  transition: 0.3s;
+}
+
+.deny-button:hover {
+  background-color: #eb1212;
+}
+
 .popup-content {
   background-color: #fff;
   padding: 30px;
   border-radius: 15px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  position: relative;
-  width: 50%; /* Adjust width */
+  position: absolute;
+  max-height: 600px; /* Adjust width */
   max-width: 600px; /* Adjust maximum width */
+  overflow-y: auto;
 }
 .ce-header {
   margin: 0px 0px 10px 0px;
+}
+
+.formatted-title {
+  color: red;
+  text-transform: uppercase;
+  font-style: italic;
 }
 
 .close-button {
@@ -39,69 +151,4 @@
 .close-button:hover {
   color: #ffffff; /* Red color on hover */
   background: #ff0000; /* Maintain the background color on hover */
-}
-
-
-input[type="text"],
-input[type="datetime-local"],
-textarea {
-  display: block;
-  width: 100%;
-  margin: 10px 0;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-textarea {
-  resize: vertical;
-  min-height: 50px;
-  max-height: 300px;
-  overflow: auto; /* Adds scrollbars  */
-}
-
-.max-people {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 10px 70px 0px 0px;
-}
-
-.max-people button {
-  padding: 5px 10px;
-  margin: 0 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background: #f0f0f0;
-  color: #000000;
-  cursor: pointer;
-}
-
-.max-people button:hover {
-  background: #d1d1d1;
-  color: #ff0000;
-}
-
-.max-people span {
-  padding: 5px 10px;
-}
-
-.create-button-container {
-  text-align: right; /* Aligns the button to the right */
-  margin-top: 20px; /* Space above the button */
-}
-
-.create-button {
-  padding: 10px 20px; /* Size of the button */
-  background-color: #007bff; /* Background color */
-  color: #fff; /* Text color */
-  border: none; /* No border */
-  border-radius: 5px; /* Rounded corners */
-  cursor: pointer; /* Mouse pointer on hover */
-  font-size: 16px; /* Font size */
-}
-
-.create-button:hover {
-  background-color: #0056b3; /* Darker background on hover */
-  transition: background-color 0.3s;
 }

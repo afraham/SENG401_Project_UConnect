@@ -378,7 +378,9 @@ function MyEvents() {
                 </div>
               </div>
             </div>
-          ))}
+            
+          ))} 
+
 
         {activeTab === "joined" && // Only render if activeTab is "Pending"
           Array.isArray(joinedEvents) &&
