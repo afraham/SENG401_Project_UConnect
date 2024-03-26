@@ -258,44 +258,6 @@ function MyEvents() {
       console.error("Error fetching events:", error);
     }
   };
-  // const updateEventMaxPeople = async (eventId, newMaxPeople) => {
-  //   try {
-  //     const response = await fetch(`http://localhost:8000/api/events/updateMaxPeople/${eventId}`, {
-  //       method: "PUT",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({ maxPeople: newMaxPeople }),
-  //     });
-
-  //     if (response.ok) {
-  //       console.log("Max people updated successfully");
-  //       fetchEvents(); // Refetch events to update the UI
-  //     } else {
-  //       console.error("Failed to update max people");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error updating max people:", error);
-  //   }
-  // };
-
-  // // New function to decrement the number of max people for an event
-  // const decrementMaxPeople = (event) => {
-  //   const { _id, spotsTaken, maxPeople } = event;
-  //   if (maxPeople > spotsTaken) {
-  //     const newMaxPeople = maxPeople - 1;
-  //     updateEventMaxPeople(_id, newMaxPeople);
-  //   } else {
-  //     alert("Cannot decrease the number of max people because it would go below the number of participants already enrolled.");
-  //   }
-  // };
-  
-
-  // useEffect(() => {
-  //   fetchEvents();
-  //   fetchPendingEvents();
-  //   fetchJoinedEvents();
-  // }, []);
 
   return (
     <div>
@@ -363,15 +325,13 @@ function MyEvents() {
                   <p className="capacity">
                     <i class="fa fa-group"></i>
                   </p>
-                  <div className="manage-button-container">
-                    <button
-                      className="manage-button"
-                      onClick={() => handleManageEvent(event)}
-                    >
-                      <i class="fa fa-user-plus"></i>
-                    </button>
-                    {event.pending.length > 0 && <span onClick={() => handleManageEvent(event)} className="pending-requests-bubble">{event.pending.length}</span>}
-                    </div>
+
+                  <button
+                    className="manage-button"
+                    onClick={() => handleManageEvent(event)}
+                  >
+                    Manage
+                  </button>
                 </div>
               </div>
               <p
