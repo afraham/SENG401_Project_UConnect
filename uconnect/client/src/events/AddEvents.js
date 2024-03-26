@@ -8,6 +8,7 @@ const AddEvents = ({ closePopup, event, editMode, updateEvents }) => {
 	const [maxPeople, setMaxPeople] = useState(event ? event.maxPeople : 2);// State for  max people, should start with 2 min
 	const [date, setDate] = useState(event ? event.date : "");
 	const [location, setLocation] = useState(event ? event.location : "");
+	const [spotsTaken] = useState(event ? event.spotsTaken : 0);
 	const maxCharacters = 24; // Only 24 Characters allowed for title
 
 	// Format the current date and time to not allow passed dates
@@ -23,12 +24,18 @@ const AddEvents = ({ closePopup, event, editMode, updateEvents }) => {
 		setMaxPeople((prev) => prev + 1);
 	};
 
-	// Function to decrement maxPeople
-	const decrementPeople = () => {
-		setMaxPeople((prev) => (prev > 2 ? prev - 1 : 2));
-	};
+  // Function to decrement maxPeople
+  const decrementPeople = () => {
+    if (spotsTaken >= maxPeople) {
+      alert(
+        "Cannot reduce the number of spots available below the number of spots already taken."
+      );
+    } else {
+      setMaxPeople((prev) => (prev > 2 ? prev - 1 : 2));
+    }
+  };
 
-	/*
+  /*
     handleInputChange
     A generic input change handler that updates state based on the input value. Enforces a maximum character limit.
     
@@ -38,16 +45,15 @@ const AddEvents = ({ closePopup, event, editMode, updateEvents }) => {
     
     Returns: None but may trigger an alert if the maximum character limit is exceeded.
     */
-	const handleInputChange = (value, setValue) => {
-		if (value.length > maxCharacters) {
-		  alert(`Please keep the input under ${maxCharacters} characters.`);
-		} else {
-		  setValue(value);
-		}
-	};
+  const handleInputChange = (value, setValue) => {
+    if (value.length > maxCharacters) {
+      alert(`Please keep the input under ${maxCharacters} characters.`);
+    } else {
+      setValue(value);
+    }
+  };
 
-	
-	/*
+  /*
     saveEventData
     Saves new event data to the database. Checks for empty fields and alerts the user if any are found.
     Extracts the current user's email from auth and sends the event data using a POST request.
@@ -55,24 +61,24 @@ const AddEvents = ({ closePopup, event, editMode, updateEvents }) => {
     Params: None
     Returns: None but updates the event list in the parent component and closes the popup on success.
     */
-	const saveEventData = async () => {
-		if (
-			!title.trim() ||
-			!description.trim() ||
-			!date.trim() ||
-			!location.trim()
-		) {
-			alert("Please fill in all fields.");
-			return; // Stop the function if any field is empty
-		}
+  const saveEventData = async () => {
+    if (
+      !title.trim() ||
+      !description.trim() ||
+      !date.trim() ||
+      !location.trim()
+    ) {
+      alert("Please fill in all fields.");
+      return; // Stop the function if any field is empty
+    }
 
-		console.log({
-			title,
-			description,
-			maxPeople,
-			date,
-			location,
-		});
+    console.log({
+      title,
+      description,
+      maxPeople,
+      date,
+      location,
+    });
 
 		closePopup();
 
@@ -81,29 +87,29 @@ const AddEvents = ({ closePopup, event, editMode, updateEvents }) => {
 			const user = auth.currentUser; // get the current user
 			const userEmail = user ? user.email : null; // get the user's email
 
-			const pending = []
-			const approved = []
-			const comments = []
+      const pending = [];
+      const approved = [];
+      const comments = [];
 
-			const spotsTaken = 1;
-			const response = await fetch("http://localhost:8000/api/events", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					title,
-					description,
-					maxPeople,
-					spotsTaken,
-					date,
-					location,
-					userEmail,
-					pending,
-					approved,
-					comments
-				}),
-			});
+      const spotsTaken = 1;
+      const response = await fetch("http://localhost:8000/api/events", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title,
+          description,
+          maxPeople,
+          spotsTaken,
+          date,
+          location,
+          userEmail,
+          pending,
+          approved,
+          comments,
+        }),
+      });
 
 			// Checking the server's response
 			if (response.ok) {
