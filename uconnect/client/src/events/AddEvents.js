@@ -3,84 +3,115 @@ import "./AddEvents.css";
 import { auth } from "../firebase";
 
 const AddEvents = ({ closePopup, event, editMode, updateEvents }) => {
-	const [title, setTitle] = useState(event ? event.title : "");
-	const [description, setDescription] =  useState(event ? event.description : "");
-	const [maxPeople, setMaxPeople] = useState(event ? event.maxPeople : 2);
+	const [title, setTitle] = useState(event ? event.title : "");  // State for the event title, with a default value for a new event
+	const [description, setDescription] =  useState(event ? event.description : ""); // State for the event description
+	const [maxPeople, setMaxPeople] = useState(event ? event.maxPeople : 2);// State for  max people, should start with 2 min
 	const [date, setDate] = useState(event ? event.date : "");
 	const [location, setLocation] = useState(event ? event.location : "");
-	const maxCharacters = 24;
+	const [spotsTaken] = useState(event ? event.spotsTaken : 0);
+	const maxCharacters = 24; // Only 24 Characters allowed for title
+
+	// Format the current date and time to not allow passed dates
+	const currentDateTime = new Date().toISOString().slice(0, 16);
+
+	// Calculate maximum date (2 years from now)
+	const maxDate = new Date();
+    maxDate.setFullYear(maxDate.getFullYear() + 2);
+    const maxDateTime = maxDate.toISOString().slice(0, 16);
 	
 	// Function to increment maxPeople
 	const incrementPeople = () => {
 		setMaxPeople((prev) => prev + 1);
 	};
 
-	// Function to decrement maxPeople
-	const decrementPeople = () => {
-		setMaxPeople((prev) => (prev > 2 ? prev - 1 : 2));
-	};
+  // Function to decrement maxPeople
+  const decrementPeople = () => {
+    if (spotsTaken >= maxPeople) {
+      alert(
+        "Cannot reduce the number of spots available below the number of spots already taken."
+      );
+    } else {
+      setMaxPeople((prev) => (prev > 2 ? prev - 1 : 2));
+    }
+  };
 
-	
-	const handleInputChange = (value, setValue) => {
-		if (value.length > maxCharacters) {
-		  alert(`Please keep the input under ${maxCharacters} characters.`);
-		} else {
-		  setValue(value);
-		}
-	};
+  /*
+    handleInputChange
+    A generic input change handler that updates state based on the input value. Enforces a maximum character limit.
+    
+    Params:
+    - value: String, the current value of the input
+    - setValue: Function, the state setter function for updating the state
+    
+    Returns: None but may trigger an alert if the maximum character limit is exceeded.
+    */
+  const handleInputChange = (value, setValue) => {
+    if (value.length > maxCharacters) {
+      alert(`Please keep the input under ${maxCharacters} characters.`);
+    } else {
+      setValue(value);
+    }
+  };
 
-	
+  /*
+    saveEventData
+    Saves new event data to the database. Checks for empty fields and alerts the user if any are found.
+    Extracts the current user's email from auth and sends the event data using a POST request.
+    
+    Params: None
+    Returns: None but updates the event list in the parent component and closes the popup on success.
+    */
+  const saveEventData = async () => {
+    if (
+      !title.trim() ||
+      !description.trim() ||
+      !date.trim() ||
+      !location.trim()
+    ) {
+      alert("Please fill in all fields.");
+      return; // Stop the function if any field is empty
+    }
 
-	const saveEventData = async () => {
-		if (
-			!title.trim() ||
-			!description.trim() ||
-			!date.trim() ||
-			!location.trim()
-		) {
-			alert("Please fill in all fields.");
-			return; // Stop the function if any field is empty
-		}
-
-		console.log({
-			title,
-			description,
-			maxPeople,
-			date,
-			location,
-		});
+    console.log({
+      title,
+      description,
+      maxPeople,
+      date,
+      location,
+    });
 
 		closePopup();
 
-		
+		// send the event data to the server
 		try {
 			const user = auth.currentUser; // get the current user
 			const userEmail = user ? user.email : null; // get the user's email
 
-			const pending = []
-			const approved = []
-			const comments = []
+      const pending = [];
+      const approved = [];
+      const comments = [];
 
-			const spotsTaken = 1;
-			const response = await fetch("http://localhost:8000/api/events", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					title,
-					description,
-					maxPeople,
-					spotsTaken,
-					date,
-					location,
-					userEmail,
-					pending,
-					approved,
-					comments
-				}),
-			});
+      const spotsTaken = 1;
+      const response = await fetch("http://localhost:8000/api/events", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title,
+          description,
+          maxPeople,
+          spotsTaken,
+          date,
+          location,
+          userEmail,
+          pending,
+          approved,
+          comments,
+        }),
+      });
 
+			// Checking the server's response
 			if (response.ok) {
 				console.log("Event data sent successfully");
 				updateEvents();
@@ -92,8 +123,17 @@ const AddEvents = ({ closePopup, event, editMode, updateEvents }) => {
 			console.error("Error sending event data:", error);
 		}
 	};
-	//..................
 
+	/*
+    handleUpdateEvent
+    Updates existing event data in the database. Performs field checks similar to saveEventData,
+    but sends a PATCH request to a specific event endpoint.
+    
+    Params:
+    - eventId: String, the ID of the event to update
+    
+    Returns: None but updates the event list in the parent component and closes the popup on success.
+    */
 	const handleUpdateEvent = async (eventId) => {
 		try {
 			if (
@@ -115,9 +155,10 @@ const AddEvents = ({ closePopup, event, editMode, updateEvents }) => {
 				maxPeople,
 				date,
 				location,
-				userEmail, // Assuming userEmail is required for the update
+				userEmail,
 			};
 	
+			// Sending the updated event data to the server using a PATCH request for partial update
 			const response = await fetch(`http://localhost:8000/api/events/${eventId}/edit`, {
 				method: "PATCH", // Use PATCH method for partial updates
 				headers: {
@@ -139,6 +180,7 @@ const AddEvents = ({ closePopup, event, editMode, updateEvents }) => {
 		}
 	};
 	
+	// Rendering the Popup UI after clicking Add an Event.
 	return (
 		<div className="popup-container">
 			<div className="popup-content">
@@ -173,6 +215,8 @@ const AddEvents = ({ closePopup, event, editMode, updateEvents }) => {
 					type="datetime-local"
 					value={date}
 					onChange={(e) => setDate(e.target.value)}
+					min={currentDateTime} 
+					max={maxDateTime}
 				/>
 				<input
 					type="text"

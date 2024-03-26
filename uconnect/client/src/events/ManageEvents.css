@@ -231,4 +231,14 @@ background: #555; /* Color of the thumb on hover */
   height: fit-content;
   white-space: nowrap;
   margin: 0px;
+  
+@media screen and (max-width: 619px) {
+
+  .request-list {
+    
+    width: 290px;
+    
+  }
+  
+  
 }

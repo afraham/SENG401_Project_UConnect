@@ -9,6 +9,9 @@ function Layout({ signInState }) {
   const [userSignedIn, setUserSignedIn] = useState(false);
   const nav = useNavigate();
 
+  /*
+    useEffect hook listens for changes in authentication state on component mount and cleanup on unmount.
+  */
   useEffect(() => {
     // Listen for authentication state changes
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -25,6 +28,15 @@ function Layout({ signInState }) {
     return () => unsubscribe(); // Cleanup subscription on unmount
   }, [nav]);
 
+
+  /*
+    handleLogout
+    Signs the user out from Firebase authentication.
+    
+    Params: None
+    
+    Returns: None, but redirects the user to the home page and updates the sign-in state.
+  */
   const handleLogout = async () => {
     try {
       await signOut(auth);
@@ -48,6 +60,7 @@ function Layout({ signInState }) {
                 Logout
               </li>
             )}
+            {/* Navigation links to different parts of the app */}
             <li>
               <Link to="/user/myprofile">My Profile</Link>
             </li>

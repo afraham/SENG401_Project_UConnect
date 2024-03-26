@@ -10,8 +10,8 @@ import no_reqs_dino from "../images/no-reqs-dino.png";
 const EventDetails = () => {
    // Get the event ID from the URL parameter
   const { state } = useLocation(); // This will give you access to the state passed through navigate
-  const event = state.event;
-  const [date, time] = event.date.split('T');
+  const event = state.event; // Extracting the event object from the state
+  const [date, time] = event.date.split('T'); // Splitting the ISO date string to separate date and time
 
   const [profiles, setProfiles] = useState(event.approved)
 
@@ -69,7 +69,8 @@ const EventDetails = () => {
   if (!event) {
     return <div>Loading event details...</div>;
   }
-
+  
+  //Rendering the Individual event page.
   return (
     <div className='event-details-container'>
     <div className="event-details-body">
