@@ -52,7 +52,6 @@ function Profile() {
         throw new Error(`Failed to fetch profile information: ${response.statusText}`);
       }
       const data = await response.json();
-      console.log("data to be updated: ", data);
       setProfileInfo(data);
     } catch (error) {
       console.error("Error fetching profile information:", error.message);

@@ -29,6 +29,8 @@ const AddEvents = ({ closePopup, event, editMode, updateEvents }) => {
 		}
 	};
 
+	
+
 	const saveEventData = async () => {
 		if (
 			!title.trim() ||

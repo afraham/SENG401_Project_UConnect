@@ -69,6 +69,28 @@
   margin-top: 4px;
 }
 
+.manage-button-container {
+  position: relative;
+  display: inline-block;
+  /* other styles */
+}
+
+
+.pending-requests-bubble {
+  position: absolute;
+  top: -6px; /* Adjust as needed */
+  right: -6px; /* Adjust as needed */
+  width: 20px; /* Adjust as needed */
+  height: 20px; /* Adjust as needed */
+  background-color: red;
+  border-radius: 50%;
+  color: white;
+  text-align: center;
+  line-height: 20px; 
+  font-size: 12px;
+  font-weight: bold;
+}
+
 .event-button:hover {
   background-color: #d1d1d1; /* Light grey background on hover */
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2),
@@ -100,11 +122,17 @@
 }
 
 .manage-button {
-  border: none;
+  border: solid;
+  padding: 2px;
+  border-radius: 100%;
   background-color: transparent;
   color: #007bff;
-  text-decoration: underline;
   font-style: italic;
+  margin-bottom: 12px;
+  margin-left: 8px;
+  font-size: 16px;
+  transform: translateY(-1px);
+  cursor: pointer;
 }
 
 .edit-button {
