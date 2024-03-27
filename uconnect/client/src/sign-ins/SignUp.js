@@ -17,8 +17,15 @@ function SignUp() {
 			// Upon successful sign up, you can redirect the user or change the application state
 			nav("/");
 		} catch (error) {
-			console.error("Error signing up:", error.message);
-			// Handle errors here, such as displaying a notification to the user
+			if (error.code === "auth/email-already-in-use") {
+				alert("The email address is already in use by another account.");
+			} else if (error.code === "auth/invalid-email") {
+				alert("Please provide a valid email address.");
+			} else if (error.code === "auth/weak-password") {
+				alert(
+					"The password is too weak, please ensure it has 6 or more characters."
+				);
+			}
 		}
 	};
 
@@ -46,7 +53,7 @@ function SignUp() {
 						required
 					/>
 					<button type="submit">Sign Up</button>
-					<img src={require("../images/logo.png")} alt="Logo.png"/>
+					<img src={require("../images/logo.png")} alt="Logo.png" />
 					<p style={{ cursor: "pointer" }}>
 						<Link to="/"> Already have an account? Sign In</Link>
 					</p>

@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./SignIn.css";
-import { signInWithEmailAndPassword, setPersistence, browserLocalPersistence } from "firebase/auth";
+import {
+	signInWithEmailAndPassword,
+	setPersistence,
+	browserLocalPersistence,
+} from "firebase/auth";
 import { auth } from "../firebase";
 
 function SignIn({ changeSignInState }) {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const nav = useNavigate(); // To navigate to main page after sign in
-
 
 	/*
 		handleSignIn
@@ -29,9 +32,12 @@ function SignIn({ changeSignInState }) {
 			nav("/user");
 			changeSignInState(true);
 		} catch (error) {
-			console.error("Error signing in:", error.message);
-			console.error("Error setting persistence or signing in:", error.message);
-			// Handle errors here, such as displaying a notification to the user
+			if (
+				error.code === "auth/user-not-found" ||
+				error.code === "auth/invalid-credential"
+			) {
+				alert("Invalid email or password. Please try again.");
+			}
 		}
 	};
 
@@ -58,8 +64,8 @@ function SignIn({ changeSignInState }) {
 						onChange={(e) => setPassword(e.target.value)}
 						required
 					/>
-					<button type="submit" >Sign In</button>
-					<img src={require("../images/logo.png")} alt="Logo.png"/>
+					<button type="submit">Sign In</button>
+					<img src={require("../images/logo.png")} alt="Logo.png" />
 					<p style={{ cursor: "pointer" }}>
 						<Link to="/signup"> Don't have an account? Sign Up</Link>
 					</p>

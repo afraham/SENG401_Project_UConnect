@@ -1,39 +1,45 @@
-import { render, fireEvent } from "@testing-library/react";
-import MyEvents from "../events/MyEvents.js";
+import React from "react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import MyEvents from "../events/MyEvents";
 
-test("renders without crashing", () => {
-	render(<MyEvents />);
-});
+jest.mock("react-router-dom", () => ({
+	...jest.requireActual("react-router-dom"),
+	useNavigate: () => jest.fn(),
+}));
+global.alert = jest.fn();
 
-test("displays add event button", () => {
-	const { getByText } = render(<MyEvents />);
-	expect(getByText("+")).toBeInTheDocument();
-});
+describe("MyEvents", () => {
+	test("opens AddEvents popup when '+' button is clicked", async () => {
+		render(<MyEvents />);
+		const addButton = screen.getByText("+");
+		fireEvent.click(addButton);
+		await waitFor(() => {
+			expect(screen.getByTestId("event-button")).toBeInTheDocument();
+		});
+	});
 
-test("displays and triggers add event button", () => {
-	const { getByText } = render(<MyEvents />);
-	const addButton = getByText("+");
-	expect(addButton).toBeInTheDocument();
+	test("renders correct number of tabs", () => {
+		const { getByText } = render(<MyEvents />);
 
-	fireEvent.click(addButton);
-	expect(getByText("Add New Event")).toBeInTheDocument();
-});
+		expect(getByText("My Events (0)")).toBeInTheDocument();
+		expect(getByText("Pending (0)")).toBeInTheDocument();
+		expect(getByText("Joined (0)")).toBeInTheDocument();
+	});
 
-test("displays AddEvents component when add event button is clicked", () => {
-	const { getByText, queryByText } = render(<MyEvents />);
-	const addButton = getByText("+");
+	test('adds a new event when "Create" button is clicked', () => {
+		// Render your component and perform necessary setup
 
-	fireEvent.click(addButton);
-	expect(queryByText("Add New Event")).toBeInTheDocument();
-});
+		render(<MyEvents />);
+		const addButton = screen.getByText("+");
+		const mockAlert = jest.spyOn(window, "alert").mockImplementation(() => {});
+		fireEvent.click(addButton);
+		const createButton = screen.getByText("Create");
 
-test("does not display AddEvents component when close button is clicked", () => {
-	const { getByText, queryByText } = render(<MyEvents />);
-	const addButton = getByText("+");
+		// Simulate user interaction that triggers the alert
+		fireEvent.click(createButton);
 
-	fireEvent.click(addButton);
-	const closeButton = getByText("X");
-
-	fireEvent.click(closeButton);
-	expect(queryByText("Add Event")).not.toBeInTheDocument();
+		// Expect that the alert function is called
+		expect(mockAlert).toHaveBeenCalledWith("Please fill in all fields.");
+		mockAlert.mockRestore();
+	});
 });

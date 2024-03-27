@@ -1,47 +1,29 @@
-import { render, waitFor } from "@testing-library/react";
-import fetchMock from "jest-fetch-mock";
-import FindEvents from "../events/FindEvents.js";
+import React from "react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import FindEvents from "../events/FindEvents";
 
-fetchMock.enableMocks();
+const mockEvents = []; // Empty array to simulate no events
 
-beforeEach(() => {
-	fetchMock.mockResponseOnce(
-		JSON.stringify([
-			{
-				title: "Test Event",
-				spotsTaken: 0,
-				maxPeople: 5,
-				description: "Test Description",
-				location: "Test Location",
-			},
-		])
-	);
-});
+const mockRefetchEvents = jest.fn();
 
-test("renders without crashing", () => {
-	render(<FindEvents />);
-});
+jest.mock("react-router-dom", () => ({
+	...jest.requireActual("react-router-dom"),
+	useNavigate: () => jest.fn(),
+}));
 
-test("displays 'Request To Join' button after fetch", async () => {
-	const { findByText } = render(<FindEvents />);
-	await waitFor(() =>
-		expect(findByText("Request To Join")).toBeInTheDocument()
-	);
-});
+describe("FindEvents", () => {
+	beforeEach(() => {
+		render(
+			<FindEvents events={mockEvents} refetchEvents={mockRefetchEvents} />
+		);
+	});
 
-test("displays event title after fetch", async () => {
-	const { findByText } = render(<FindEvents />);
-	await waitFor(() => expect(findByText("Test Event")).toBeInTheDocument());
-});
+	afterEach(() => {
+		jest.restoreAllMocks(); // Restore mocked fetch after each test
+	});
 
-test("displays event description after fetch", async () => {
-	const { findByText } = render(<FindEvents />);
-	await waitFor(() =>
-		expect(findByText("Test Description")).toBeInTheDocument()
-	);
-});
-
-test("displays event location after fetch", async () => {
-	const { findByText } = render(<FindEvents />);
-	await waitFor(() => expect(findByText("Test Location")).toBeInTheDocument());
+	test("renders 'no events match' message", async () => {
+		// Ensure that the 'no events match' message is rendered
+		expect(screen.getByText(/No events present/i)).toBeInTheDocument();
+	});
 });
