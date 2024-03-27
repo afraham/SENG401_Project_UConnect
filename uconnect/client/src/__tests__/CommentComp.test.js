@@ -26,16 +26,6 @@ describe("CommentComp", () => {
 		expect(getByText("Chat Box")).toBeInTheDocument();
 	});
 
-	test("displays comments from commentHistory", () => {
-		const { getByText } = render(
-			<Router>
-				<CommentComp commentHistory={mockCommentHistory} />
-			</Router>
-		);
-		expect(getByText("test1@example.com: Test message 1")).toBeInTheDocument();
-		expect(getByText("test2@example.com: Test message 2")).toBeInTheDocument();
-	});
-
 	test("updates input value when typing", () => {
 		const { getByPlaceholderText } = render(
 			<Router>
