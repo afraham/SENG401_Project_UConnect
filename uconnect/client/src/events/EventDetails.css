@@ -1,16 +1,32 @@
-.event-details-container h1 {
+.event-details-container {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  margin-bottom: 20px;
+}
+
+.event-details-body {
     text-align: center;
+    width: 70%;
+    height: 90%;
+}
+
+
+
+.event-details-container-title {
     text-transform: uppercase;
     font-size: 2.5em;
-    margin-top: 40px;
 }
 
 .description-box {
     border: 2px solid red;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    margin: 20px auto; /* Centers the box */
-    max-width: 1000px; /* Adjust the width as needed */
+    margin-top: 0px;
+    margin-left: 10%;
+    width: 100%; /* Adjust the width as needed */
 }
   
   .description-title {
@@ -33,7 +49,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
     margin: 20px auto; /* Centers the box */
-    max-width: 800px; /* Adjust the width as needed */
+    width: 96%;
     text-align: center;
   }
   
@@ -62,3 +78,116 @@
   
     
   }
+
+.details-body {
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+  height: 65vh;
+  align-items: stretch;
+}
+
+.chat-box {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.event-details-approved-users-box {
+  flex: 1;
+  overflow: hidden; /* Hide the overflow and let the inner box be scrollable */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ccc; 
+  border-radius: 8px;
+  margin-right: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.event-details-approved-list {
+  margin: 0px 30px 30px 30px;
+  position: relative;
+  border-radius: 10px;
+  text-align: left;
+  flex: 1;
+  overflow: auto;
+}
+
+
+.event-details-approved-name {
+  font-size: 20px;
+  margin: 0px;
+  font-weight: bold;
+
+}
+
+.event-details-profile {
+  display: flex;
+  flex-direction: row;
+}
+
+.event-details-pfp-box {
+  display: flex;
+  align-items: center;
+}
+
+.event-details-user-info {
+  display: flex;
+  flex-direction: column;
+  padding: 0px;
+  max-width: calc(inherit - 30px);
+  margin-left: 10px;
+}
+
+.event-details-approved-bio {
+  font-size: 15px;
+  padding: 10px 0px 10px 0px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.event-details-avatar {
+  display: flex;
+  justify-self: flex-start;
+  max-height: 60px;
+  max-width: 60px;
+  border-radius: 50%;
+  position: relative;
+}
+
+.event-details-approved-interests-box {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 10px 0px 0px 0px;
+  gap: 10px;
+  overflow-x: auto;
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: #888 #f1f1f1; /* Thumb and track colors */
+}
+
+.event-details-approved-interest {
+  font-size: 13px;
+  padding: 7px; /* Adjust as needed */
+  background-color: rgba(100, 194, 215, 1); /* Adjust as needed */
+  color: white; /* Adjust as needed */
+  border-radius: 20px; /* Adjust as needed */
+  width: fit-content;
+  height: fit-content;
+  white-space: nowrap;
+  margin: 0px;
+}
+
+.event-details-approved-user {
+  display: flex;
+  align-items: center;
+  background-color: rgb(239, 238, 238);
+  border-radius: 10px;
+  padding: 1em;
+  font-size: larger;
+  max-height: fit-content;
+  margin-bottom: 1em;
+}
+
+.event-details-approved-user:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.202);
+}

@@ -32,7 +32,7 @@
   border-radius: 10px;
   padding: 1em;
   font-size: larger;
-  max-height: 60px;
+  max-height: fit-content;
   margin-bottom: 1em;
 }
 
@@ -63,7 +63,7 @@
   background: #ff7b00;
   color: white;
   border-radius: 15px;
-  padding: 0.4em 1em; /* Adjust padding for better readability */
+  padding: 0.4em 0.1em; /* Adjust padding for better readability */
   height: 30px;
   min-width: 70px; /* Set minimum width to ensure content is visible */
   font-size: 14px; /* Increased font size for better visibility */
@@ -153,7 +153,86 @@
   background: #ff0000; /* Maintain the background color on hover */
 }
 
+.profile {
+  display: flex;
+  flex-direction: row;
+}
 
+.pfp-box {
+  display: flex;
+  align-items: center;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  padding: 0px;
+  max-width: 360px;
+}
+
+.request-bio {
+  font-size: 15px;
+  padding: 10px 0px 10px 0px;
+  max-height: 90px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.request-name {
+  font-size: 20px;
+  margin: 0px;
+  font-weight: bold;
+}
+
+.request-avatar {
+  margin-right: 10px;
+}
+
+.interests-box {
+  display: flex;
+  flex-direction: row;
+  margin: 10px 0px 0px 0px;
+  gap: 10px;
+  overflow-x: auto;
+
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: #888 #f1f1f1; /* Thumb and track colors */
+}
+
+
+.interests-box::-webkit-scrollbar {
+width: 12px; /* Width of the scrollbar */
+}
+
+.interests-box::-webkit-scrollbar-track {
+background: #f1f1f1; /* Color of the track */
+}
+
+.interests-box::-webkit-scrollbar-thumb {
+background: #888; /* Color of the thumb */
+border-radius: 6px; /* Roundness of the thumb */
+}
+
+.interests-box::-webkit-scrollbar-thumb:hover {
+background: #555; /* Color of the thumb on hover */
+}
+
+.interests-box::-webkit-scrollbar-button {
+  display: none; /* Hide scrollbar buttons */
+}
+
+.interest {
+  font-size: 13px;
+  padding: 7px; /* Adjust as needed */
+  background-color: rgba(100, 194, 215, 1); /* Adjust as needed */
+  color: white; /* Adjust as needed */
+  border-radius: 20px; /* Adjust as needed */
+  width: fit-content;
+  height: fit-content;
+  white-space: nowrap;
+  margin: 0px;
+}
+  
 @media screen and (max-width: 619px) {
 
   .request-list {
