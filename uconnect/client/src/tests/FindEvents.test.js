@@ -26,7 +26,7 @@ describe("FindEvents", () => {
 
   test("renders 'no events match' message", async () => {
     // Ensure that the 'no events match' message is rendered
-    expect(screen.getByText(/No events match/i)).toBeInTheDocument();
+    expect(screen.getByText(/No events present/i)).toBeInTheDocument();
   });
 
 
