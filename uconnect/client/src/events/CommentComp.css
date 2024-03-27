@@ -9,6 +9,8 @@
     border-radius: 8px;
     height: stretch;
     min-height: fit-content;
+    overflow: hidden;
+    padding-bottom: 40px;
 }
 .comments-section h2{
     text-align: center;

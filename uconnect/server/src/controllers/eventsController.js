@@ -53,38 +53,6 @@ exports.getEvents = async (req, res) => {
 };
 
 
-/////// Latest version of the getEvents
-// exports.getEvents = async (req, res) => {
-// 	try {
-// 		const database = db.db("create_events");
-// 		const collection = database.collection("events");
-
-// 		const userEmail = req.query.userEmail;
-// 		let events;
-
-// 		if (userEmail) {
-// 			events = await collection
-// 				.find({
-// 					$and: [
-// 						{ userEmail: { $ne: userEmail } }, // Check if user is owner of event
-// 						{ pending: { $nin: [userEmail] } }, // Check if user has already joined event
-// 						{ approved: { $nin: [userEmail] } }, // Check if user has an open request to join event
-// 					],
-// 				})
-// 				.toArray();
-// 		} else {
-// 			res.status(400).send({ message: "No userEmail provided" });
-// 			return;
-// 		}
-
-// 		res.setHeader("Access-Control-Allow-Origin", "*");
-// 		res.status(200).json(events);
-// 	} catch (error) {
-// 		console.error("Error retrieving events:", error);
-// 		res.status(500).send({ message: "Internal Server Error" });
-// 	}
-// };
-
 /*
 getEventsByEmail
 Retrieves all events and uses req query property to see if userEmail is entered. If userEmail exists retrieve all events belonging to the userEmail

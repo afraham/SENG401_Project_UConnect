@@ -122,53 +122,53 @@ const ManageEvents = ({
     }
   };
 
-  const fetchProfileFromEmail = async () => {
-    try {
-      const newHandledRequests = [];
-      for (let i = 0; i < event.pending.length; i++) {
-        const email = event.pending[i];
-        try {
-          // Attempt to fetch user data from the database using request
-          const response = await fetch(`http://localhost:8000/api/profiles/${email}`);
-          if (response.ok) {
-            const userData = await response.json();
+  useEffect(() => {
+    const fetchProfileFromEmail = async () => {
+      try {
+        const newHandledRequests = [];
+        for (let i = 0; i < event.pending.length; i++) {
+          const email = event.pending[i];
+          try {
+            // Attempt to fetch user data from the database using request
+            const response = await fetch(`http://localhost:8000/api/profiles/${email}`);
+            if (response.ok) {
+              const userData = await response.json();
+              newHandledRequests.push({
+                name: userData.name,
+                picture: userData.picture,
+                interests: userData.interests,
+                bio: userData.bio,
+                email: email,
+                profileAvaiable: true
+              });
+            } else {
+              console.log("Could not find matching profile, this might not be an error!")
+              // If user data not found, use request itself
+              newHandledRequests.push({
+                email: email,
+                picture: default_picture,
+                profileAvaiable: false
+              });
+            }
+          } catch (error) {
+            console.error("Error fetching user data for request:", error);
+            // If an error occurs, use request itself
             newHandledRequests.push({
-              name: userData.name,
-              picture: userData.picture,
-              interests: userData.interests,
-              bio: userData.bio,
-              email: email,
-              profileAvaiable: true
-            });
-          } else {
-            console.log("Could not find matching profile, this might not be an error!")
-            // If user data not found, use request itself
-            newHandledRequests.push({
-              email: email,
+              name: email,
               picture: default_picture,
               profileAvaiable: false
             });
           }
-        } catch (error) {
-          console.error("Error fetching user data for request:", error);
-          // If an error occurs, use request itself
-          newHandledRequests.push({
-            name: email,
-            picture: default_picture,
-            profileAvaiable: false
-          });
         }
+        setProfiles(newHandledRequests);
+      } catch (error) {
+        console.error("Error fetching data for requests:", error);
+        // Handle error case here
       }
-      setProfiles(newHandledRequests);
-    } catch (error) {
-      console.error("Error fetching data for requests:", error);
-      // Handle error case here
-    }
-  }
-
-  useEffect(() => {
+    };
+  
     fetchProfileFromEmail();
-  }, [])
+  }, [event.pending])
 
   return (
     <div className="popup-container">
