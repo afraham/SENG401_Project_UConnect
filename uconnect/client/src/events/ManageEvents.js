@@ -122,6 +122,14 @@ const ManageEvents = ({
     }
   };
 
+  // Mock array for approved requests
+  const mockApprovedRequests = ["user1"];
+
+  // Kicking out approved users
+  const handleKick = (userEmail) => {
+    console.log(`Kicking out user with email: ${userEmail}`);
+  };
+
   const fetchProfileFromEmail = async () => {
     try {
       const newHandledRequests = [];
