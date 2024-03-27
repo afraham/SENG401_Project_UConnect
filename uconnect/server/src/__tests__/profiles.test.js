@@ -48,3 +48,51 @@ describe("POST /api/profiles", () => {
 		expect(res.body).toHaveProperty("message", "Email is required");
 	});
 });
+
+describe("PUT /api/profiles", () => {
+	it("should update an existing profile", async () => {
+		const profileData = {
+			email: "jest@user.com",
+			name: "Updated Jest User",
+			bio: "This is an updated test user created by Jest.",
+		};
+		const res = await request(app).put("/api/profiles").send(profileData);
+
+		expect(res.statusCode).toEqual(200);
+		expect(res.body).toHaveProperty(
+			"message",
+			"Profile updated/created successfully"
+		);
+	});
+
+	it("should return 500 if the email is not provided", async () => {
+		const invalidProfileData = {
+			name: "Updated Jest User",
+			bio: "This is an updated test user created by Jest.",
+		};
+		const res = await request(app)
+			.put("/api/profiles")
+			.send(invalidProfileData);
+
+		expect(res.statusCode).toEqual(500);
+		expect(res.body).toHaveProperty("message", "Internal Server Error");
+	});
+});
+
+describe("GET /api/profiles/:email", () => {
+	it("should fetch a profile", async () => {
+		const email = "jest@user.com";
+		const res = await request(app).get(`/api/profiles/${email}`);
+
+		expect(res.statusCode).toEqual(200);
+		expect(res.body).toHaveProperty("email", email);
+	});
+
+	it("should return 404 if the profile is not found", async () => {
+		const email = "nonexistent@user.com";
+		const res = await request(app).get(`/api/profiles/${email}`);
+
+		expect(res.statusCode).toEqual(404);
+		expect(res.body).toHaveProperty("message", "Profile not found");
+	});
+});
