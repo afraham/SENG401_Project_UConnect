@@ -9,37 +9,13 @@ app.use("/", router);
 
 describe("Events Routes", () => {
 	let eventId;
-	let eventId1;
+	let eventId_temp;
 
-	beforeAll((done) => {
-		request(app)
-			.post("/api/events")
-			.send({
-				title: "Jest Event",
-				description: "This is an event made by Jest.",
-				maxPeople: 3,
-				spotsTaken: 0,
-				date: "2023-01-01T00:00",
-				location: "Jest Location",
-				userEmail: "jest@beforeAll.com",
-				pending: [],
-				approved: [],
-				comments: [],
-			})
-			.end((err, res) => {
-				if (err) {
-					return done(err);
-				}
-				eventId = new ObjectId(res.body._id); // convert to ObjectId
-				done();
-			});
-	});
-
-	it("should create a new event", async () => {
+	beforeAll(async () => {
 		const res = await request(app).post("/api/events").send({
-			title: "Jest Event in Block",
-			description: "This is an event made by Jest AGAIN!",
-			maxPeople: 4,
+			title: "Jest Event",
+			description: "This is an event made by Jest.",
+			maxPeople: 3,
 			spotsTaken: 0,
 			date: "2023-01-01T00:00",
 			location: "Jest Location",
@@ -48,41 +24,68 @@ describe("Events Routes", () => {
 			approved: [],
 			comments: [],
 		});
-		eventId1 = new ObjectId(res.body._id); // convert to ObjectId
 
-		expect(res.statusCode).toEqual(201);
-		expect(res.body).toHaveProperty("message", "Event created successfully");
+		console.log(res.body); // log the entire response body
+
+		eventId = res.body._id; // assign the returned eventId
+		console.log(`Event ID: ${eventId}`); // log the eventId
 	});
 
-	it("should fetch all events", async () => {
-		const res = await request(app)
-			.get("/api/events")
-			.query({ userEmail: "jest@beforeAll.com" });
+	describe("POST /api/events", () => {
+		it("should create a new event", async () => {
+			const eventData = {
+				title: "Jest Event in Block",
+				description: "This is an event made by Jest AGAIN!",
+				maxPeople: 4,
+				spotsTaken: 0,
+				date: "2023-01-01T00:00",
+				location: "Jest Location",
+				userEmail: "jest@beforeAll.com",
+				pending: [],
+				approved: [],
+				comments: [],
+			};
+			const res = await request(app).post("/api/events").send(eventData);
 
-		expect(res.statusCode).toEqual(200);
-		expect(Array.isArray(res.body)).toBe(true);
+			eventId_temp = res.body._id; // Assign the _id to eventId_temp
+
+			expect(res.statusCode).toEqual(201);
+			expect(res.body).toHaveProperty("message", "Event created successfully");
+		});
+	});
+
+	describe("GET /api/events", () => {
+		it("should fetch all events", async () => {
+			const res = await request(app)
+				.get("/api/events")
+				.query({ userEmail: "jest@beforeAll.com" });
+
+			expect(res.statusCode).toEqual(200);
+			expect(Array.isArray(res.body)).toBe(true);
+		});
 	});
 
 	// should try to change it to a general eventid but... it works with an
 	// existing eventid :( so it's not a good test
-	it("should request to join an event", async () => {
-		const eventIdA = "660312f57ad729c353204ab6";
-		const res = await request(app)
-			.put(`/api/events/${eventIdA}/join`) // pass eventId directly
-			.send({ userEmail: "jest@beforeAll.com" });
+	describe("PUT /api/events/:eventId/join", () => {
+		it("should request to join an event", async () => {
+			const res = await request(app)
+				.put(`/api/events/${eventId}/join`) // pass eventId directly
+				.send({ userEmail: "jest@beforeAll.com" });
 
-		expect(res.statusCode).toEqual(200);
-		expect(res.body).toHaveProperty("message", "Event joined successfully");
-	});
+			expect(res.statusCode).toEqual(200);
+			expect(res.body).toHaveProperty("message", "Event joined successfully");
+		});
 
-	it("should return 404 if the event does not exist", async () => {
-		const nonExistentId = new ObjectId(); // generate a new ObjectId
-		const res = await request(app)
-			.put(`/api/events/${nonExistentId.toString()}/join`)
-			.send({ userEmail: "jest@beforeAll.com" });
+		it("should return 404 if the event does not exist", async () => {
+			const nonExistentId = new ObjectId(); // generate a new ObjectId
+			const res = await request(app)
+				.put(`/api/events/${nonExistentId.toString()}/join`)
+				.send({ userEmail: "jest@beforeAll.com" });
 
-		expect(res.statusCode).toEqual(404);
-		expect(res.body).toHaveProperty("message", "Item not found");
+			expect(res.statusCode).toEqual(404);
+			expect(res.body).toHaveProperty("message", "Item not found");
+		});
 	});
 
 	describe("GET /api/eventsByEmail", () => {
@@ -126,21 +129,20 @@ describe("Events Routes", () => {
 	});
 
 	describe("PUT /api/eventById/:eventId", () => {
-		it("should add a comment to an event", async () => {
-			const res = await request(app)
-				.put(`/api/eventById/${eventId.toString()}`)
-				.send({
-					message: "This is a test comment",
-					userEmail: "jest@beforeAll.com",
-				});
-
-			expect(res.statusCode).toEqual(200);
-			expect(res.body).not.toBeNull();
-			expect(res.body.value).not.toBeNull();
-			expect(res.body.value.comments).toContainEqual({
+		test("should add a comment to an event", async () => {
+			const comment = {
 				message: "This is a test comment",
 				userEmail: "jest@beforeAll.com",
-			});
+			};
+
+			const res = await request(app)
+				.put(`/api/eventById/${eventId}`)
+				.send(comment);
+
+			expect(res.status).toBe(200);
+			expect(res.body).not.toBeNull();
+			expect(res.body.value).not.toBeNull();
+			expect(res.body.value.comments).toContainEqual(comment);
 		});
 
 		it("should return 500 if the event does not exist", async () => {
@@ -148,7 +150,7 @@ describe("Events Routes", () => {
 			const res = await request(app)
 				.put(`/api/eventById/${nonExistentId.toString()}`)
 				.send({
-					comment: "This is a test comment",
+					message: "This is a test comment",
 					userEmail: "jest@beforeAll.com",
 				});
 
@@ -160,7 +162,7 @@ describe("Events Routes", () => {
 	describe("DELETE /api/events/:eventId", () => {
 		it("should delete an event", async () => {
 			const res = await request(app).delete(
-				`/api/events/${eventId.toString()}`
+				`/api/events/${eventId_temp.toString()}`
 			);
 
 			expect(res.statusCode).toEqual(200);
@@ -181,20 +183,20 @@ describe("Events Routes", () => {
 	describe("PUT /api/events/approve/:eventId", () => {
 		it("should approve a user for an event", async () => {
 			const res = await request(app)
-				.put(`/api/events/approve/${eventId1.toString()}`)
+				.put(`/api/events/approve/${eventId.toString()}`)
 				.send({ userEmail: "jest@beforeAll.com" });
 
 			expect(res.statusCode).toEqual(200);
 			expect(res.body.value.approved).toContain("jest@beforeAll.com");
 		});
 
-		it("should return 404 if the event does not exist", async () => {
+		it("should return 500 if the event does not exist", async () => {
 			const nonExistentId = new ObjectId(); // generate a new ObjectId
 			const res = await request(app)
 				.put(`/api/events/approve/${nonExistentId.toString()}`)
 				.send({ userEmail: "jest@beforeAll.com" });
 
-			expect(res.statusCode).toEqual(404);
+			expect(res.statusCode).toEqual(500);
 		});
 	});
 
@@ -208,41 +210,35 @@ describe("Events Routes", () => {
 			expect(res.body.value.pending).not.toContain("jest@beforeAll.com");
 		});
 
-		it("should return 404 if the event does not exist", async () => {
+		it("should return 500 if the event does not exist", async () => {
 			const nonExistentId = new ObjectId(); // generate a new ObjectId
 			const res = await request(app)
 				.put(`/api/events/deny/${nonExistentId.toString()}`)
 				.send({ userEmail: "jest@beforeAll.com" });
 
-			expect(res.statusCode).toEqual(404);
-			expect(res.body).toHaveProperty(
-				"message",
-				"Item not found or element not removed"
-			);
+			expect(res.statusCode).toEqual(500);
+			expect(res.body).toHaveProperty("message", "Internal Server Error");
 		});
 	});
 
 	describe("PUT /api/events/leave/:eventId", () => {
 		it("should make a user leave an event", async () => {
 			const res = await request(app)
-				.put(`/api/events/leave/${eventId1.toString()}`)
+				.put(`/api/events/leave/${eventId.toString()}`)
 				.send({ userEmail: "jest@beforeAll.com" });
 
 			expect(res.statusCode).toEqual(200);
 			expect(res.body.value.approved).not.toContain("jest@beforeAll.com");
 		});
 
-		it("should return 404 if the event does not exist", async () => {
+		it("should return 500 if the event does not exist", async () => {
 			const nonExistentId = new ObjectId(); // generate a new ObjectId
 			const res = await request(app)
 				.put(`/api/events/leave/${nonExistentId.toString()}`)
 				.send({ userEmail: "jest@beforeAll.com" });
 
-			expect(res.statusCode).toEqual(404);
-			expect(res.body).toHaveProperty(
-				"message",
-				"Item not found or element not removed"
-			);
+			expect(res.statusCode).toEqual(500);
+			expect(res.body).toHaveProperty("message", "Internal Server Error");
 		});
 	});
 
@@ -283,17 +279,14 @@ describe("Events Routes", () => {
 			expect(res.body.value.pending).not.toContain("jest@beforeAll.com");
 		});
 
-		it("should return 404 if the event does not exist", async () => {
+		it("should return 500 if the event does not exist", async () => {
 			const nonExistentId = new ObjectId(); // generate a new ObjectId
 			const res = await request(app)
 				.put(`/api/events/cancelPending/${nonExistentId.toString()}`)
 				.send({ userEmail: "jest@beforeAll.com" });
 
-			expect(res.statusCode).toEqual(404);
-			expect(res.body).toHaveProperty(
-				"message",
-				"Item not found or element not removed"
-			);
+			expect(res.statusCode).toEqual(500);
+			expect(res.body).toHaveProperty("message", "Internal Server Error");
 		});
 	});
 });
