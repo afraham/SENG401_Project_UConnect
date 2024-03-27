@@ -9,79 +9,90 @@
     border-radius: 8px;
     height: stretch;
     min-height: fit-content;
+    overflow: hidden;
+    padding-bottom: 40px;
+
 }
-.comments-section h2{
-    text-align: center;
-    text-transform: uppercase;
+
+.comments-section h2 {
+  text-align: center;
+  text-transform: uppercase;
 }
 
 .comments-section input[type="text"] {
-    width: calc(100% - 20px);
-    padding: 12px 12px; 
-    margin-bottom: 10px;
-    border-radius: 15px; 
-    border: 1px solid #ccc; 
-    font-size: 1rem; 
-    margin-right: 10px;
-    
+  width: calc(100% - 20px);
+  padding: 12px 12px;
+  margin-bottom: 10px;
+  border-radius: 15px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  margin-right: 10px;
 }
-
 
 .comments-section button {
-    padding: 13px 20px;
-    border-radius: 15px; 
-    background-color: #4CAF50;
-    color: white; 
-    border: none;
-    cursor: pointer; 
-    font-size: 1rem; 
-    margin-top: 10px; 
-    transition: background-color 0.3s ease; 
-    margin-bottom: 10px;
-    
+  padding: 13px 20px;
+  border-radius: 15px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+  margin-bottom: 10px;
 }
 
-
 .comments-section button:hover {
-    background-color: #155218; 
+  background-color: #155218;
 }
 
 .comments-section form {
-    
-    display: flex;
-    flex-direction: row; /* Aligns elements in a row */
-    justify-content: space-between; /* Distributes space between elements */
-    align-items: center;
+  display: flex;
+  flex-direction: row; /* Aligns elements in a row */
+  justify-content: space-between; /* Distributes space between elements */
+  align-items: center;
 }
 
 .comments-section input[type="text"]:focus {
-    outline-color: #fe2908;
+  outline-color: #fe2908;
 }
 
 .chat-list {
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-    background-color: #f9f9f9; 
-    border-radius: 5px;
-    padding: 10px; 
-    margin-bottom: 8px; 
-    border: 1px solid #e1e1e1; 
-    height: 70%;
-    overflow-y: auto;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 8px;
+  border: 1px solid #e1e1e1;
+  height: 70%;
+  overflow-y: auto;
+  gap: 10px;
 }
 
 .chat-elements {
-    border: 1px solid #e1e1e1; 
-    background-color: #fff;
-    padding: 5px 15px;
-    border-radius: 100px;
+  border-radius: 20px;
+  background-color: #ffffff; /* Updated background color */
+  padding: 10px;
 }
 
-@media screen and (max-width: 619px) {
+.chat-email {
+  font-size: 0.8rem; /* Decreased font size */
+  font-weight: bold; /* Changed font weight */
+  color: rgb(90, 179, 199); /* Changed color */
+  margin-left: 10px;
+}
 
-    .comments-section{
-        width: 430px;
-    }   
+.chat-text {
+  font-size: 1rem;
+  color: #333; /* Changed color */
+  margin-left: 10px;
+}
+
+/* Responsive CSS */
+@media screen and (max-width: 619px) {
+  .comments-section {
+    width: 430px;
+  }
 }

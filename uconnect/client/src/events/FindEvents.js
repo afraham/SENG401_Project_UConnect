@@ -133,7 +133,8 @@ function FindEvents() {
   };
   return (
     <div>
-      <br />
+      <br/>
+      
       <div className="search-bar">
         <input
           type="text"
@@ -142,6 +143,11 @@ function FindEvents() {
           onChange={(e) => setSearchQuery(e.target.value)}
         />
       </div>
+      {events.length === 0 && searchQuery.trim() === "" && (
+      <div className="no-events-message">
+        No events present
+      </div>
+      )}
       <div className="event-list">
       {Array.isArray(events) &&
         (searchQuery.trim() === "" || // Only filter if searchQuery is not empty

@@ -7,13 +7,13 @@
   opacity: 0.8;
   border-radius: 20px;
   margin: 10px 10px 10px 10px;
-  box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.2), /* dark Shadow for right and bottom */
-               -5px -5px 10px rgba(255, 255, 255, 0.5); /* Light shadow for top and left */
-  
+  box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.2),
+    /* dark Shadow for right and bottom */ -5px -5px 10px
+      rgba(255, 255, 255, 0.5); /* Light shadow for top and left */
 }
 
 .navbar li {
-  float: right; 
+  float: right;
   display: block;
   color: rgb(0, 0, 0);
   text-align: center;
@@ -22,10 +22,8 @@
   text-decoration: none;
 }
 
-
 .navbar li:hover {
-  background-color: #d1d1d1;
-  color:#fc1919;
+  color: #fc1919;
 }
 
 .navbar a:visited {
@@ -34,17 +32,15 @@
 
 .navbar a {
   text-decoration: none; /* Remove underline from navbar fields */
-  
 }
 
 .navbar-logo {
-  height: 60px; 
+  height: 60px;
   margin-left: 10px; /* Add some space from the left edge of the navbar */
   float: left; /* Align the logo to the left */
 }
 
 @media screen and (max-width: 619px) {
-
   .navbar li {
     width: 60px;
     font-size: 12px;
@@ -53,7 +49,6 @@
   }
 
   .navbar-logo {
-    height: 40px; 
-    
+    height: 40px;
   }
 }

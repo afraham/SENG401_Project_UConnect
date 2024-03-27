@@ -146,7 +146,7 @@ const EventDetails = () => {
                         alt="no-reqs-dino"
                         src={no_reqs_dino}
                         />
-                        <p>No requests right now, come back later!</p>
+                        <p>No one has joined the Event yet!</p>
                 </div>
                 )}
                 </div>
