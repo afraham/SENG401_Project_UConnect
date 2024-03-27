@@ -4,11 +4,11 @@ import default_picture from "../images/default_picture.jpg";
 import { auth } from "../firebase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faPen,
-  faX,
-  faBookmark,
-  faPlus,
-  faCheck,
+	faPen,
+	faX,
+	faBookmark,
+	faPlus,
+	faCheck,
 } from "@fortawesome/free-solid-svg-icons";
 
 function Profile() {

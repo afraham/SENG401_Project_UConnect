@@ -8,7 +8,8 @@ const profilesController = require("../controllers/profilesController");
 router.put("/api/profiles/update", profilesController.updateProfile);
 router.get("/api/profiles/:email", profilesController.fetchProfileInfo);
 
+// Route to update an existing profile
+router.put("/api/profiles/update", profilesController.updateProfile);
+router.get("/api/profiles/:email", profilesController.fetchProfileInfo);
+
 module.exports = router;
-
-
-
