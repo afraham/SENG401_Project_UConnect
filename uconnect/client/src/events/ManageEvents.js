@@ -22,7 +22,8 @@ const ManageEvents = ({
     }
   }, [event]);
 
-  const [profiles, setProfiles] = useState([])
+  const [pendingProfiles, setPendingProfiles] = useState([])
+  const [approvedProfiles, setApprovedProfiles] = useState([])
   const [selectedTab, setSelectedTab] = useState("pending");
   const [kickedUsers, setKickedUsers] = useState([]);
 
@@ -159,7 +160,7 @@ const ManageEvents = ({
   };
 
 
-  const fetchProfileFromEmail = async () => {
+  const fetchPendingProfilesFromEmail = async () => {
     try {
       const newHandledRequests = [];
       for (let i = 0; i < event.pending.length; i++) {
@@ -196,7 +197,52 @@ const ManageEvents = ({
           });
         }
       }
-      setProfiles(newHandledRequests);
+      setPendingProfiles(newHandledRequests);
+      console.log("Profiles:", newHandledRequests); // Print out the profiles
+    } catch (error) {
+      console.error("Error fetching data for requests:", error);
+      // Handle error case here
+    }
+  }
+
+  const fetchApprovedProfilesFromEmail = async () => {
+    try {
+      const newHandledRequests = [];
+      for (let i = 0; i < event.approved.length; i++) {
+        const email = event.approved[i];
+        try {
+          // Attempt to fetch user data from the database using request
+          const response = await fetch(`http://localhost:8000/api/profiles/${email}`);
+          if (response.ok) {
+            const userData = await response.json();
+            newHandledRequests.push({
+              name: userData.name,
+              picture: userData.picture,
+              interests: userData.interests,
+              bio: userData.bio,
+              email: email,
+              profileAvaiable: true
+            });
+          } else {
+            console.log("Could not find matching profile, this might not be an error!")
+            // If user data not found, use request itself
+            newHandledRequests.push({
+              email: email,
+              picture: default_picture,
+              profileAvaiable: false
+            });
+          }
+        } catch (error) {
+          console.error("Error fetching user data for request:", error);
+          // If an error occurs, use request itself
+          newHandledRequests.push({
+            name: email,
+            picture: default_picture,
+            profileAvaiable: false
+          });
+        }
+      }
+      setApprovedProfiles(newHandledRequests);
       console.log("Profiles:", newHandledRequests); // Print out the profiles
     } catch (error) {
       console.error("Error fetching data for requests:", error);
@@ -205,8 +251,17 @@ const ManageEvents = ({
   }
 
   useEffect(() => {
-    fetchProfileFromEmail();
+    fetchPendingProfilesFromEmail();
   }, [])
+
+  useEffect(() => {
+    if (selectedTab === "pending") {
+      fetchPendingProfilesFromEmail();
+    }
+    else if (selectedTab === "approved") {
+      fetchApprovedProfilesFromEmail();
+    }
+  }, [selectedTab])
 
   return (
     <div className="popup-container">
@@ -235,9 +290,9 @@ const ManageEvents = ({
             </div>
             {selectedTab === "pending" && (
               <>
-                {Array.isArray(profiles) && profiles.length > 0 ? (
+                {Array.isArray(pendingProfiles) && pendingProfiles.length > 0 ? (
                   <div className="request-list">
-                    {profiles.map((request, index) => (
+                    {pendingProfiles.map((request, index) => (
                       <div className="request" key={index}>
                         {request.profileAvaiable ? (
                           <div className="profile">
@@ -315,27 +370,25 @@ const ManageEvents = ({
             )}
             {selectedTab === "approved" && (
               <>
-              {event.approved.length > 0 ? (
-                <div className="request-list">
-                  {event.approved.map((email, index) => {
-                    const request = profiles.find((profile) => profile.email === email);
-                    return (
+              {Array.isArray(approvedProfiles) && approvedProfiles.length > 0 ? (
+                  <div className="request-list">
+                    {approvedProfiles.map((user, index) => (
                       <div className="request" key={index}>
-                        {request && request.profileAvaiable ? (
+                        {user && user.profileAvaiable ? (
                           <div className="profile">
                             <div className="pfp-box">
                               <img
-                                src={request.picture}
+                                src={user.picture}
                                 alt="Profile"
                                 className="request-avatar"
                               ></img>
                             </div>
                             <div className="user-info">
-                              <h1 className="request-name">{request.name}</h1>
-                              <h10 className="request-bio">{request.bio}</h10>
-                              {Array.isArray(request.interests) && request.interests.length > 0 && (
+                              <h1 className="request-name">{user.name}</h1>
+                              <h10 className="request-bio">{user.bio}</h10>
+                              {Array.isArray(user.interests) && user.interests.length > 0 && (
                                 <div className="interests-box" key={index}>
-                                  {request.interests.map((interest, interestindex) => (
+                                  {user.interests.map((interest, interestindex) => (
                                     <div className="interest" key={interestindex}>
                                       <h10>{interest}</h10>
                                     </div>
@@ -354,7 +407,7 @@ const ManageEvents = ({
                               ></img>
                             </div>
                             <div className="user-info">
-                              <h1 className="request-name">{email}</h1>
+                              <h1 className="request-name">{user.email}</h1>
                             </div>
                           </div>
                         )}
@@ -362,15 +415,14 @@ const ManageEvents = ({
                           {/* User content */}
                           <button
                             className="kick-button"
-                            onClick={() => handleKick(email)}
-                            disabled={kickedUsers.includes(email)} // Disable button if user has been kicked
+                            onClick={() => handleKick(user.email)}
+                            disabled={kickedUsers.includes(user.email)} // Disable button if user has been kicked
                           >
-                            {kickedUsers.includes(email) ? "KICKED" : "Kick 'Em"}
+                            {kickedUsers.includes(user.email) ? "KICKED" : "Kick 'Em"}
                           </button>
                         </div>
                       </div>
-                    );
-                  })}
+                ))}
                 </div>
               ) : (
                 <div className="no-reqs">
