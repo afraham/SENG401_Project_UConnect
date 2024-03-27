@@ -64,6 +64,13 @@ exports.fetchProfileInfo = async (req, res) => {
 	}
 };
 
+/*
+createProfile
+Create a new profile with name and email.
+
+Params: req, res
+Returns: None
+*/
 exports.createProfile = async (req, res) => {
 	try {
 		const database = db.db("create_profiles");
@@ -98,25 +105,24 @@ Params: req, res
 Returns: None
 */
 exports.fetchProfileInfo = async (req, res) => {
-    try {
-      const email = req.params.email; 
-      console.log("Email that was sent:", email);
-      const database = db.db("create_profiles");
-      const collection = database.collection("profiles");
-  
-      const profile = await collection.findOne({ email: email }); // Find by userEmail
-      //console.log("Profile found:", profile); // Log the profile
-  
-      if (!profile) {
-        res.status(404).send({ message: "Profile not found" });
-        return;
-      }
-  
-      res.setHeader("Access-Control-Allow-Origin", "*");
-      res.status(200).send(profile);
-    } catch (error) {
-      console.error("Error fetching profile information:", error);
-      res.status(500).send({ message: "Internal Server Error" });
-    }
-};
+	try {
+		const email = req.params.email;
+		console.log("Email that was sent:", email);
+		const database = db.db("create_profiles");
+		const collection = database.collection("profiles");
 
+		const profile = await collection.findOne({ email: email }); // Find by userEmail
+		//console.log("Profile found:", profile); // Log the profile
+
+		if (!profile) {
+			res.status(404).send({ message: "Profile not found" });
+			return;
+		}
+
+		res.setHeader("Access-Control-Allow-Origin", "*");
+		res.status(200).send(profile);
+	} catch (error) {
+		console.error("Error fetching profile information:", error);
+		res.status(500).send({ message: "Internal Server Error" });
+	}
+};

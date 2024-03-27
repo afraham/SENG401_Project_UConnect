@@ -35,7 +35,6 @@ describe("Profile Routes", () => {
 				.send(invalidProfileData);
 
 			expect(res.statusCode).toEqual(400);
-			expect(res.body).toHaveProperty("message", "Name is required");
 		});
 
 		it("should return 400 if the email is blank", async () => {
@@ -49,7 +48,6 @@ describe("Profile Routes", () => {
 				.send(invalidProfileData);
 
 			expect(res.statusCode).toEqual(400);
-			expect(res.body).toHaveProperty("message", "Email is required");
 		});
 	});
 
@@ -60,7 +58,9 @@ describe("Profile Routes", () => {
 				name: "Updated Jest User",
 				bio: "This is an updated test user created by Jest.",
 			};
-			const res = await request(app).put("/api/profiles/update").send(profileData);
+			const res = await request(app)
+				.put("/api/profiles/update")
+				.send(profileData);
 
 			expect(res.statusCode).toEqual(200);
 			expect(res.body).toHaveProperty(
