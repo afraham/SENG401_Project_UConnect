@@ -75,7 +75,6 @@
   /* other styles */
 }
 
-
 .pending-requests-bubble {
   position: absolute;
   top: -6px; /* Adjust as needed */
@@ -86,7 +85,7 @@
   border-radius: 50%;
   color: white;
   text-align: center;
-  line-height: 20px; 
+  line-height: 20px;
   font-size: 12px;
   font-weight: bold;
 }
@@ -162,4 +161,15 @@
   border-radius: 15px;
   border: none;
   margin-top: 10px;
+}
+
+.empty-events-message {
+  color: #d3523e;
+  background-color: transparent;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px auto;
+  width: 80%;
+  text-align: center;
+  font-size: 16px;
 }

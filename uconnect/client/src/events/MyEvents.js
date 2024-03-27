@@ -7,6 +7,7 @@ import ManageEvents from "./ManageEvents";
 import { auth } from "../firebase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
+import no_reqs_dino from "../images/no-reqs-dino.png";
 
 function MyEvents() {
   // State to manage if the popup is shown or not
@@ -483,7 +484,7 @@ function MyEvents() {
               </div>
             ))
           : activeTab === "myEvents" && (
-              <p className="no-events-message">
+              <p className="empty-events-message">
                 You have not created any events yet. Click the "+" button above
                 to create your first event!
               </p>
@@ -537,7 +538,7 @@ function MyEvents() {
               </div>
             ))
           : activeTab === "pending" && (
-              <p className="no-events-message">
+              <p className="empty-events-message">
                 You have no pending requests to join events.
               </p>
             )}
@@ -590,7 +591,7 @@ function MyEvents() {
               </div>
             ))
           : activeTab === "joined" && (
-              <p className="no-events-message">
+              <p className="empty-events-message">
                 You have not joined any events yet. Click the "Find Events" tab
                 above to find events to join!
               </p>

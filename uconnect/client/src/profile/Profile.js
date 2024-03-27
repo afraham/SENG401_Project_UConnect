@@ -11,7 +11,6 @@ import {
   faCheck,
 } from "@fortawesome/free-solid-svg-icons";
 
-
 function Profile() {
   const [isEditing, setIsEditing] = useState(false);
   const [profileInfo, setProfileInfo] = useState({
@@ -45,7 +44,7 @@ function Profile() {
     Returns: None, but sends the updated profile info to the backend and exits editing mode.
   */
   const handleSaveClick = async (updatedInfo) => {
-    try {  
+    try {
       await fetch("http://localhost:8000/api/profiles/update", {
         method: "PUT",
         headers: {
@@ -71,9 +70,13 @@ function Profile() {
   const fetchProfileInfo = async (email) => {
     try {
       console.log("Fetching profile info for email:", email);
-      const response = await fetch(`http://localhost:8000/api/profiles/${email}`);
+      const response = await fetch(
+        `http://localhost:8000/api/profiles/${email}`
+      );
       if (!response.ok) {
-        throw new Error(`Failed to fetch profile information: ${response.statusText}`);
+        throw new Error(
+          `Failed to fetch profile information: ${response.statusText}`
+        );
       }
       const data = await response.json();
       setProfileInfo(data);
@@ -81,14 +84,16 @@ function Profile() {
       console.error("Error fetching profile information:", error.message);
     }
   };
-  
+
   // Call the fetchProfileInfo function with the email when the component mounts
   useEffect(() => {
-    const userEmail = auth.currentUser ? auth.currentUser.email : "email@example.com";
+    const userEmail = auth.currentUser
+      ? auth.currentUser.email
+      : "email@example.com";
     console.log(userEmail);
     fetchProfileInfo(userEmail);
   }, []);
-  
+
   /*
     handleImageUpload
     Handles the upload and preview of a new profile picture.
@@ -112,7 +117,7 @@ function Profile() {
     }
   };
 
-   /*
+  /*
     handleAddInterest
     Adds a new interest to the profile.
 
@@ -167,10 +172,13 @@ function Profile() {
                   className="image-input"
                 />
               )}
-        
             </label>
             {isEditing && profileInfo.picture && (
-              <img className="avatar-prev" src={profileInfo.picture} alt="Preview" />
+              <img
+                className="avatar-prev"
+                src={profileInfo.picture || default_picture}
+                alt="Preview"
+              />
             )}
 
             <div className="profile-name-email">
@@ -286,7 +294,5 @@ function Profile() {
     </>
   );
 }
-
-
 
 export default Profile;
