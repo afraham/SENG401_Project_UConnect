@@ -118,6 +118,7 @@ function FindEvents() {
 
       if (response.ok) {
         console.log("Request to join sent successfully");
+        fetchEvents();
       } else {
         console.error(
           "Failed to send request to join:",

@@ -36,7 +36,6 @@ Params: req, res
 Returns: None
 */
 
-////////// This is the first old get events.
 exports.getEvents = async (req, res) => {
     try {
         const database = db.db("create_events");
