@@ -143,7 +143,7 @@ function FindEvents() {
           onChange={(e) => setSearchQuery(e.target.value)}
         />
       </div>
-      {events.length === 0 && (
+      {events.length === 0 && searchQuery.trim() === "" && (
       <div className="no-events-message">
         No events present
       </div>
