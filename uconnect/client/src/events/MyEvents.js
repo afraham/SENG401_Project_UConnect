@@ -50,7 +50,7 @@ function MyEvents() {
     fetchPendingEvents();
     fetchJoinedEvents();
   }, []);
-  
+
   /*
   handleEditEvent
   Prepares the selected event for editing by setting it as the current event and showing the popup form.
@@ -77,7 +77,6 @@ function MyEvents() {
   const goToEventDetails = (event) => {
     navigate(`/user/events/${event._id}`, { state: { event } });
   };
-
 
   /*
   confirmDelete
@@ -270,7 +269,7 @@ function MyEvents() {
           ...event,
           isExpanded: false,
         }));
-        setPendingEvents(eventsWithExpansion); 
+        setPendingEvents(eventsWithExpansion);
         console.log("Fetched successfully");
       }
     } catch (error) {
@@ -358,7 +357,8 @@ function MyEvents() {
     }
   };
 
-  useEffect(() => { //remove?
+  useEffect(() => {
+    //remove?
     fetchEvents();
     fetchPendingEvents();
     fetchJoinedEvents();
@@ -414,163 +414,187 @@ function MyEvents() {
       </div>
       {/* render if activeTab is "My Events" */}
       <div className="myevent-list">
-        {activeTab === "myEvents" &&
-          Array.isArray(events) &&
-          events.map((event, index) => (
-            <div
-              className={`event-card ${event.isExpanded ? "expanded" : ""}`}
-              key={index}
-            >
-              <div className="top-box">
-                <div className="left-align">
-                  <p className="event-title">{event.title}</p>
-                </div>
-                <div className="right-align">
-                  <p className="capacity">
-                    {event.spotsTaken}/{event.maxPeople}
-                  </p>
-                  <p className="capacity">
-                    <i class="fa fa-group"></i>
-                  </p>
+        {activeTab === "myEvents" && Array.isArray(events) && events.length > 0
+          ? events.map((event, index) => (
+              <div
+                className={`event-card ${event.isExpanded ? "expanded" : ""}`}
+                key={index}
+              >
+                <div className="top-box">
+                  <div className="left-align">
+                    <p className="event-title">{event.title}</p>
+                  </div>
+                  <div className="right-align">
+                    <p className="capacity">
+                      {event.spotsTaken}/{event.maxPeople}
+                    </p>
+                    <p className="capacity">
+                      <i class="fa fa-group"></i>
+                    </p>
 
-                  <div className="manage-button-container">
-                    <button
-                      className="manage-button"
-                      onClick={() => handleManageEvent(event)}
-                    >
-                      <i class="fa fa-user-plus"></i>
-                    </button>
-                    {event.pending.length > 0 && (
-                      <span
+                    <div className="manage-button-container">
+                      <button
+                        className="manage-button"
                         onClick={() => handleManageEvent(event)}
-                        className="pending-requests-bubble"
                       >
-                        {event.pending.length}
-                      </span>
-                    )}
+                        <i class="fa fa-user-plus"></i>
+                      </button>
+                      {event.pending.length > 0 && (
+                        <span
+                          onClick={() => handleManageEvent(event)}
+                          className="pending-requests-bubble"
+                        >
+                          {event.pending.length}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <p
+                  className={`description ${
+                    event.isExpanded ? "expanded" : ""
+                  }`}
+                  onClick={() => goToEventDetails(event)}
+                >
+                  {event.description}
+                </p>
+                <div className="bottom-box">
+                  <div className="left-align">
+                    <p className="location">
+                      <i class="fa fa-clock-o"></i> {event.date.split("T")[0]}
+                    </p>
+                  </div>
+
+                  <div className="right-align">
+                    <button
+                      className="edit-button"
+                      onClick={() => handleEditEvent(event)}
+                    >
+                      <FontAwesomeIcon icon={faPen} />
+                    </button>
+                    <button
+                      className="delete-button"
+                      onClick={() => confirmDelete(event)}
+                    >
+                      <FontAwesomeIcon icon={faTrash} />
+                    </button>
                   </div>
                 </div>
               </div>
-              <p
-                className={`description ${event.isExpanded ? "expanded" : ""}`}
-                onClick={() => goToEventDetails(event)}
-              >
-                {event.description}
+            ))
+          : activeTab === "myEvents" && (
+              <p className="no-events-message">
+                You have not created any events yet. Click the "+" button above
+                to create your first event!
               </p>
-              <div className="bottom-box">
-                <div className="left-align">
-                  <p className="location">
-                    <i class="fa fa-clock-o"></i> {event.date.split("T")[0]}
-                  </p>
-                </div>
-
-                <div className="right-align">
-                  <button
-                    className="edit-button"
-                    onClick={() => handleEditEvent(event)}
-                  >
-                    <FontAwesomeIcon icon={faPen} />
-                  </button>
-                  <button
-                    className="delete-button"
-                    onClick={() => confirmDelete(event)}
-                  >
-                    <FontAwesomeIcon icon={faTrash} />
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
+            )}
 
         {/* render if activeTab is "Pending" */}
         {activeTab === "pending" &&
-          Array.isArray(pendingEvents) &&
-          pendingEvents.map((event, index) => (
-            <div
-              className={`event-card ${event.isExpanded ? "expanded" : ""}`}
-              key={index}
-            >
-              <div className="top-box">
-                <div className="left-align">
-                  <p className="event-title">{event.title}</p>
-                </div>
-                <div className="right-align">
-                  <p className="capacity">
-                    {event.spotsTaken}/{event.maxPeople}
-                  </p>
-                  <p className="capacity">
-                    <i class="fa fa-group"></i>
-                  </p>
-                </div>
-              </div>
-              <p
-                className={`description ${event.isExpanded ? "expanded" : ""}`}
-                onClick={() => goToEventDetails(event)}
+        Array.isArray(pendingEvents) &&
+        pendingEvents.length > 0
+          ? pendingEvents.map((event, index) => (
+              <div
+                className={`event-card ${event.isExpanded ? "expanded" : ""}`}
+                key={index}
               >
-                {event.description}
-              </p>
-              <div className="bottom-box">
-                <div className="left-align">
-                  <p className="location">
-                    <i class="fa fa-clock-o"></i> {event.date.split("T")[0]}
-                  </p>
+                <div className="top-box">
+                  <div className="left-align">
+                    <p className="event-title">{event.title}</p>
+                  </div>
+                  <div className="right-align">
+                    <p className="capacity">
+                      {event.spotsTaken}/{event.maxPeople}
+                    </p>
+                    <p className="capacity">
+                      <i class="fa fa-group"></i>
+                    </p>
+                  </div>
                 </div>
-                <div className="right-align">
-                  <button
-                    className="pending-button"
-                    onClick={() => handlePendingButton(event._id)}
-                  >
-                    CANCEL
-                  </button>
+                <p
+                  className={`description ${
+                    event.isExpanded ? "expanded" : ""
+                  }`}
+                  onClick={() => goToEventDetails(event)}
+                >
+                  {event.description}
+                </p>
+                <div className="bottom-box">
+                  <div className="left-align">
+                    <p className="location">
+                      <i class="fa fa-clock-o"></i> {event.date.split("T")[0]}
+                    </p>
+                  </div>
+                  <div className="right-align">
+                    <button
+                      className="pending-button"
+                      onClick={() => handlePendingButton(event._id)}
+                    >
+                      CANCEL
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          : activeTab === "pending" && (
+              <p className="no-events-message">
+                You have no pending requests to join events.
+              </p>
+            )}
 
         {/* render if activeTab is "Joined" */}
         {activeTab === "joined" &&
-          Array.isArray(joinedEvents) &&
-          joinedEvents.map((event, index) => (
-            <div
-              className={`event-card ${event.isExpanded ? "expanded" : ""}`}
-              key={index}
-            >
-              <div className="top-box">
-                <div className="left-align">
-                  <p className="event-title">{event.title}</p>
-                </div>
-                <div className="right-align">
-                  <p className="capacity">
-                    {event.spotsTaken}/{event.maxPeople}
-                  </p>
-                  <p className="capacity">
-                    <i class="fa fa-group"></i>
-                  </p>
-                </div>
-              </div>
-              <p
-                className={`description ${event.isExpanded ? "expanded" : ""}`}
-                onClick={() => goToEventDetails(event)}
+        Array.isArray(joinedEvents) &&
+        joinedEvents.length > 0
+          ? joinedEvents.map((event, index) => (
+              <div
+                className={`event-card ${event.isExpanded ? "expanded" : ""}`}
+                key={index}
               >
-                {event.description}
-              </p>
-              <div className="bottom-box">
-                <div className="left-align">
-                  <p className="location">
-                    <i class="fa fa-clock-o"></i> {event.date.split("T")[0]}
-                  </p>
+                <div className="top-box">
+                  <div className="left-align">
+                    <p className="event-title">{event.title}</p>
+                  </div>
+                  <div className="right-align">
+                    <p className="capacity">
+                      {event.spotsTaken}/{event.maxPeople}
+                    </p>
+                    <p className="capacity">
+                      <i class="fa fa-group"></i>
+                    </p>
+                  </div>
                 </div>
-                <div className="right-align">
-                  <button
-                    className="leave-button"
-                    onClick={() => handleLeaveButton(event)}
-                  >
-                    Leave
-                  </button>
+                <p
+                  className={`description ${
+                    event.isExpanded ? "expanded" : ""
+                  }`}
+                  onClick={() => goToEventDetails(event)}
+                >
+                  {event.description}
+                </p>
+                <div className="bottom-box">
+                  <div className="left-align">
+                    <p className="location">
+                      <i class="fa fa-clock-o"></i> {event.date.split("T")[0]}
+                    </p>
+                  </div>
+                  <div className="right-align">
+                    <button
+                      className="leave-button"
+                      onClick={() => handleLeaveButton(event)}
+                    >
+                      Leave
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          : activeTab === "joined" && (
+              <p className="no-events-message">
+                You have not joined any events yet. Click the "Find Events" tab
+                above to find events to join!
+              </p>
+            )}
       </div>
       {showManagePopup && (
         <ManageEvents
