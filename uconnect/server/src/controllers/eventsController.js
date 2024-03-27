@@ -12,7 +12,9 @@ exports.createEvent = async (req, res) => {
 
 		console.log(`Successfully inserted event with _id: ${result.insertedId}`);
 		res.setHeader("Access-Control-Allow-Origin", "*");
-		res.status(201).send({ message: "Event created successfully" });
+		res
+			.status(201)
+			.send({ _id: result.insertedId, message: "Event created successfully" });
 	} catch (error) {
 		console.error("Error inserting event:", error);
 		res.status(500).send({ message: "Internal Server Error" });
@@ -243,7 +245,7 @@ exports.updateEvent = async (req, res) => {
 };
 
 exports.addCommentToEvent = async (req, res) => {
-	const data = req.body
+	const data = req.body;
 	const { eventId } = req.params;
 	try {
 		const database = db.db("create_events");
@@ -251,17 +253,22 @@ exports.addCommentToEvent = async (req, res) => {
 		const result = await collection.findOneAndUpdate(
 			{ _id: new ObjectId(eventId) },
 			{
-				$push: { comments: data }
+				$push: { comments: data },
 			},
-			{ returnNewDocument: true }
-		)
+			{ returnOriginal: false }
+		);
+
+		if (!result.value) {
+			res.status(404).json({ message: "Event not found" });
+			return;
+		}
 
 		res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
 		res.status(200).json(result);
 	} catch (error) {
 		res.status(500).json({ message: "Internal Server Error" });
 	}
-}
+};
 
 exports.userLeftEvent = async (req, res) => {
 	const { eventId } = req.params;
@@ -295,9 +302,9 @@ exports.userLeftEvent = async (req, res) => {
 exports.cancelPending = async (req, res) => {
 	const { eventId } = req.params;
 	const { userEmail } = req.body;
-	
-    console.log('Event ID:', eventId);
-    console.log('User Email:', userEmail);
+
+	console.log("Event ID:", eventId);
+	console.log("User Email:", userEmail);
 
 	try {
 		const database = db.db("create_events");
