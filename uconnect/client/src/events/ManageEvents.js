@@ -129,13 +129,40 @@ const ManageEvents = ({
     }
   };
 
-  // Mock array for approved requests
-  const mockApprovedRequests = ["user1"];
-
   // Kicking out approved users
-  const handleKick = (userEmail) => {
-    console.log(`Kicking out user with email: ${userEmail}`);
+  const handleKick = async (userEmail) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8000/api/events/kick/${event._id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userEmail }),
+        }
+      );
+      if (response.ok) {
+        // Remove the user email from the approved array
+        const updatedApproved = event.approved.filter((email) => email !== userEmail);
+        // Update the event object with the new approved array
+        const updatedEvent = { ...event, approved: updatedApproved };
+        // Call the refetchEvents function to update the events list
+        refetchEvents();
+      } else {
+        console.error(
+          "Request to kick failed:",
+          response.status,
+          response.statusText
+        );
+        // Handle error case here
+      }
+    } catch (error) {
+      console.error("Error kicking user:", error);
+      // Handle error case here
+    }
   };
+
 
   const fetchProfileFromEmail = async () => {
     try {
@@ -202,7 +229,10 @@ const ManageEvents = ({
               </button>
               <button
                 className={selectedTab === "approved" ? "active" : ""}
-                onClick={() => setSelectedTab("approved")}
+                onClick={() => {
+                  console.log("Approved array:", event.approved);
+                  setSelectedTab("approved");
+                }}
               >
                 Approved
               </button>
@@ -227,7 +257,7 @@ const ManageEvents = ({
                               <h10 className="request-bio">{request.bio}</h10>
                               {Array.isArray(request.interests) && request.interests.length > 0 && (
                                 <div className="interests-box" key={index}>
-                                  {request.interests.map((interest, interestindex) => ( 
+                                  {request.interests.map((interest, interestindex) => (
                                     <div className="interest" key={interestindex}>
                                       <h10>{interest}</h10>
                                     </div>
@@ -262,7 +292,7 @@ const ManageEvents = ({
                               className="deny-button"
                               onClick={() => handleDeny(request.email, index)}
                             >
-                              <FontAwesomeIcon icon={faX} />{" "} 
+                              <FontAwesomeIcon icon={faX} />{" "}
                             </button>
                           </div>
                         )}
@@ -289,35 +319,70 @@ const ManageEvents = ({
             )}
             {selectedTab === "approved" && (
               <>
-                {mockApprovedRequests.length > 0 ? (
-                  <div className="request-list">
-                    {mockApprovedRequests.map((approvedRequest, index) => (
+              {event.approved.length > 0 ? (
+                <div className="request-list">
+                  {event.approved.map((email, index) => {
+                    const request = profiles.find((profile) => profile.email === email);
+                    return (
                       <div className="request" key={index}>
-                        <img
-                          src={default_picture}
-                          alt="Profile"
-                          className="request-avatar"
-                        ></img>
-                        <p>{approvedRequest}</p>
+                        {request && request.profileAvaiable ? (
+                          <div className="profile">
+                            <div className="pfp-box">
+                              <img
+                                src={request.picture}
+                                alt="Profile"
+                                className="request-avatar"
+                              ></img>
+                            </div>
+                            <div className="user-info">
+                              <h1 className="request-name">{request.name}</h1>
+                              <h10 className="request-bio">{request.bio}</h10>
+                              {Array.isArray(request.interests) && request.interests.length > 0 && (
+                                <div className="interests-box" key={index}>
+                                  {request.interests.map((interest, interestindex) => (
+                                    <div className="interest" key={interestindex}>
+                                      <h10>{interest}</h10>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        ) : (
+                          console.log("Using default picture for:", email),
+                          <div className="profile">
+                            <div className="pfp-box">
+                              <img
+                                src={default_picture}
+                                alt="Profile"
+                                className="request-avatar"
+                              ></img>
+                            </div>
+                            <div className="user-info">
+                              <h1 className="request-name">{email}</h1>
+                            </div>
+                          </div>
+                        )}
                         <button
                           className="kick-button"
-                          onClick={() => handleKick(approvedRequest)}
+                          onClick={() => handleKick(email)}
                         >
                           Kick 'em
                         </button>
                       </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="no-reqs">
-                    <img
-                      className="no-reqs-img"
-                      alt="no-reqs-dino"
-                      src={no_reqs_dino}
-                    />
-                    <p>No approved requests yet.</p>
-                  </div>
-                )}
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="no-reqs">
+                  <img
+                    className="no-reqs-img"
+                    alt="no-reqs-dino"
+                    src={no_reqs_dino}
+                  />
+                  <p>No approved requests yet.</p>
+                </div>
+              )}
               </>
             )}
             <button className="close-button" onClick={handleClosePopup}>
@@ -328,6 +393,7 @@ const ManageEvents = ({
       </div>
     </div>
   );
-};  
+};
+  
 
 export default ManageEvents;
