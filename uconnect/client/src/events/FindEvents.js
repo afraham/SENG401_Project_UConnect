@@ -4,51 +4,75 @@ import "./FindEvents.css";
 import { auth } from "../firebase"; // Import Firebase auth
 
 function FindEvents() {
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState([]); // Array of all events retrieved from backend. All non-enrolled events.
   const [userEmail, setUserEmail] = useState(""); // State to store user's email
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState(""); // Search criteria by user
   const navigate = useNavigate();
 
-  // Function to fetch events from the backend
+
+  /*
+  fetchEvents
+  Function to fetch from database, fetches all events except those created by the user and/or joined/requested to join by the user.
+
+  Params: None
+  Returns: None but updates events state to the list of events user is not enrolled in.
+  */
+
   const fetchEvents = async () => {
     const user = auth.currentUser;
     if (!user) return; // Early return if user is not authenticated
-    const userEmail = user.email;
-
-    let eventsFromStorage = JSON.parse(localStorage.getItem("events"));
+    const userEmail = user.email; // Get user email from authenticated user
 
     try {
-      const response = await fetch(
-        `http://localhost:8000/api/events?userEmail=${userEmail}`
-      );
-      if (response.ok) {
-        const data = await response.json();
-        const eventsWithExpansionAndStatus = data.map((event) => {
-          const storedEvent = eventsFromStorage?.find(
-            (e) => e._id === event._id
-          );
-          return {
-            ...event,
-            isExpanded: false,
-            requestStatus: storedEvent?.requestStatus || "NotRequested",
-          };
-        });
-        setEvents(eventsWithExpansionAndStatus);
-        localStorage.setItem(
-          "events",
-          JSON.stringify(eventsWithExpansionAndStatus)
+        const response = await fetch(
+            `http://localhost:8000/api/events?userEmail=${userEmail}` // API call to backend
         );
-      } else {
-        console.error("Failed to fetch events:", response.statusText);
-        setEvents(eventsFromStorage || []);
-      }
-    } catch (error) {
-      console.error("Error fetching events:", error);
-      setEvents(eventsFromStorage || []);
-    }
-  };
+        if (response.ok) {
+            const data = await response.json();
 
-  // Effect to fetch events when the userEmail state changes
+            console.log(data); // Log the data received from the API
+
+            const eventsWithExpansionAndStatus = data.map((event) => {
+              let buttonDisplay = "Request To Join";
+
+              if (event.userEmail === userEmail) {
+                buttonDisplay = "Your Event";
+              }
+              else if (Array.isArray(event.pending) && event.maxPeople === event.spotsTaken && event.pending.includes(userEmail)) {
+                buttonDisplay = "Waitlisted";
+              } 
+              else if (Array.isArray(event.pending) && event.pending.includes(userEmail)) {
+                  buttonDisplay = "Pending";
+              } 
+              else if (Array.isArray(event.approved) && event.approved.includes(userEmail)) {
+                  buttonDisplay = "Joined";
+              } 
+              else if (event.maxPeople === event.spotsTaken) {
+                  buttonDisplay = "Add to Waitlist";
+              } 
+          
+              return {
+                  ...event,
+                  isExpanded: false,
+                  buttonDisplay: buttonDisplay,
+              };
+            });
+          
+      
+            setEvents(eventsWithExpansionAndStatus); // Set events state to the returned events
+            localStorage.setItem(
+                "events",
+                JSON.stringify(eventsWithExpansionAndStatus)
+            ); // Use local storage to store the events, storage is persistent
+        } else {
+            console.error("Failed to fetch events:", response.statusText);
+        }
+    } catch (error) {
+        console.error("Error fetching events:", error);
+    }
+};
+
+  // Effect to fetch events when the userEmail state changes, in theory userEmail should never change.
   useEffect(() => {
     fetchEvents();
   }, [userEmail]);
@@ -71,23 +95,15 @@ function FindEvents() {
     navigate(`/user/events/${event._id}`, { state: { event } });
   };
 
-  // Handler for sending a request to join an event
+  /*
+  handleRequestToJoin
+  Handler for sending a request to join an event. Updates the event in the database
+  and updates the view telling the user that their request is pending.
+
+  Params: eventId : String, userEmail : String, index : int
+  Returns: None, Updated set of events
+  */
   const handleRequestToJoin = async (eventId, userEmail, index) => {
-    const updatedEvents = events.map((event, i) => {
-      if (i === index) {
-        return {
-          ...event,
-          isExpanded: event.isExpanded,
-          requestStatus: "Pending",
-        };
-      }
-      return event;
-    });
-
-    setEvents(updatedEvents);
-
-    localStorage.setItem("events", JSON.stringify(updatedEvents));
-
     try {
       const response = await fetch(
         `http://localhost:8000/api/events/${eventId}/join`,
@@ -102,6 +118,7 @@ function FindEvents() {
 
       if (response.ok) {
         console.log("Request to join sent successfully");
+        fetchEvents();
       } else {
         console.error(
           "Failed to send request to join:",
@@ -112,10 +129,12 @@ function FindEvents() {
     } catch (error) {
       console.error("Error sending request to join:", error);
     }
+
   };
   return (
     <div>
       <br/>
+      
       <div className="search-bar">
         <input
           type="text"
@@ -124,11 +143,17 @@ function FindEvents() {
           onChange={(e) => setSearchQuery(e.target.value)}
         />
       </div>
+      {events.length === 0 && searchQuery.trim() === "" && (
+      <div className="no-events-message">
+        No events present
+      </div>
+      )}
       <div className="event-list">
-        {Array.isArray(events) &&
-        events.filter((event) =>
-          event.title.toLowerCase().includes(searchQuery.toLowerCase())
-        ).length > 0 ? (
+      {Array.isArray(events) &&
+        (searchQuery.trim() === "" || // Only filter if searchQuery is not empty
+          events.filter((event) =>
+            event.title.toLowerCase().includes(searchQuery.toLowerCase())
+          ).length > 0) ? (
           events
             .filter((event) =>
               event.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -166,19 +191,29 @@ function FindEvents() {
                     </p>
                   </div>
                   <div className="right-align">
-                    <button
-                      className={`request-button ${
-                        event.requestStatus === "Pending" ? "pending" : ""
-                      }`}
-                      disabled={event.requestStatus === "Pending"}
-                      onClick={() =>
-                        handleRequestToJoin(event._id, userEmail, index)
-                      }
-                    >
-                      {event.requestStatus === "Pending"
-                        ? "Pending"
-                        : "Request To Join"}
-                    </button>
+                  <button
+                    className={`request-button ${
+                      event.buttonDisplay === "Pending" ? "pending" :
+                      event.buttonDisplay === "Joined" ? "joined" :
+                      event.buttonDisplay === "Add to Waitlist" ? "waitlist" :
+                      event.buttonDisplay === "Waitlisted" ? "waitlisted" :
+                      event.buttonDisplay === "Your Event" ? "yourevent" : ""
+                    }`}
+                    disabled={event.buttonDisplay === "Pending" || 
+                    event.buttonDisplay === "Joined" ||
+                    event.buttonDisplay === "Waitlisted" ||
+                    event.buttonDisplay === "Your Event"
+                  } //Disables button
+                    onClick={() => handleRequestToJoin(event._id, userEmail, index)}
+                  >
+                    {/* // Displays the correct text of the button based on its state */}
+                    {event.buttonDisplay === "Pending" && "Pending"} 
+                    {event.buttonDisplay === "Joined" && "Joined"}
+                    {event.buttonDisplay === "Add to Waitlist" && "Add to Waitlist"}
+                    {event.buttonDisplay === "Request To Join" && "Request To Join"}
+                    {event.buttonDisplay === "Waitlisted" && "Waitlisted"}
+                    {event.buttonDisplay === "Your Event" && "Your Event!"}
+                  </button>
                   </div>
                 </div>
               </div>

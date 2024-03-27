@@ -11,17 +11,128 @@
   z-index: 1000;
 }
 
+.request-avatar {
+  display: flex;
+  justify-self: flex-start;
+  max-height: 60px;
+  max-width: 60px;
+  border-radius: 50%;
+  position: relative;
+}
+
+.requests h3 {
+  margin-left: 30px;
+  font-weight: 400;
+}
+
+.request {
+  display: flex;
+  align-items: center;
+  background-color: rgb(239, 238, 238);
+  border-radius: 10px;
+  padding: 1em;
+  font-size: larger;
+  max-height: fit-content;
+  margin-bottom: 1em;
+}
+
+.request:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.202);
+}
+
+.no-reqs {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.no-reqs-img {
+  max-height: 300px;
+  max-width: fit-content;
+}
+
+.request-list {
+  margin: 0px 30px 30px 30px;
+  position: relative;
+  border-radius: 10px;
+}
+
+.request-outcome {
+  background-color: rgb(255, 161, 20);
+  height: 30px;
+  width: 100px;
+  color: white;
+  font-size: 12px;
+  padding: 0px 0px 0px 0px;
+  border-radius: 15px;
+  text-align: center;
+  display: flex;
+  align-items: center; /* Vertically center content */
+  justify-content: center;
+  margin-left: auto;
+}
+
+.request p {
+  margin-left: 1em;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  right: 0;
+  font-size: larger;
+  margin-left: auto;
+}
+
+.approve-button {
+  background-color: #00b44b;
+  color: rgb(255, 255, 255);
+  border: none;
+  border-radius: 10px;
+  margin-bottom: 5px;
+  height: 30px;
+  width: 30px;
+  transition: 0.3s;
+}
+
+.approve-button:hover {
+  background-color: #00a03e;
+}
+
+.deny-button {
+  background-color: #ff0000;
+  color: rgb(255, 255, 255);
+  border: none;
+  border-radius: 10px;
+  height: 30px;
+  width: 30px;
+  transition: 0.3s;
+}
+
+.deny-button:hover {
+  background-color: #eb1212;
+}
+
 .popup-content {
   background-color: #fff;
   padding: 30px;
   border-radius: 15px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  position: relative;
-  width: 50%; /* Adjust width */
+  position: absolute;
+  max-height: 600px; /* Adjust width */
   max-width: 600px; /* Adjust maximum width */
+  overflow-y: auto;
 }
 .ce-header {
   margin: 0px 0px 10px 0px;
+}
+
+.formatted-title {
+  color: red;
+  text-transform: uppercase;
+  font-style: italic;
 }
 
 .close-button {
@@ -41,67 +152,87 @@
   background: #ff0000; /* Maintain the background color on hover */
 }
 
-
-input[type="text"],
-input[type="datetime-local"],
-textarea {
-  display: block;
-  width: 100%;
-  margin: 10px 0;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+.profile {
+  display: flex;
+  flex-direction: row;
 }
 
-textarea {
-  resize: vertical;
-  min-height: 50px;
-  max-height: 300px;
-  overflow: auto; /* Adds scrollbars  */
-}
-
-.max-people {
+.pfp-box {
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin: 10px 70px 0px 0px;
 }
 
-.max-people button {
-  padding: 5px 10px;
-  margin: 0 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background: #f0f0f0;
-  color: #000000;
-  cursor: pointer;
+.user-info {
+  display: flex;
+  flex-direction: column;
+  padding: 0px;
+  max-width: 360px;
 }
 
-.max-people button:hover {
-  background: #d1d1d1;
-  color: #ff0000;
+.request-bio {
+  font-size: 15px;
+  padding: 10px 0px 10px 0px;
+  max-height: 90px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.max-people span {
-  padding: 5px 10px;
+.request-name {
+  font-size: 20px;
+  margin: 0px;
+  font-weight: bold;
 }
 
-.create-button-container {
-  text-align: right; /* Aligns the button to the right */
-  margin-top: 20px; /* Space above the button */
+.request-avatar {
+  margin-right: 10px;
 }
 
-.create-button {
-  padding: 10px 20px; /* Size of the button */
-  background-color: #007bff; /* Background color */
-  color: #fff; /* Text color */
-  border: none; /* No border */
-  border-radius: 5px; /* Rounded corners */
-  cursor: pointer; /* Mouse pointer on hover */
-  font-size: 16px; /* Font size */
+.interests-box {
+  display: flex;
+  flex-direction: row;
+  margin: 10px 0px 0px 0px;
+  gap: 10px;
+  overflow-x: auto;
+
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: #888 #f1f1f1; /* Thumb and track colors */
 }
 
-.create-button:hover {
-  background-color: #0056b3; /* Darker background on hover */
-  transition: background-color 0.3s;
+.interests-box::-webkit-scrollbar {
+  width: 12px; /* Width of the scrollbar */
+}
+
+.interests-box::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Color of the track */
+}
+
+.interests-box::-webkit-scrollbar-thumb {
+  background: #888; /* Color of the thumb */
+  border-radius: 6px; /* Roundness of the thumb */
+}
+
+.interests-box::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Color of the thumb on hover */
+}
+
+.interests-box::-webkit-scrollbar-button {
+  display: none; /* Hide scrollbar buttons */
+}
+
+.interest {
+  font-size: 13px;
+  padding: 7px; /* Adjust as needed */
+  background-color: rgba(100, 194, 215, 1); /* Adjust as needed */
+  color: white; /* Adjust as needed */
+  border-radius: 20px; /* Adjust as needed */
+  width: fit-content;
+  height: fit-content;
+  white-space: nowrap;
+  margin: 0px;
+}
+
+@media screen and (max-width: 619px) {
+  .request-list {
+    width: 290px;
+  }
 }
