@@ -159,6 +159,7 @@
   align-items: center;
   margin-bottom: 50px;
   cursor: pointer;
+  transition: 0.3s;
 }
 
 .search-bar input[type="text"] {
