@@ -165,7 +165,7 @@ const AddEvents = ({ closePopup, event, editMode, updateEvents }) => {
 					<p>Max People: </p>
 					<button onClick={decrementPeople}>-</button>
 					<span>{maxPeople}</span>
-					<button onClick={incrementPeople}>+</button>
+					<button data-testid='add' onClick={incrementPeople}>+</button>
 				</div>
 				<input
 					type="datetime-local"

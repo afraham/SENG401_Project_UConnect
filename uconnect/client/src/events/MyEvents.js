@@ -236,7 +236,7 @@ function MyEvents() {
         </p>
         <div className="event-button-container">
           <button
-            className="event-button"
+            className="event-button" data-testid="event-button" 
             onClick={() => handleShowPopup(null)}
           >
             {" "}
@@ -298,7 +298,7 @@ function MyEvents() {
                   </p>
 
                   <button
-                    className="manage-button"
+                    className="manage-button"  data-testid="manage-button"
                     onClick={() => handleManageEvent(event)}
                   >
                     Manage
