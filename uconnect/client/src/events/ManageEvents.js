@@ -16,7 +16,14 @@ const ManageEvents = ({
     new Array(event.pending.length).fill("unhandled")
   );
 
+  useEffect(() => {
+    if (event && event.pending) {
+      setHandledRequests(new Array(event.pending.length).fill("unhandled"));
+    }
+  }, [event]);
+
   const [profiles, setProfiles] = useState([])
+  const [selectedTab, setSelectedTab] = useState("pending");
 
   /*
   handleClosePopup
@@ -186,82 +193,132 @@ const ManageEvents = ({
             Manage <span className="formatted-title">{title}</span>
           </h2>
           <div className="requests">
-            <h3>Requests</h3>
-            {Array.isArray(profiles) && profiles.length > 0 ? (
-              <div className="request-list">
-                {profiles.map((request, index) => (
-                  <div className="request" key={index}>
-                  {request.profileAvaiable ? (
-                    <div className="profile">
-                      <div className="pfp-box">
+            <div className="tab-buttons">
+              <button
+                className={selectedTab === "pending" ? "active" : ""}
+                onClick={() => setSelectedTab("pending")}
+              >
+                Requests
+              </button>
+              <button
+                className={selectedTab === "approved" ? "active" : ""}
+                onClick={() => setSelectedTab("approved")}
+              >
+                Approved
+              </button>
+            </div>
+            {selectedTab === "pending" && (
+              <>
+                {Array.isArray(profiles) && profiles.length > 0 ? (
+                  <div className="request-list">
+                    {profiles.map((request, index) => (
+                      <div className="request" key={index}>
+                        {request.profileAvaiable ? (
+                          <div className="profile">
+                            <div className="pfp-box">
+                              <img
+                                src={request.picture}
+                                alt="Profile"
+                                className="request-avatar"
+                              ></img>
+                            </div>
+                            <div className="user-info">
+                              <h1 className="request-name">{request.name}</h1>
+                              <h10 className="request-bio">{request.bio}</h10>
+                              {Array.isArray(request.interests) && request.interests.length > 0 && (
+                                <div className="interests-box" key={index}>
+                                  {request.interests.map((interest, interestindex) => ( 
+                                    <div className="interest" key={interestindex}>
+                                      <h10>{interest}</h10>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="profile">
+                            <div className="pfp-box">
+                              <img
+                                src={default_picture}
+                                alt="Profile"
+                                className="request-avatar"
+                              ></img>
+                            </div>
+                            <div className="user-info">
+                              <h1 className="request-name">{request.email}</h1>
+                            </div>
+                          </div>
+                        )}
+                        {handledRequests[index] === "unhandled" && (
+                          <div className="buttons">
+                            <button
+                              className="approve-button"
+                              onClick={() => handleApprove(request.email, index)}
+                            >
+                              <FontAwesomeIcon icon={faCheck} />
+                            </button>
+                            <button
+                              className="deny-button"
+                              onClick={() => handleDeny(request.email, index)}
+                            >
+                              <FontAwesomeIcon icon={faX} />{" "} 
+                            </button>
+                          </div>
+                        )}
+                        {handledRequests[index] === "denied" && (
+                          <span className="request-outcome">DENIED</span>
+                        )}
+                        {handledRequests[index] === "approved" && (
+                          <span className="request-outcome">ACCEPTED</span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="no-reqs">
+                    <img
+                      className="no-reqs-img"
+                      alt="no-reqs-dino"
+                      src={no_reqs_dino}
+                    />
+                    <p>No requests right now, come back later!</p>
+                  </div>
+                )}
+              </>
+            )}
+            {selectedTab === "approved" && (
+              <>
+                {mockApprovedRequests.length > 0 ? (
+                  <div className="request-list">
+                    {mockApprovedRequests.map((approvedRequest, index) => (
+                      <div className="request" key={index}>
                         <img
-                          src={request.picture}
+                          src={default_picture}
                           alt="Profile"
                           className="request-avatar"
                         ></img>
-                      </div>
-                      <div className="user-info">
-                        <h1 className="request-name">{request.name}</h1>
-                        <h10 className="request-bio">{request.bio}</h10>
-                        {Array.isArray(request.interests) && request.interests.length > 0 && (
-                          <div className="interests-box" key={index}>
-                            {request.interests.map((interest, interestindex) => ( 
-                              <div className="interest">
-                                <h10>{interest}</h10>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="profile">
-                      <div className="pfp-box">
-                      <img
-                        src={default_picture}
-                        alt="Profile"
-                        className="request-avatar"
-                      ></img>
-                      </div>
-                      <div className="user-info">
-                      <h1 className="request-name">{request.email}</h1>
-                      </div>
-                    </div>
-                  )}
-                    {handledRequests[index] === "unhandled" && (
-                      <div className="buttons">
+                        <p>{approvedRequest}</p>
                         <button
-                          className="approve-button"
-                          onClick={() => handleApprove(request.email, index)}
+                          className="kick-button"
+                          onClick={() => handleKick(approvedRequest)}
                         >
-                          <FontAwesomeIcon icon={faCheck} />
-                        </button>
-                        <button
-                          className="deny-button"
-                          onClick={() => handleDeny(request.email, index)}
-                        >
-                          <FontAwesomeIcon icon={faX} />{" "} 
+                          Kick 'em
                         </button>
                       </div>
-                    )}
-                    {handledRequests[index] === "denied" && (
-                      <span className="request-outcome">DENIED</span>
-                    )}
-                    {handledRequests[index] === "approved" && (
-                      <span className="request-outcome">ACCEPTED</span>
-                    )}
+                    ))}
                   </div>
-                ))}
-              </div>
-            ) : (
-              <div className="no-reqs">
-                <img
-                  className="no-reqs-img"
-                  alt="no-reqs-dino"
-                  src={no_reqs_dino}
-                />
-                <p>No requests right now, come back later!</p>
-              </div>
+                ) : (
+                  <div className="no-reqs">
+                    <img
+                      className="no-reqs-img"
+                      alt="no-reqs-dino"
+                      src={no_reqs_dino}
+                    />
+                    <p>No approved requests yet.</p>
+                  </div>
+                )}
+              </>
             )}
             <button className="close-button" onClick={handleClosePopup}>
               X
@@ -271,6 +328,6 @@ const ManageEvents = ({
       </div>
     </div>
   );
-};
+};  
 
 export default ManageEvents;

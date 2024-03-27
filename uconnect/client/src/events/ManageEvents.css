@@ -240,6 +240,41 @@ background: #555; /* Color of the thumb on hover */
     width: 290px;
     
   }
-  
-  
 }
+
+.tab-buttons {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px; /* Add some space between buttons and content */
+}
+
+.tab-buttons button {
+  padding: 10px 20px;
+  margin: 0 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  background-color: #ffffff;
+  font-weight: 400; /* Set font weight to 400 */
+  font-size: 1.17em; /* This is roughly equivalent to h3 size */
+}
+
+.tab-buttons button.active {
+  background-color: #efefef; /* Change to your preferred active color */
+  color: #ff0000; /* Change to your preferred active text color */
+}
+
+.kick-button {
+  /* font-size: 1.2em; */
+  background-color: red;
+  color: white;
+  padding: 0.5em 1em;
+  border: none;
+  cursor: pointer;
+}
+
+.kick-button:hover {
+  background-color: darkred;
+}
+
