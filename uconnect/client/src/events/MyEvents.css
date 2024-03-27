@@ -20,14 +20,25 @@
   margin-bottom: 0.5em;
   font-weight: 500;
   margin-left: 0.5em;
+  cursor: pointer;
 }
 
 .pending-button {
-  background-color: rgb(255, 119, 22);
-  border: none;
-  border-radius: 20px;
+  background-color: rgb(255, 119, 21);
+  height: 30px;
+  width: 100px;
   color: white;
-  padding: 5px 10px;
+  font-size: 12px;
+  padding: 0px 0px 0px 0px;
+  border-radius: 15px;
+  border: none;
+  margin-top: 10px;
+  transition: 0.3s;
+}
+
+.pending-button:hover {
+  background-color: rgb(242, 145, 0);
+  cursor: pointer;
 }
 
 .event-tab {
@@ -39,7 +50,7 @@
 }
 
 .active-tab {
-  color: #ff5555;
+  color: #ff0000 !important;
   text-decoration: underline;
 }
 .myevent-list {
@@ -67,6 +78,7 @@
       rgba(255, 255, 255, 0.5); /* Light shadow for top and left */
   border: none;
   margin-top: 4px;
+  transition: 0.3s;
 }
 
 .manage-button-container {
@@ -74,7 +86,6 @@
   display: inline-block;
   /* other styles */
 }
-
 
 .pending-requests-bubble {
   position: absolute;
@@ -86,17 +97,17 @@
   border-radius: 50%;
   color: white;
   text-align: center;
-  line-height: 20px; 
+  line-height: 20px;
   font-size: 12px;
   font-weight: bold;
 }
 
 .event-button:hover {
-  background-color: #d1d1d1; /* Light grey background on hover */
+  background-color: #f5f5f5; /* Light grey background on hover */
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2),
     /* Smaller shadow for a pressed effect */ -2px -2px 5px
       rgba(255, 255, 255, 0.5);
-  color: #ff5555;
+  color: #ff0000;
 }
 
 .delete-button {
@@ -153,7 +164,7 @@
 }
 
 .leave-button {
-  background-color: red;
+  background-color: rgb(232, 1, 1);
   height: 30px;
   width: 100px;
   color: white;
@@ -162,4 +173,21 @@
   border-radius: 15px;
   border: none;
   margin-top: 10px;
+  transition: 0.3s;
+}
+
+.leave-button:hover {
+  background-color: #ff1616;
+  cursor: pointer;
+}
+
+.empty-events-message {
+  color: #d3523e;
+  background-color: transparent;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px auto;
+  width: 80%;
+  text-align: center;
+  font-size: 16px;
 }
