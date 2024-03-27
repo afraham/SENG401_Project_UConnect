@@ -278,3 +278,8 @@ background: #555; /* Color of the thumb on hover */
   background-color: darkred;
 }
 
+.kicked-user {
+  background-color: rgba(107, 61, 61, 0.789);
+  /* opacity: 0.5; */
+}
+

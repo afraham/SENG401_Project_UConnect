@@ -24,6 +24,7 @@ const ManageEvents = ({
 
   const [profiles, setProfiles] = useState([])
   const [selectedTab, setSelectedTab] = useState("pending");
+  const [kickedUsers, setKickedUsers] = useState([]);
 
   /*
   handleClosePopup
@@ -143,11 +144,7 @@ const ManageEvents = ({
         }
       );
       if (response.ok) {
-        // Remove the user email from the approved array
-        const updatedApproved = event.approved.filter((email) => email !== userEmail);
-        // Update the event object with the new approved array
-        const updatedEvent = { ...event, approved: updatedApproved };
-        // Call the refetchEvents function to update the events list
+        setKickedUsers((prevKickedUsers) => [...prevKickedUsers, userEmail]);
         refetchEvents();
       } else {
         console.error(
@@ -155,11 +152,9 @@ const ManageEvents = ({
           response.status,
           response.statusText
         );
-        // Handle error case here
       }
     } catch (error) {
       console.error("Error kicking user:", error);
-      // Handle error case here
     }
   };
 
@@ -202,6 +197,7 @@ const ManageEvents = ({
         }
       }
       setProfiles(newHandledRequests);
+      console.log("Profiles:", newHandledRequests); // Print out the profiles
     } catch (error) {
       console.error("Error fetching data for requests:", error);
       // Handle error case here
@@ -349,7 +345,6 @@ const ManageEvents = ({
                             </div>
                           </div>
                         ) : (
-                          console.log("Using default picture for:", email),
                           <div className="profile">
                             <div className="pfp-box">
                               <img
@@ -363,12 +358,16 @@ const ManageEvents = ({
                             </div>
                           </div>
                         )}
-                        <button
-                          className="kick-button"
-                          onClick={() => handleKick(email)}
-                        >
-                          Kick 'em
-                        </button>
+                        <div className={`request ${handledRequests[index] === "kicked" ? "kicked-user" : ""}`} key={index}>
+                          {/* User content */}
+                          <button
+                            className="kick-button"
+                            onClick={() => handleKick(email)}
+                            disabled={kickedUsers.includes(email)} // Disable button if user has been kicked
+                          >
+                            {kickedUsers.includes(email) ? "KICKED" : "Kick 'Em"}
+                          </button>
+                        </div>
                       </div>
                     );
                   })}

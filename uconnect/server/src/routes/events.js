@@ -18,6 +18,8 @@ router.put("/api/events/leave/:eventId", eventsController.userLeftEvent);
 router.delete("/api/events/delete/:eventId", eventsController.deleteEvent);
 router.patch("/api/events/:eventId/edit", eventsController.updateEvent);
 router.put("/api/events/cancelPending/:eventId", eventsController.cancelPending);
+router.put("/api/events/kick/:eventId", eventsController.kickUser);
+
 
 
 module.exports = router;

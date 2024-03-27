@@ -422,3 +422,42 @@ exports.cancelPending = async (req, res) => {
 		res.status(500).json({ message: "Internal Server Error" });
 	}
 };
+
+/*
+kickUser
+Removes user from pending array of a specified event from eventId passed by req's param property. Decrements the spotsTaken by one.
+
+Params: req, res
+Returns: res if failed
+*/
+exports.kickUser = async (req, res) => {
+	const { eventId } = req.params;
+	const { userEmail } = req.body;
+	try {
+		const database = db.db("create_events");
+		const collection = database.collection("events");
+		const result = await collection.findOneAndUpdate(
+			{ _id: new ObjectId(eventId) }, // Find event by id
+			{
+				$inc: { spotsTaken: -1 }, // Decrement spots taken
+				$pull: { approved: userEmail }, // Remove user from pending array
+			},
+			{ new: true } // Returns ne item
+		);
+
+		res.setHeader("Access-Control-Allow-Origin", "*");
+
+		if (result.modifiedCount === 0) {
+			return res
+				.status(404)
+				.json({ message: "Item not found or element not removed" });
+		}
+		res.status(200).json(result);
+	} catch (error) {
+		res.status(500).json({ message: "Internal Server Error" });
+	}
+};
+
+
+
+
