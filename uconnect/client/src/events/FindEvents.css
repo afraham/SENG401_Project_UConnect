@@ -75,7 +75,7 @@
 }
 
 .request-button {
-  background-color: #fa2707;
+  background-color: #d51c00;
   height: 30px;
   width: 100px;
   color: white;
@@ -87,31 +87,52 @@
 }
 
 .request-button:hover {
-  background-color: #0056b3;
+  background-color: #ff0000 !important;
   transition: background-color 0.3s;
   cursor: pointer;
 }
 
 /* CSS based on the buttonDisplay */
 .pending {
-    background-color: #f5bf42;
+  background-color: #ff6a00;
+}
+
+.pending:hover {
+  background-color: #d86c00 !important;
+  cursor: not-allowed;
 }
 
 .joined {
-    background-color: #15ab29;
+  background-color: #00aa17;
 }
 
+.joined:hover {
+  background-color: #05911c !important;
+  cursor: not-allowed;
+}
 .waitlist {
-    background-color: #e68b15;
+  background-color: #f1a100;
+}
+
+.waitlist:hover {
+  background-color: #ffaa00 !important;
 }
 
 .waitlisted {
-    background-color: #1568e6;
-    cursor: not-allowed;
+  background-color: #198acb;
+}
+
+.waitlisted:hover {
+  background-color: #1271a8 !important;
+  cursor: not-allowed;
 }
 
 .yourevent {
-    background-color: #9b59b6;
+  background-color: #00c0ca;
+}
+.yourevent:hover {
+  background-color: #00b0b9 !important;
+  cursor: not-allowed;
 }
 
 .location {

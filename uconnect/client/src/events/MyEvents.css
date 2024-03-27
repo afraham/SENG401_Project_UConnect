@@ -24,11 +24,21 @@
 }
 
 .pending-button {
-  background-color: rgb(255, 119, 22);
-  border: none;
-  border-radius: 20px;
+  background-color: rgb(255, 119, 21);
+  height: 30px;
+  width: 100px;
   color: white;
-  padding: 5px 10px;
+  font-size: 12px;
+  padding: 0px 0px 0px 0px;
+  border-radius: 15px;
+  border: none;
+  margin-top: 10px;
+  transition: 0.3s;
+}
+
+.pending-button:hover {
+  background-color: rgb(242, 145, 0);
+  cursor: pointer;
 }
 
 .event-tab {
@@ -154,7 +164,7 @@
 }
 
 .leave-button {
-  background-color: red;
+  background-color: rgb(232, 1, 1);
   height: 30px;
   width: 100px;
   color: white;
@@ -163,6 +173,12 @@
   border-radius: 15px;
   border: none;
   margin-top: 10px;
+  transition: 0.3s;
+}
+
+.leave-button:hover {
+  background-color: #ff1616;
+  cursor: pointer;
 }
 
 .empty-events-message {

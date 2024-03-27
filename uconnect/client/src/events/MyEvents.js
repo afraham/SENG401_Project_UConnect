@@ -531,7 +531,7 @@ function MyEvents() {
                       className="pending-button"
                       onClick={() => handlePendingButton(event._id)}
                     >
-                      CANCEL
+                      Cancel
                     </button>
                   </div>
                 </div>
