@@ -1,14 +1,17 @@
 .comments-section {
-  border: 1px solid #ccc;
-  padding: 20px;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-  background-color: #fff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  height: stretch;
-  min-height: fit-content;
+    border: 1px solid #ccc; 
+    padding: 20px;
+    max-width: 800px; 
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #fff; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    height: stretch;
+    min-height: fit-content;
+    overflow: hidden;
+    padding-bottom: 40px;
+
 }
 
 .comments-section h2 {

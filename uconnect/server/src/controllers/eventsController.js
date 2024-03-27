@@ -51,6 +51,7 @@ exports.getEvents = async (req, res) => {
     }
 };
 
+
 /*
 getEventsByEmail
 Retrieves all events and uses req query property to see if userEmail is entered. If userEmail exists retrieve all events belonging to the userEmail
