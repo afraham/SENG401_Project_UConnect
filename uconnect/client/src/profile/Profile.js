@@ -166,20 +166,28 @@ function Profile() {
                   className="avatar"
                 />
               ) : (
-                <input
-                  type="file"
-                  onChange={handleImageUpload}
-                  className="image-input"
-                />
+                <>
+                  {profileInfo.picture ? (
+                    <img
+                      className="avatar-prev"
+                      src={profileInfo.picture}
+                      alt="Preview"
+                    />
+                  ) : (
+                    <img
+                      className="avatar-prev"
+                      src={default_picture}
+                      alt="Default Preview"
+                    />
+                  )}
+                  <input
+                    type="file"
+                    onChange={handleImageUpload}
+                    className="image-input"
+                  />
+                </>
               )}
             </label>
-            {isEditing && profileInfo.picture && (
-              <img
-                className="avatar-prev"
-                src={profileInfo.picture || default_picture}
-                alt="Preview"
-              />
-            )}
 
             <div className="profile-name-email">
               {/* Name */}

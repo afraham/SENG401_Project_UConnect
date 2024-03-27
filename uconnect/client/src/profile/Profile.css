@@ -115,13 +115,15 @@
   color: #ffffff;
 }
 
-.avatar-prev {
+.avatar-prev{
   width: 100px;
   border-radius: 50px;
   max-height: 100px;
   max-width: 100px;
   position: absolute;
 }
+
+
 
 .image-upload {
   position: relative;
