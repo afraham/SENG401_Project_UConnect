@@ -39,7 +39,7 @@
 }
 
 .active-tab {
-  color: #ff5555;
+  color: #ff0000 !important;
   text-decoration: underline;
 }
 .myevent-list {
