@@ -37,34 +37,18 @@ Returns: None
 */
 
 exports.getEvents = async (req, res) => {
-	try {
-		const database = db.db("create_events");
-		const collection = database.collection("events");
+    try {
+        const database = db.db("create_events");
+        const collection = database.collection("events");
 
-		const userEmail = req.query.userEmail;
-		let events;
+        const events = await collection.find().toArray();
 
-		if (userEmail) {
-			events = await collection
-				.find({
-					$and: [
-						{ userEmail: { $ne: userEmail } }, // Check if user is owner of event
-						{ pending: { $nin: [userEmail] } }, // Check if user has already joined event
-						{ approved: { $nin: [userEmail] } }, // Check if user has an open request to join event
-					],
-				})
-				.toArray();
-		} else {
-			res.status(400).send({ message: "No userEmail provided" });
-			return;
-		}
-
-		res.setHeader("Access-Control-Allow-Origin", "*");
-		res.status(200).json(events);
-	} catch (error) {
-		console.error("Error retrieving events:", error);
-		res.status(500).send({ message: "Internal Server Error" });
-	}
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.status(200).json(events);
+    } catch (error) {
+        console.error("Error retrieving events:", error);
+        res.status(500).send({ message: "Internal Server Error" });
+    }
 };
 
 /*

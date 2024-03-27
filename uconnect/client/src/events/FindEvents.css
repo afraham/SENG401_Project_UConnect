@@ -92,9 +92,26 @@
   cursor: pointer;
 }
 
+/* CSS based on the buttonDisplay */
 .pending {
-  background-color: #5a5555;
-  cursor: not-allowed;
+    background-color: #f5bf42;
+}
+
+.joined {
+    background-color: #15ab29;
+}
+
+.waitlist {
+    background-color: #e68b15;
+}
+
+.waitlisted {
+    background-color: #1568e6;
+    cursor: not-allowed;
+}
+
+.yourevent {
+    background-color: #9b59b6;
 }
 
 .location {
