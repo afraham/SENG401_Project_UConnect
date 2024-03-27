@@ -7,7 +7,6 @@ Find profile by email and replace fields with new profiledata.
 Params: req, res
 Returns: None
 */
-
 exports.updateProfile = async (req, res) => {
 	try {
 		const database = db.db("create_profiles");
@@ -90,3 +89,34 @@ exports.createProfile = async (req, res) => {
 		res.status(500).send({ message: "Internal Server Error" });
 	}
 };
+
+/*
+fetchProfileInfo
+Fetch entire profile item from user's email.
+
+Params: req, res
+Returns: None
+*/
+exports.fetchProfileInfo = async (req, res) => {
+    try {
+      const email = req.params.email; 
+      console.log("Email that was sent:", email);
+      const database = db.db("create_profiles");
+      const collection = database.collection("profiles");
+  
+      const profile = await collection.findOne({ email: email }); // Find by userEmail
+      //console.log("Profile found:", profile); // Log the profile
+  
+      if (!profile) {
+        res.status(404).send({ message: "Profile not found" });
+        return;
+      }
+  
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.status(200).send(profile);
+    } catch (error) {
+      console.error("Error fetching profile information:", error);
+      res.status(500).send({ message: "Internal Server Error" });
+    }
+};
+

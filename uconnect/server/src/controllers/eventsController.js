@@ -37,34 +37,18 @@ Params: req, res
 Returns: None
 */
 exports.getEvents = async (req, res) => {
-	try {
-		const database = db.db("create_events");
-		const collection = database.collection("events");
+    try {
+        const database = db.db("create_events");
+        const collection = database.collection("events");
 
-		const userEmail = req.query.userEmail;
-		let events;
+        const events = await collection.find().toArray();
 
-		if (userEmail) {
-			events = await collection
-				.find({
-					$and: [
-						{ userEmail: { $ne: userEmail } },
-						{ pending: { $nin: [userEmail] } },
-						{ approved: { $nin: [userEmail] } },
-					],
-				})
-				.toArray();
-		} else {
-			res.status(400).send({ message: "No userEmail provided" });
-			return;
-		}
-
-		res.setHeader("Access-Control-Allow-Origin", "*");
-		res.status(200).json(events);
-	} catch (error) {
-		console.error("Error retrieving events:", error);
-		res.status(500).send({ message: "Internal Server Error" });
-	}
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.status(200).json(events);
+    } catch (error) {
+        console.error("Error retrieving events:", error);
+        res.status(500).send({ message: "Internal Server Error" });
+    }
 };
 
 /*
@@ -75,7 +59,6 @@ else do not retrieve any events.
 Params: req, res
 Returns: None
 */
-
 exports.getEventsByEmail = async (req, res) => {
 	try {
 		const database = db.db("create_events");
@@ -85,7 +68,7 @@ exports.getEventsByEmail = async (req, res) => {
 		let events;
 
 		if (userEmail) {
-			events = await collection.find({ userEmail: userEmail }).toArray();
+			events = await collection.find({ userEmail: userEmail }).toArray(); // Find and retrieves all events with user as owner
 		} else {
 			res.status(400).send({ message: "No userEmail provided" });
 			return;
@@ -106,7 +89,6 @@ Updates array of pending requests for a specified event from the eventId. Requir
 Params: req, res
 Returns: None
 */
-
 exports.requestToJoinEvent = async (req, res) => {
 	const { eventId } = req.params;
 	const { userEmail } = req.body;
@@ -139,7 +121,6 @@ else do not retrieve any events.
 Params: req, res
 Returns: None
 */
-
 exports.getMyPendingEventsByEmail = async (req, res) => {
 	const userEmail = req.query.userEmail;
 
@@ -163,7 +144,6 @@ else do not retrieve any events.
 Params: req, res
 Returns: None
 */
-
 exports.getMyJoinedEventsByEmail = async (req, res) => {
 	const userEmail = req.query.userEmail;
 
@@ -186,7 +166,6 @@ Requests deletion of an event using an eventId retrieved from req's parameter pr
 Params: req, res
 Returns: None
 */
-
 exports.deleteEvent = async (req, res) => {
 	const { eventId } = req.params;
 	console.log("Trying to delete", eventId);
@@ -216,7 +195,6 @@ Moves userEmail from pending array to approved array in database for an event fr
 Params: req, res
 Returns: res if failed
 */
-
 exports.approveUser = async (req, res) => {
 	const { eventId } = req.params;
 	const { userEmail } = req.body;
@@ -255,7 +233,6 @@ Removes user from pending array of a specified event from eventId passed by req'
 Params: req, res
 Returns: res if failed
 */
-
 exports.denyUser = async (req, res) => {
 	const { eventId } = req.params;
 	const { userEmail } = req.body;
@@ -291,7 +268,6 @@ Update an event's field in database from an eventId with the request paramaters 
 Params: req, res
 Returns: res if failed
 */
-
 exports.updateEvent = async (req, res) => {
 	const { eventId } = req.params; // Extract eventId from request parameters
 	const eventDataToUpdate = req.body; // Updated event data sent from the client
@@ -358,7 +334,6 @@ Find event from eventId using request parameters and remove userEmail from appro
 Params: req, res
 Returns: None
 */
-
 exports.userLeftEvent = async (req, res) => {
 	const { eventId } = req.params;
 	const { userEmail } = req.body;
