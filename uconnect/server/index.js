@@ -18,6 +18,8 @@ const corsOptions = {
 		"https://u-connect-server.vercel.app",
 	],
 	credentials: true,
+	methods: "*",
+	allowedHeaders: ["Content-Type", "Authorization"],
 };
 
 app.use(cors(corsOptions));
