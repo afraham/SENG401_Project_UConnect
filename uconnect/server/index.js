@@ -17,13 +17,9 @@ const corsOptions = {
 		"https://u-connect-frontend.vercel.app",
 		"https://u-connect-server.vercel.app",
 	],
-	credentials: true,
-	methods: "*",
-	allowedHeaders: ["Content-Type", "Authorization"],
 };
 
 app.use(cors(corsOptions));
-app.options("*", cors());
 
 // adding a route for the root URL
 // displays a message to the backend deployment (mainly used for debugging)
@@ -36,7 +32,6 @@ app.use(eventsRoutes);
 
 // Adding profiles routes
 app.use(profileRoutes);
-
 
 app.listen(port, () => {
 	console.log(`Server is running on port ${port}`);
