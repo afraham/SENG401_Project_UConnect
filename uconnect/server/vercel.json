@@ -13,7 +13,7 @@
 			"headers": [{ "key": "Access-Control-Allow-Origin", "value": "*" }]
 		},
 		{
-			"source": "/https://u-connect-server.vercel.app/(.*)",
+			"source": "/u-connect-server.vercel.app/(.*)",
 			"headers": [{ "key": "Access-Control-Allow-Origin", "value": "*" }]
 		}
 	]
