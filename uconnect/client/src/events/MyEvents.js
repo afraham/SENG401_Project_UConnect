@@ -109,7 +109,7 @@ function MyEvents() {
 	const handleDeleteEvent = async (event) => {
 		try {
 			const response = await fetch(
-				`http://localhost:8000/api/events/delete/${event._id}`,
+				`https://u-connect-frontend.vercel.app/api/events/delete/${event._id}`,
 				{
 					method: "DELETE",
 					headers: {
@@ -174,7 +174,7 @@ function MyEvents() {
 			const userEmail = user ? user.email : null;
 
 			const response = await fetch(
-				`http://localhost:8000/api/events/cancelPending/${eventId}`,
+				`https://u-connect-frontend.vercel.app/api/events/cancelPending/${eventId}`,
 				{
 					method: "PUT",
 					headers: {
@@ -219,7 +219,7 @@ function MyEvents() {
 			const userEmail = user ? user.email : null;
 
 			const response = await fetch(
-				`http://localhost:8000/api/events/leave/${event._id}`,
+				`https://u-connect-frontend.vercel.app/api/events/leave/${event._id}`,
 				{
 					method: "PUT",
 					headers: {
@@ -260,7 +260,7 @@ function MyEvents() {
 
 			if (userEmail) {
 				const response = await fetch(
-					`http://localhost:8000/api/pendingEventsByEmail?userEmail=${userEmail}`
+					`https://u-connect-frontend.vercel.app/api/pendingEventsByEmail?userEmail=${userEmail}`
 				);
 				if (!response.ok) {
 					throw new Error(`HTTP error! status: ${response.status}`);
@@ -293,7 +293,7 @@ function MyEvents() {
 
 			if (userEmail) {
 				const response = await fetch(
-					`http://localhost:8000/api/joinedEventsByEmail?userEmail=${userEmail}`
+					`https://u-connect-frontend.vercel.app/api/joinedEventsByEmail?userEmail=${userEmail}`
 				);
 				if (!response.ok) {
 					throw new Error(`HTTP error! status: ${response.status}`);
@@ -341,7 +341,7 @@ function MyEvents() {
 
 			if (userEmail) {
 				const response = await fetch(
-					`http://localhost:8000/api/eventsByEmail?userEmail=${userEmail}`
+					`https://u-connect-frontend.vercel.app/api/eventsByEmail?userEmail=${userEmail}`
 				);
 				if (!response.ok) {
 					throw new Error(`HTTP error! status: ${response.status}`);
