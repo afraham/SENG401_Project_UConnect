@@ -38,7 +38,7 @@ function CommentComp({ commentHistory }) {
 				};
 				try {
 					const response = await fetch(
-						`https://u-connect-frontend.vercel.app/api/eventById/${eventId}`,
+						`https://u-connect-server.vercel.app/api/eventById/${eventId}`,
 						{
 							// Call to backend with eventId to update proper event
 							method: "PUT",

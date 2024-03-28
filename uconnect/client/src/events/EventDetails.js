@@ -28,7 +28,7 @@ const EventDetails = () => {
 					try {
 						// Attempt to fetch user data from the database using request
 						const response = await fetch(
-							`https://u-connect-frontend.vercel.app/api/profiles/${email}`
+							`https://u-connect-server.vercel.app/api/profiles/${email}`
 						);
 						if (response.ok) {
 							const userData = await response.json();

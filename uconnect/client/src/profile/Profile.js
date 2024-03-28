@@ -45,7 +45,7 @@ function Profile() {
   */
 	const handleSaveClick = async (updatedInfo) => {
 		try {
-			await fetch("https://u-connect-frontend.vercel.app/api/profiles/update", {
+			await fetch("https://u-connect-server.vercel.app/api/profiles/update", {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
@@ -71,7 +71,7 @@ function Profile() {
 		try {
 			console.log("Fetching profile info for email:", email);
 			const response = await fetch(
-				`https://u-connect-frontend.vercel.app/api/profiles/${email}`
+				`https://u-connect-server.vercel.app/api/profiles/${email}`
 			);
 			if (!response.ok) {
 				throw new Error(

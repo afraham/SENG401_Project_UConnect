@@ -95,7 +95,7 @@ const AddEvents = ({ closePopup, event, editMode, updateEvents }) => {
 
 			const spotsTaken = 1;
 			const response = await fetch(
-				"https://u-connect-frontend.vercel.app/api/events",
+				"https://u-connect-server.vercel.app/api/events",
 				{
 					method: "POST",
 					headers: {
@@ -165,7 +165,7 @@ const AddEvents = ({ closePopup, event, editMode, updateEvents }) => {
 
 			// Sending the updated event data to the server using a PATCH request for partial update
 			const response = await fetch(
-				`https://u-connect-frontend.vercel.app/api/events/${eventId}/edit`,
+				`https://u-connect-server.vercel.app/api/events/${eventId}/edit`,
 				{
 					method: "PATCH", // Use PATCH method for partial updates
 					headers: {

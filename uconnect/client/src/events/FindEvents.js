@@ -24,7 +24,7 @@ function FindEvents() {
 
 		try {
 			const response = await fetch(
-				`https://u-connect-frontend.vercel.app/api/events?userEmail=${userEmail}` // API call to backend
+				`https://u-connect-server.vercel.app/api/events?userEmail=${userEmail}` // API call to backend
 			);
 			if (response.ok) {
 				const data = await response.json();
@@ -110,7 +110,7 @@ function FindEvents() {
 	const handleRequestToJoin = async (eventId, userEmail, index) => {
 		try {
 			const response = await fetch(
-				`https://u-connect-frontend.vercel.app/api/events/${eventId}/join`,
+				`https://u-connect-server.vercel.app/api/events/${eventId}/join`,
 				{
 					method: "PUT",
 					headers: {
