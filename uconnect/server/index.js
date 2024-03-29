@@ -12,11 +12,11 @@ const port = 8000;
 app.use(bodyParser.json());
 
 const corsOptions = {
-	origin: [
-		"http://localhost:3000",
-		"https://u-connect-frontend.vercel.app",
-		"https://u-connect-server.vercel.app",
-	],
+	origin: "*",
+	credentials: true,
+	methods: ["GET", "POST", "HEAD", "PUT", "PATCH", "DELETE", "OPTIONS"],
+	allowedHeaders: ["Content-Type", "Access-Control-Allow-Origin"],
+	exposedHeaders: ["Content-Type", "Access-Control-Allow-Origin"],
 };
 
 app.use(cors(corsOptions));
